@@ -15,8 +15,6 @@ import wkrjsystem.department.bean.WkrjDept;
 import wkrjsystem.department.service.WkrjDeptService;
 import wkrjsystem.user.bean.WkrjUser;
 import wkrjsystem.utils.AjaxJson;
-import wkrjsystem.utils.Guid;
-import wkrjsystem.utils.UtilsHelper;
 import wkrjsystemdev.userdev.bean.WkrjUserDev;
 
 @Controller
