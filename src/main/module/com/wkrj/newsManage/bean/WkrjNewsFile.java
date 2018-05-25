@@ -10,7 +10,7 @@ import wkrjsystem.menu.bean.WkrjMenu;
  * @author sjc
  *
  */
-public class WkrjNewsFile {   
+public class WkrjNewsFile {
 
 	private String file_id;
 	private String news_id;// 信息ID
