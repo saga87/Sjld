@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.wkrj.newsManage.dao.WkrjNewsManageDao">
+	
+	<select id="getNewsList" resultType="hashmap">
+		
+		SELECT n.news_id,n.news_title,n.news_content,n.news_other,n.news_inputuser,news_inputuserdept,news_lookarea,news_type,
+        DATE_FORMAT(n.news_inputtime,'%Y-%m-%d %H:%i:%s') news_inputtime,u.user_name
+        FROM `wkrj_newsmanage` n,wkrj_sys_user u 
+		where u.user_id = n.news_inputuser
+        
+         <choose>  
+	        <when test="isSchool!= null and ''!=isSchool and 'null'!=isSchool">  
+	            and u.school_id=#{isSchool}
+	        </when>  
+	        <when test="false==isGly">  
+	             and (FIND_IN_SET(#{user_id},news_lookarea) or n.news_inputuserdept LIKE CONCAT('%',#{user_dept},'%'))
+	        </when>  
+	        <otherwise>  
+	           
+	        </otherwise>  
+    	</choose>  
+        <!-- <if test="false==isGly">
+            and (FIND_IN_SET(#{user_id},news_lookarea) or n.news_inputuserdept LIKE CONCAT('%',#{user_dept},'%'))
+        </if> -->
+        <if test="null!=news_title and ''!=news_title">
+            and news_title like concat("%", #{news_title},"%")
+        </if>
+        <if test="null!=news_inputtime and ''!=news_inputtime">
+            and news_inputtime >= #{news_inputtime}
+        </if>
+        <if test="null!=end_date and ''!=end_date">
+            and news_inputtime &lt;= #{end_date}
+        </if>
+        order by news_inputtime desc
+         limit #{offset},#{page}
+		<!-- where notice_parent_id = #{parentId} and notice_is_display='0' -->
+	</select>
+
+	<select id="getNewsOpDetail" resultType="hashmap">
+        
+        SELECT n.news_id,n.news_title,n.news_content,n.news_other,n.news_inputuser,news_inputuserdept,news_lookarea,
+        DATE_FORMAT(n.news_inputtime,'%Y-%m-%d %H:%i:%s') news_inputtime,
+        o.op_signuser,o.op_lookuser,u.user_name,
+        DATE_FORMAT(o.op_looktime,'%Y-%m-%d %H:%i:%s') op_looktime,
+        DATE_FORMAT(o.op_signtime,'%Y-%m-%d %H:%i:%s') op_signtime
+        FROM `wkrj_newsmanage` n 
+        LEFT JOIN wkrj_sys_user u ON u.user_id = n.news_inputuser
+        left join wkrj_newsmanage_op o ON o.news_id=n.news_id
+        where 1=1 
+        <choose>  
+            <when test="isSchool!= null and ''!=isSchool and 'null'!=isSchool">  
+                and u.school_id=#{isSchool}
+            </when>  
+            <when test="false==isGly">  
+                 and (FIND_IN_SET(#{user_id},n.news_lookarea) or n.news_inputuserdept LIKE CONCAT('%',#{user_dept},'%'))
+            </when>  
+            <otherwise>  
+               
+            </otherwise>  
+        </choose>
+        <!-- <if test="false==isGly">
+            and (FIND_IN_SET(#{user_id},n.news_lookarea) or n.news_inputuserdept LIKE CONCAT('%',#{user_dept},'%'))
+        </if> -->
+        <if test="null!=news_title and ''!=news_title">
+            and news_title like concat("%", #{news_title},"%")
+        </if>
+        <if test="null!=op_signtime and ''!=op_signtime">
+            and o.op_signtime >= #{op_signtime}
+        </if>
+        <if test="null!=end_date and ''!=end_date">
+            and o.op_signtime &lt;= #{end_date}
+        </if>
+        
+        <if test="null!=op_looktime and ''!=op_looktime">
+            and o.op_looktime >= #{op_looktime}
+        </if>
+        <if test="null!=end_looktime and ''!=end_looktime">
+            and o.op_looktime &lt;= #{end_looktime}
+        </if>
+         order by news_inputtime desc
+         limit #{offset},#{page}
+    </select>
+    
+    <select id="checkOpList" resultType="WkrjNewsManageOp">
+        SELECT 
+        o.op_signuser,o.op_lookuser,
+        DATE_FORMAT(o.op_looktime,'%Y-%m-%d %H:%i:%s') op_looktime,
+        DATE_FORMAT(o.op_signtime,'%Y-%m-%d %H:%i:%s') op_signtime
+        FROM wkrj_newsmanage_op o 
+        where 1=1 and o.news_id=#{news_id}
+         order by op_signtime desc
+         limit #{offset},#{page}
+    </select>
+    
+    <select id="checkOpListCnt" resultType="Long">
+        SELECT count(1)
+        FROM wkrj_newsmanage_op
+        where 1=1 and news_id=#{news_id}
+    </select>
+	
+	<select id="getNewsFile" resultType="WkrjNewsFile" parameterType="String">
+        
+        SELECT f.file_id,f.news_id,f.file_yname,f.file_xname,f.file_inputtime,f.file_inputuser
+        FROM `wkrj_newsfile` f LEFT JOIN wkrj_sys_user u ON u.user_id = f.file_inputuser
+         where f.news_id=#{news_id}
+        
+    
+    </select>
+	
+	<select id="getNewsListCount" resultType="Long" parameterType="Object">
+        
+        SELECT count(news_id) 
+        FROM `wkrj_newsmanage` <!-- where (FIND_IN_SET(#{user_id},news_lookarea) or news_inputuserdept LIKE CONCAT('%',#{user_dept},'%')) -->
+         ,wkrj_sys_user u 
+		where u.user_id = news_inputuser
+        
+         <choose>  
+	        <when test="isSchool!= null and ''!=isSchool and 'null'!=isSchool">  
+	            and u.school_id=#{isSchool}
+	        </when>  
+	        <when test="false==isGly">  
+	             and (FIND_IN_SET(#{user_id},news_lookarea) or news_inputuserdept LIKE CONCAT('%',#{user_dept},'%'))
+	        </when>  
+	        <otherwise>  
+	           
+	        </otherwise>  
+    	</choose>  
+       <!--  <if test="false==isGly">
+            and (FIND_IN_SET(#{user_id},news_lookarea) or news_inputuserdept LIKE CONCAT('%',#{user_dept},'%'))
+        </if> -->
+        <if test="null!=news_title and ''!=news_title">
+            and news_title like concat("%", #{news_title},"%")
+        </if>
+        <if test="null!=news_inputtime and ''!=news_inputtime">
+            and news_inputtime = #{news_inputtime}
+        </if>
+        <if test="null!=end_date and ''!=end_date">
+            and news_inputtime &lt;= #{end_date}
+        </if>
+
+    </select>
+
+    <select id="getNewsOpDetailCount" resultType="Long">
+        
+        SELECT count(1) 
+        FROM `wkrj_newsmanage` n 
+        LEFT JOIN wkrj_sys_user u ON u.user_id = n.news_inputuser
+        left join wkrj_newsmanage_op o ON o.news_id=n.news_id
+        where 1=1
+        <choose>  
+            <when test="isSchool!= null and ''!=isSchool and 'null'!=isSchool">  
+                and u.school_id=#{isSchool}
+            </when>
+            <when test="false==isGly">  
+                 and (FIND_IN_SET(#{user_id},n.news_lookarea) or n.news_inputuserdept LIKE CONCAT('%',#{user_dept},'%'))
+            </when>  
+            <otherwise>  
+               
+            </otherwise>  
+        </choose>
+        <!-- <if test="false==isGly">
+            and (FIND_IN_SET(#{user_id},n.news_lookarea) or n.news_inputuserdept LIKE CONCAT('%',#{user_dept},'%'))
+        </if> -->
+        <if test="null!=news_title and ''!=news_title">
+            and news_title like concat("%", #{news_title},"%")
+        </if>
+        <if test="null!=op_signtime and ''!=op_signtime">
+            and o.op_signtime >= #{op_signtime}
+        </if>
+        <if test="null!=end_date and ''!=end_date">
+            and o.op_signtime &lt;= #{end_date}
+        </if>
+        
+        <if test="null!=op_looktime and ''!=op_looktime">
+            and o.op_looktime >= #{op_looktime}
+        </if>
+        <if test="null!=end_looktime and ''!=end_looktime">
+            and o.op_looktime &lt;= #{end_looktime}
+        </if>
+
+    </select>
+
+	<insert id="addNews" parameterType="WkrjNewsManage" >
+		
+		insert wkrj_newsmanage(news_id,news_title,news_content,news_other,news_inputtime,news_inputuser,news_inputuserdept,news_lookarea,news_type)
+		values(#{news_id},#{news_title},#{news_content},#{news_other},#{news_inputtime},#{news_inputuser},
+			   #{news_inputuserdept},#{news_lookarea},#{news_type});
+	
+	</insert>
+	
+	<insert id="addNewsFile" parameterType="WkrjNewsFile" >
+        
+        insert wkrj_newsfile(file_id,news_id,file_yname,file_xname,file_inputtime,file_inputuser)
+        values(#{file_id},#{news_id},#{file_yname},#{file_xname},#{file_inputtime},#{file_inputuser});
+    
+    </insert>
+    
+    <insert id="signNews" parameterType="WkrjNewsManageOp" >
+        
+        insert wkrj_newsmanage_op(news_id,op_signtime,op_signuser)
+        values(#{news_id},#{op_signtime},#{op_signuser});
+    
+    </insert>
+    
+    <update id="checkNews" parameterType="WkrjNewsManageOp">
+        
+        update wkrj_newsmanage_op set op_lookuser=#{op_lookuser},op_looktime=#{op_looktime}
+        where news_id=#{news_id} and op_signuser=#{op_signuser}
+        
+    </update>
+    
+	<select id="ifCheckNews" resultType="boolean" parameterType="WkrjNewsManageOp">
+        
+        SELECT count(*)
+        FROM wkrj_newsmanage_op where news_id=#{news_id} and op_lookuser=#{op_lookuser}
+    
+    </select>
+    
+	<update id="updateNews" parameterType="WkrjNewsManage">
+		
+		update wkrj_newsmanage set news_title=#{news_title},news_content=#{news_content},news_other=#{news_other},news_type=#{news_type},
+<!-- 		,news_inputtime=#{news_inputtime},news_inputuser=#{news_inputuser},news_inputuserdept=#{news_inputuserdept} -->
+		news_lookarea=#{news_lookarea}
+		where news_id=#{news_id}
+		
+	</update>
+	
+	<delete id="delNews">
+		
+		delete from wkrj_newsmanage where news_id=#{news_id}
+		
+	</delete>
+	
+	<delete id="delNewsFile">
+        
+        delete from wkrj_newsfile where news_id=#{news_id}
+        
+    </delete>
+    
+    <select id="checkeIsHaveFile" resultType="boolean">
+        SELECT count(news_id) FROM wkrj_newsfile where news_id=#{news_id}
+    </select>
+    
+    <select id="isSignOrNot" resultType="boolean">
+        SELECT count(news_id) FROM wkrj_newsmanage_op where news_id=#{news_id} and op_signuser=#{op_signuser}
+    </select>
+    
+    <select id="getUserList" resultType="WkrjUser" parameterType="String">
+        
+        SELECT user_id,user_name,user_realname 
+        FROM `wkrj_sys_user` 
+    
+    </select>
+    
+    <select id="getUserNameById" resultType="WkrjUser" parameterType="String">
+        
+        SELECT user_id,user_realname
+        FROM `wkrj_sys_user` 
+        where user_id = #{user_id}
+    
+    </select>
+    
+    <delete id="delFileByID">
+        
+        delete from wkrj_newsfile where file_id=#{file_id}
+        
+    </delete>
+        
+    <select id="getnewsManageFileListCount" resultType="Long" parameterType="Object">
+        
+        SELECT count(news_id) 
+        FROM `wkrj_newsfile` where news_id=#{news_id}
+        
+    </select>
+            
+    <select id="getnewsManageFileList" resultType="hashmap">
+        
+        SELECT f.file_id,f.news_id,f.file_yname,f.file_xname,f.file_inputuser,
+        DATE_FORMAT(f.file_inputtime,'%Y-%m-%d %H:%i:%s') file_inputtime,u.user_name
+        FROM `wkrj_newsfile` f left join wkrj_sys_user u on u.user_id=f.file_inputuser where f.news_id=#{news_id} 
+        order by f.file_inputtime desc
+        limit #{offset},#{page}
+    
+    </select>
+
+</mapper>
+
