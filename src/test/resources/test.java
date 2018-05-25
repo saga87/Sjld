@@ -7,7 +7,7 @@ public class test {
 		System.out.println(Math.ceil(12.3));//13
 		
 		
-		/*java.math.Math类常用的常量和方法：
+		/*java.math.rrrMath类常用的常量和方法：
 		Math.PI 记录的圆周率
 		Math.E记录e的常量
 		Math.abs 求绝对值
