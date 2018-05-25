@@ -5,8 +5,6 @@ public class test {
 	public static void main(String[] args) {
 		System.out.println(Math.ceil(12.7));;//13
 		System.out.println(Math.ceil(12.3));//13
-		
-		
 		/*java.math.Math类常用的常量和方法：
 		Math.PI 记录的圆周率
 		Math.E记录e的常量
