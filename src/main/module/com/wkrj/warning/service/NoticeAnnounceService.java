@@ -8,9 +8,12 @@ import java.util.Map;
 
 
 
+
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.ibatis.annotations.Param;
+
+
+import org.springframework.web.multipart.MultipartFile;
 
 import com.wkrj.warning.bean.NoticeAnnounce;
 import com.wkrj.warning.bean.NoticeAnnounceFile;
@@ -24,7 +27,7 @@ public interface NoticeAnnounceService {
 	boolean deleteNoticeAnnounce(HttpServletRequest request,String na_id);
 	
 	List<Map<String,Object>> getNoticeAnnounceFileList(String file_id,String na_id);
-	boolean deleteNoticeAnnounceFile(HttpServletRequest request,@Param("file_id")String file_id,@Param("na_id")String na_id);
+	boolean deleteNoticeAnnounceFile(HttpServletRequest request,String file_id,String na_id);
 	
-	
+	public String uploadPic(MultipartFile newsManage_icons,HttpServletRequest request,String foledArrress);
 }

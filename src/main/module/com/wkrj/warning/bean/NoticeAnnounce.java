@@ -16,7 +16,23 @@ public class NoticeAnnounce {
 	private String na_inputtime;//录入时间
 	private int importance;//重要程度
 	private String accept_user;//可视用户
+	private String file_yname;
+	private String file_xname;
 	
+	
+	
+	public String getFile_yname() {
+		return file_yname;
+	}
+	public void setFile_yname(String file_yname) {
+		this.file_yname = file_yname;
+	}
+	public String getFile_xname() {
+		return file_xname;
+	}
+	public void setFile_xname(String file_xname) {
+		this.file_xname = file_xname;
+	}
 	public String getNa_id() {
 		return na_id;
 	}

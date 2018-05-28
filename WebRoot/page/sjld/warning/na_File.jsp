@@ -11,28 +11,20 @@
             temp_manager = $("#newsManageFile_maingrid").ligerGrid({
 		        url:'noticeAnnounce/getNoticeAnnounceFileList?na_id='+dialogData.content.na_id,
 		        columns: [
-		        { display: '附件名称', name: 'file_name', id: 'file_name', width: '35%', align: 'center' },
-		        { display: '上传人账号', name: 'file_inputuser', id: 'file_inputuser', width: '30%', align: 'center' },
-		        { display: '上传时间', name: 'file_inputtime', id: 'file_inputtime', width: '35%', align: 'center' }
-		        ], height: 385,
-		        width : 575,
+		        { display: '附件名称', name: 'file_yname', id: 'file_yname', width: '40%', align: 'center' },
+		        { display: '上传人账号', name: 'file_inputuser', id: 'file_inputuser', width: '15%', align: 'center' },
+		        { display: '上传时间', name: 'file_inputtime', id: 'file_inputtime', width: '25%', align: 'center' }
+		        ], height: 485,
+		        width : 675,
 		        usePager :true,
 		        rownumbers : true,
 		        alternatingRow: true,
 		        toolbar : {
 		            items : [ {
-		                text : '删除',
-		                click : delnewsManageFile,
-		                icon : 'delete'
-		            },{
 		                text : '预览',
 		                click : previewFile,
 		                icon : 'prev'
-		            }, {
-		                text : '下载',
-		                click : down_load,
-		                icon : 'modify'
-		            } ]
+		            }]
 		        }
 		    });
        });

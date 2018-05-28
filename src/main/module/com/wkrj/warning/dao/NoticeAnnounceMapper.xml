@@ -48,14 +48,14 @@
     
     <insert id="addNoticeAnnounceFile" parameterType="NoticeAnnounceFile">
 		INSERT INTO wkrj_noticeannouncefile(na_id,file_id,file_yname,file_xname,file_inputtime,
-		file_inputuser,file_name,file_path)
+		file_inputuser)
 		VALUES(#{na_id},#{file_id},#{file_yname},#{file_xname},#{file_inputtime}
-		,#{file_inputuser},#{file_name},#{file_path})
+		,#{file_inputuser})
 	</insert>
 	<update id="updateNoticeAnnounceFile" parameterType="NoticeAnnounceFile">
 		UPDATE wkrj_noticeannouncefile SET file_yname = #{file_yname},file_xname = #{file_xname},
-		file_inputtime = #{file_inputtime},file_inputuser = #{file_inputuser},
-		file_name = #{file_name},file_path = #{file_path}
+		file_inputtime = #{file_inputtime},file_inputuser = #{file_inputuser}
+		
 		WHERE file_id = #{file_id}
 	</update>
 	<delete id="deleteNoticeAnnounceFile">
@@ -68,5 +68,12 @@
         </if>
 	</delete>
 	
+	<select id="getNaFile" parameterType="String" resultType="NoticeAnnounceFile">
+	
+		SELECT na_id,file_id,file_yname,file_xname,file_inputtime,file_inputuser
+		FROM wkrj_noticeannouncefile
+        WHERE na_id=#{na_id}
+        
+	</select>
 	
 </mapper>

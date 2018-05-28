@@ -13,22 +13,9 @@ public class NoticeAnnounceFile {
 	private String file_xname;// 附件现名称
 	private String file_inputtime;// 附件上传时间
 	private String file_inputuser;// 录入人
-	private String file_name;// 文件名
-	private String file_path;// 文件路径
 	
 	
-	public String getFile_name() {
-		return file_name;
-	}
-	public void setFile_name(String file_name) {
-		this.file_name = file_name;
-	}
-	public String getFile_path() {
-		return file_path;
-	}
-	public void setFile_path(String file_path) {
-		this.file_path = file_path;
-	}
+	
 	public String getFile_id() {
 		return file_id;
 	}

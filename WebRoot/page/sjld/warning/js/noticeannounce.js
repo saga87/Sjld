@@ -36,7 +36,7 @@ $(function(){
 				text : '修改',
 				click : na_edit,
 				icon : 'modify',
-				id:'wkrjsystem/newsManage/updateNews'
+				id:'noticeAnnounce/updateNoticeAnnounce'
 			}, {
 				line : true
 			}, {
@@ -144,7 +144,7 @@ function previewFile(){
 		return;
 	}
 	var openwin = document.getElementById("zxhpopwindow");
- 	openwin.href = "upload/newsManage/"+r.file_xname;
+ 	openwin.href = "upload/noticeannounce/"+r.file_xname;
 	openwin.click();
 }
 //根据条件检索(查询)
@@ -271,7 +271,7 @@ function na_delRow(row){
 			$.ajax({
 		        //type: "get",
 		        url: 'noticeAnnounce/deleteNoticeAnnounce',
-		        data: { id: r.na_id },
+		        data: {na_id: r.na_id},
 		        cache: false,
 		        async: false,
 		        dataType : "json",  
@@ -399,20 +399,27 @@ function na_add(){
 				
 				
 				
-				var name = dialog.frame.$("input[name='file_name']");
-				var path = dialog.frame.$("input[name='file_path']");
-				var type = dialog.frame.$("input[name='file_type']");
-				var file_name = new Array();
-				var file_url = new Array();
-				for(var i=0;i<path.length;i++){
-					var nm = $(name[i]).attr("value");    //获取value
-				    var url = $(path[i]).attr("value");    //获取value
-				    var lb = $(type[i]).attr("value");
-				    file_url.push(url);
-				    file_name.push(nm+"."+lb);
-				}
-				data.file_name = file_name.join();
-			    data.file_path = file_url.join();
+//				var name = dialog.frame.$("input[name='file_name']");
+//				var path = dialog.frame.$("input[name='file_path']");
+//				var type = dialog.frame.$("input[name='file_type']");
+//				
+//				
+//				console.log(name.attr("value")+'===='+path+'===='+type);
+//				
+//				var file_name = new Array();
+//				var file_url = new Array();
+//				for(var i=0;i<path.length;i++){
+//					var nm = $(name[i]).attr("value");    //获取value
+//				    var url = $(path[i]).attr("value");    //获取value
+//				    var lb = $(type[i]).attr("value");
+//				    file_url.push(url);
+//				    file_name.push(nm+"."+lb);
+//				}
+//				data.file_name = file_name.join();
+//			    data.file_path = file_url.join();
+				
+				
+				
 				
 				
 				realAddNews(data,g,dialog);
@@ -432,6 +439,7 @@ function na_add(){
  * @param {} isupdate
  */
 function realAddNews(data,g,dialog){
+	console.log(data);
 	 $.ajax({
         url: "noticeAnnounce/addNoticeAnnounce",
         dataType : "json",  
@@ -463,13 +471,13 @@ function na_edit(){
 		$.ligerDialog.alert('请选择一条记录进行修改!');
 		return;
 	}
-	if (r.news_inputuser != user_id) {
-		top.$.ligerDialog.alert("只能本人修改");
-		return;
-	}
+//	if (r.news_inputuser != user_id) {
+//		top.$.ligerDialog.alert("只能本人修改");
+//		return;
+//	}
 	var s = parent.$.ligerDialog.open({
 		//target: $("#newsManage_updateWindow_form"),
-		url : "page/sjc/newsManage/news_update.jsp",
+		url : "page/sjld/warning/na_update.jsp",
 		//data : JSON.stringify(r),
 		width : 900,
 		height :600,
@@ -482,34 +490,35 @@ function na_edit(){
 				console.dir(dialog);
 				
 				var data = dialog.frame.liger.get("newsManage_updateWindow_form").getData();
-				if (data.news_title == null || data.news_title == "") {
+				if (data.na_title == null || data.na_title == "") {
 					top.$.ligerDialog.alert("公告标题不能为空");
 					return;
-				}else if (data.news_content == null || data.news_content == "") {
+				}else if (data.na_content == null || data.na_content == "") {
 					top.$.ligerDialog.alert("公告内容不能为空");
 					return;
-				}else if (data.news_lookarea == null || data.news_lookarea == "") {
-					top.$.ligerDialog.alert("请选择查看范围");
-					return;
 				}
+//				else if (data.na_lookarea == null || data.na_lookarea == "") {
+//					top.$.ligerDialog.alert("请选择查看范围");
+//					return;
+//				}
 				//data['user[0].user_id'] = dialog.frame.liger.get("news_lookarea").getValue();
 //				if(dialog.frame.liger.get("news_lookarea")){
 //					var news_lookarea = dialog.frame.liger.get("news_lookarea").getValue();
 //					data.news_lookarea = news_lookarea;
 //				}
-				var users = data.news_lookarea;
-				var _user = "";
-				var _users = users.split(";");
-				for (var i = 0; i < _users.length; i++) {
-					_user += _users[i];
-		            if (i < _users.length-1) {
-		            	_user +=",";
-		            }
-				}
-				data.news_lookarea = _user;
+//				var users = data.news_lookarea;
+//				var _user = "";
+//				var _users = users.split(";");
+//				for (var i = 0; i < _users.length; i++) {
+//					_user += _users[i];
+//		            if (i < _users.length-1) {
+//		            	_user +=",";
+//		            }
+//				}
+//				data.news_lookarea = _user;
 				//data.news_type = dialog.frame.liger.get("news_type").getValue();
 				$.ajax({
-		            url: "wkrjsystem/newsManage/updateNews",
+		            url: "noticeAnnounce/updateNoticeAnnounce",
 		            data: data,
 		            dataType : "json",  
 		            type : "POST",

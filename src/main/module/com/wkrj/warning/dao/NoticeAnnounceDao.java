@@ -21,5 +21,5 @@ public interface NoticeAnnounceDao {
 	boolean updateNoticeAnnounceFile(NoticeAnnounceFile file);
 	boolean deleteNoticeAnnounceFile(@Param("file_id")String file_id,@Param("na_id")String na_id);
 	
-	
+	public List<NoticeAnnounceFile> getNaFile(@Param("na_id")String na_id);
 }

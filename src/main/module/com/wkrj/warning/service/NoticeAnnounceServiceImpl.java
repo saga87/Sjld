@@ -1,5 +1,6 @@
 package com.wkrj.warning.service;
 
+import java.io.File;
 import java.util.List;
 import java.util.Map;
 
@@ -11,14 +12,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 
-
-
-
+import org.springframework.web.multipart.MultipartFile;
 
 import wkrjsystem.utils.FileUtils;
 import wkrjsystem.utils.Guid;
 import wkrjsystem.utils.UtilsHelper;
 
+import com.wkrj.newsManage.bean.WkrjNewsFile;
 import com.wkrj.warning.bean.NoticeAnnounce;
 import com.wkrj.warning.bean.NoticeAnnounceFile;
 import com.wkrj.warning.dao.NoticeAnnounceDao;
@@ -26,6 +26,9 @@ import com.wkrj.warning.dao.NoticeAnnounceDao;
 @Service("noticeAnnounceService")
 @Transactional
 public class NoticeAnnounceServiceImpl implements NoticeAnnounceService {
+	
+	//路径
+	private String realPath= getClass().getClassLoader().getResource("/").getPath()+ "../../upload/noticeannounce/";
 	
 	@Autowired
 	private NoticeAnnounceDao dao;
@@ -42,20 +45,21 @@ public class NoticeAnnounceServiceImpl implements NoticeAnnounceService {
 			String na_id = Guid.getGuid();
 			noticeAnnounce.setNa_id(na_id);
 			noticeAnnounce.setNa_inputtime(UtilsHelper.getDateFormatTime());
-			String path = file.getFile_path();
-			if (!"".equals(path) && path != null) {
-				String [] names = file.getFile_name().split(",");
-				String [] paths = file.getFile_path().split(",");
-				for (int i = 0; i < paths.length; i++) {
-					NoticeAnnounceFile file2 = new NoticeAnnounceFile();
-					file2.setNa_id(na_id);
-					file2.setFile_id(Guid.getGuid());
-					file2.setFile_name(names[i]);
-					file2.setFile_path(paths[i]);
-					dao.addNoticeAnnounceFile(file2);
+			if(file.getFile_yname()!=null&&!"".equals(file.getFile_yname())){
+				String yfilenames = file.getFile_yname();
+				String xfilenames = file.getFile_xname();
+				for (int i = 0, len = yfilenames.split(",").length; i < len; i++) {
+					file.setFile_yname(yfilenames.split(",")[i]);
+					file.setFile_xname(xfilenames.split(",")[i]);
+					file.setFile_id(Guid.getGuid());
+					file.setNa_id(noticeAnnounce.getNa_id());
+					file.setFile_inputtime(noticeAnnounce.getNa_inputtime());
+					if (!dao.addNoticeAnnounceFile(file)) {
+						return false;
+					}
 				}
 			}
-			dao.addNoticeAnnounce(noticeAnnounce);
+				dao.addNoticeAnnounce(noticeAnnounce);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
@@ -69,17 +73,19 @@ public class NoticeAnnounceServiceImpl implements NoticeAnnounceService {
 		try {
 			//先删除数据之前的附件信息重新添加
 			dao.deleteNoticeAnnounceFile(null, noticeAnnounce.getNa_id());
-			String path = file.getFile_path();
-			if (!"".equals(path) && path != null) {
-				String [] names = file.getFile_name().split(",");
-				String [] paths = file.getFile_path().split(",");
-				for (int i = 0; i < paths.length; i++) {
-					NoticeAnnounceFile file2 = new NoticeAnnounceFile();
-					file2.setNa_id(noticeAnnounce.getNa_id());
-					file2.setFile_id(Guid.getGuid());
-					file2.setFile_name(names[i]);
-					file2.setFile_path(paths[i]);
-					dao.addNoticeAnnounceFile(file2);
+			if(file.getFile_yname()!=null&&!"".equals(file.getFile_yname())){
+				String yfilenames = file.getFile_yname();
+				String xfilenames = file.getFile_xname();
+				for (int i = 0, len = yfilenames.split(",").length; i < len; i++) {
+					file.setFile_yname(yfilenames.split(",")[i]);
+					file.setFile_xname(xfilenames.split(",")[i]);
+					file.setFile_id(Guid.getGuid());
+					file.setNa_id(noticeAnnounce.getNa_id());
+					file.setFile_inputtime(UtilsHelper.getDateFormatTime());
+					file.setFile_inputuser(noticeAnnounce.getNa_inputuser());
+					if (!dao.addNoticeAnnounceFile(file)) {
+						return false;
+					}
 				}
 			}
 			dao.updateNoticeAnnounce(noticeAnnounce);
@@ -93,18 +99,36 @@ public class NoticeAnnounceServiceImpl implements NoticeAnnounceService {
 	@Override
 	public boolean deleteNoticeAnnounce(HttpServletRequest request, String na_id) {
 		try {
-			String idesString [] = na_id.split(",");
-			for (int i = 0; i < idesString.length; i++) {
-				String idString = idesString[i];
-				this.deleteNoticeAnnounceFile(request, null, idString);
-				dao.deleteNoticeAnnounce(idString);
+			if(deleteLocalFile(na_id) && dao.deleteNoticeAnnounceFile(null, na_id)
+					&&dao.deleteNoticeAnnounce(na_id)){
+				return true;
+			}else{
+				return false;
 			}
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
 		}
+		
+	}
+	
+	
+	public boolean deleteLocalFile(String na_id){
+		List<NoticeAnnounceFile> fileList = dao.getNaFile(na_id);	
+		for (int i = 0; i < fileList.size(); i++) {
+			//删除本地附件
+			String sPath = this.realPath+fileList.get(i).getFile_xname();
+			File file = new File(sPath);  
+			   // 路径为文件且不为空则进行删除  
+			if (file.isFile() && file.exists()) {  
+				file.delete();  
+			}
+		}
 		return true;
 	}
+	
+	
 
 	@Override
 	public List<Map<String, Object>> getNoticeAnnounceFileList(String file_id,
@@ -126,11 +150,7 @@ public class NoticeAnnounceServiceImpl implements NoticeAnnounceService {
 			}
 		}
 		if (na_id != null) {
-			List<Map<String,Object>> booklist = dao.getNoticeAnnounceList(0, 10,null);
-			if (booklist.get(0).containsKey("coverpath")) {
-				String coverpath = booklist.get(0).get("coverpath").toString();
-				FileUtils.lkh_delFile(String.format(ctxPath+"%s", coverpath));
-			}
+			
 			List<Map<String,Object>> filelist = dao.getNoticeAnnounceFileList(null, na_id);
 			if (filelist.size()>0) {
 				for (int i = 0; i < filelist.size(); i++) {
@@ -146,5 +166,29 @@ public class NoticeAnnounceServiceImpl implements NoticeAnnounceService {
 	}
 	
 	
+	public String uploadPic(MultipartFile newsManage_file,HttpServletRequest request,String foledArrress){
+		
+		
+		
+		if(null==foledArrress || "".equals(foledArrress)){
+			foledArrress="upload/noticeannounce/";
+		}
+		
+		String realPath = request.getSession().getServletContext().getRealPath("/")+foledArrress;
+		
+		String yFileName = newsManage_file.getOriginalFilename();//原文件名
+		
+		long timeMillis = System.currentTimeMillis();//获取时间戳 这种速度更快一些
+		String extra = "wkrj";//由于样式不能是数字所以加上wkrj来区分
+		
+		String xFileName = extra+timeMillis+extra+yFileName.substring(yFileName.lastIndexOf("."), yFileName.length());//现文件名
+		
+		try {
+			org.apache.commons.io.FileUtils.copyInputStreamToFile(newsManage_file.getInputStream(), new File(realPath,xFileName));
+		} catch (Exception e) {
+			System.err.println("上传附件出错了");
+		}
+		return "{\"success\":\"true\",\"filename\":\""+xFileName+"\",\"yFileName\":\""+yFileName+"\"}";
+	}
 
 }

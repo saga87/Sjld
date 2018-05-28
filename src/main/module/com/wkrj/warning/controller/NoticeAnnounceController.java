@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import wkrjsystem.user.bean.WkrjUser;
 import wkrjsystem.utils.AjaxJson;
@@ -62,7 +63,7 @@ public class NoticeAnnounceController {
 	 */
 	@RequestMapping("addNoticeAnnounce")
 	@ResponseBody
-	public Object addNoticeAnnounce(HttpServletRequest request,NoticeAnnounce noticeAnnounce,NoticeAnnounceFile file){
+	public Object addNoticeAnnounce(HttpServletRequest request,NoticeAnnounce noticeAnnounce){
 		WkrjUser user = (WkrjUser) request.getSession().getAttribute("user");
 		WkrjUserDev userDev = (WkrjUserDev) request.getSession().getAttribute("userDev");
 		String user_name = "";
@@ -95,6 +96,17 @@ public class NoticeAnnounceController {
 		noticeAnnounce.setNa_inputuserdept(user_dept);
 		
 		AjaxJson json = new AjaxJson();
+		
+		NoticeAnnounceFile file = new NoticeAnnounceFile();
+		
+		if (noticeAnnounce.getFile_xname() != null && !"".equals(noticeAnnounce.getFile_xname())) {
+		//	file.setNa_id(noticeAnnounce.getNa_id());
+			file.setFile_xname(noticeAnnounce.getFile_xname());
+			file.setFile_yname(noticeAnnounce.getFile_yname());
+//			file.setFile_inputtime(date);
+			file.setFile_inputuser(user_name);
+		} 
+		
 		if (service.addNoticeAnnounce(noticeAnnounce, file)) {
 			json.setSuccess(true);
 			json.setMsg("添加成功");
@@ -108,7 +120,7 @@ public class NoticeAnnounceController {
 	 */
 	@RequestMapping("updateNoticeAnnounce")
 	@ResponseBody
-	public Object updateNoticeAnnounce(HttpServletRequest request,NoticeAnnounce noticeAnnounce,NoticeAnnounceFile file){
+	public Object updateNoticeAnnounce(HttpServletRequest request,NoticeAnnounce noticeAnnounce){
 		WkrjUser user = (WkrjUser) request.getSession().getAttribute("user");
 		WkrjUserDev userDev = (WkrjUserDev) request.getSession().getAttribute("userDev");
 		String user_name = "";
@@ -139,6 +151,18 @@ public class NoticeAnnounceController {
 		}
 		noticeAnnounce.setNa_inputuser(user_name);
 		noticeAnnounce.setNa_inputuserdept(user_dept);
+		
+		
+		NoticeAnnounceFile file = new NoticeAnnounceFile();
+		
+		if (noticeAnnounce.getFile_xname() != null && !"".equals(noticeAnnounce.getFile_xname())) {
+		//	file.setNa_id(noticeAnnounce.getNa_id());
+			file.setFile_xname(noticeAnnounce.getFile_xname());
+			file.setFile_yname(noticeAnnounce.getFile_yname());
+//			file.setFile_inputtime(date);
+			file.setFile_inputuser(user_name);
+		} 
+		
 		
 		AjaxJson json = new AjaxJson();
 		if (service.updateNoticeAnnounce(noticeAnnounce, file)) {
@@ -167,9 +191,10 @@ public class NoticeAnnounceController {
 
 	@RequestMapping("uploadFile")
 	@ResponseBody
-	public Object uploadFile(HttpServletRequest request){
-		List<Map<String, String>> list = FileUtils.lkh_uploadFile(request, "noticeAnnounce");
-		return list;
+	public String uploadFile(HttpServletRequest request,MultipartFile na_file,
+			String foledArrress){
+		
+		return this.service.uploadPic(na_file, request, foledArrress);
 	}
 	
 	@RequestMapping("deleFile")

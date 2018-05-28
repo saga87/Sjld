@@ -7,7 +7,9 @@
  </head>
  <body>
  <script type="text/javascript" src="page/sjld/warning/js/noticeannounce.js"></script>
- 
+ <script src="plug-in/uploadify/jquery.uploadify.min.js" type="text/javascript"></script>
+ <link rel="stylesheet" type="text/css" href="plug-in/uploadify/uploadify.css">
+ <script type="text/javascript" src="plug-in/uploadify/jquery.uploadify.js"></script>
 <script type="text/javascript">
 
        $(function (){
@@ -46,11 +48,15 @@
 	        </div>
 		</div>
 		
-		<div class ="Co">
-                    <label style=" display: block; width: 100%;text-align: left;">附件:</label>
-                    <div class="nafile"></div>
-                    <div style=" margin-left: 100px;"><button type="button" class="layui-btn" id="test3"><i class="layui-icon"></i>上传附件</button></div>
-         </div>
+         
+          <div class="Co">
+            <label>&nbsp;&nbsp;附件:</label>
+            <div class="r_div">
+                <input type="file" name="na_file" id="uploadify" />
+            </div>
+                        <input type="hidden" name="file_yname" id="file_yname" />
+                        <input type="hidden" name="file_xname" id="file_xname" />
+           </div>
 		
 		<input type="hidden" name="na_id"  />
 		<input type="hidden" name="accept_user" id="accept_user" />
@@ -58,40 +64,37 @@
 </form>
 <!--添加通知公告结束-->
  </body>
- <script type="text/javascript">
- 	layui.use('upload', function(){
- 	var $ = layui.jquery  ,upload = layui.upload;
- 	//指定允许上传的文件类型
-  upload.render({
-    elem: '#test3'
-    ,url: 'noticeAnnounce/uploadFile'
-    ,accept: 'file' //普通文件
-    ,multiple: true//可选多个文件
-    ,done: function(res){
-      if (res.length>0) {
-		for (var i = 0; i < res.length; i++) {
-			$(".nafile").append('<div class="pdffile" style="margin-left:35px"><span>'+res[i].filename+'.'+res[i].fileextend+'</span>'+
-			'<div class="delebook"><i class="layui-icon" style="font-size: 20px; color: #000;background:#d0d0d0;border-radius:5px; margin-right: 11px;cursor: pointer;">&#xe640;</i></div>'+
-			' <input type="hidden" name="file_path" value="'+res[i].fileurl+'"><input type="hidden" name="file_name" value="'+res[i].filename+'"><input type="hidden" name="file_type" value="'+res[i].fileextend+'"></div>');
-		}
-	}
-    }
-  });
- //删除文件
-$('.nafile').on('click','.delebook',function(){
-    var path = $(this).parent().find('input').val();
-    if(null != path && path != '' && path != "undefined"){
-        $.post('noticeAnnounce/deleFile', {  path : path },
-            function(data) {
-                if (data.success) {
-                }else{
-                    $.messager.alert('提示','删除失败');
-                }
-        },"json");
-    } 
-    $(this).parent().remove();
-      
-});
- });
- </script>
+ 	
+
+	<script type="text/javascript">
+	
+		$("#uploadify").uploadify({
+			'buttonText' : '请选择',
+			'height' : 30,
+			'swf' : 'plug-in/uploadify/uploadify.swf',
+			'uploader' : '../../../noticeAnnounce/uploadFile',
+			'width' : 120,
+			'auto' : true,
+			'multi' : true,//多选
+			'fileTypeExts' : '*.jpg;*.jpeg;*.png;*.xls;*.xlsx;*.doc;*.docx',
+			'formData' : {
+				file_index : 0
+			},
+			'fileObjName' : 'na_file',
+			'onUploadSuccess' : function(file, data, response) {
+				var d = eval('(' + data + ')');
+				d = eval('(' + d + ')');
+				var filename = d.filename;
+				var yFileName = d.yFileName;
+		//		var file_type = d.fileType;
+				$("#file_xname").val(filename + "," + $("#file_xname").val());
+				$("#file_yname").val(yFileName + "," + $("#file_yname").val());
+		//		$("#file_type").val(file_type + "," + $("#file_type").val());
+            
+				top.$(".l-window-mask").hide();
+				//$("#isupload").val(1);
+			},
+			'removeCompleted' : false
+		});
+	</script>
  </html>
