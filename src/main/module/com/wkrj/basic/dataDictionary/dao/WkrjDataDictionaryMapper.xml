@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.wkrj.basic.dataDictionary.dao.WkrjDataDictionaryDao">
+	
+	<select id="getDataDictionaryTree" resultType="map" parameterType="String">
+		
+		SELECT id,typecode,typename,typeid,typeparentid,value,notes
+		FROM `wkrj_sys_data_dictionary` 
+		where typeparentid = #{parentId}
+	
+	</select>
+	
+	<select id="getDataDictionaryNameById" resultType="WkrjDataDictionary" parameterType="String">
+		
+		SELECT id,typecode,typename,typeid,typeparentid,value,notes 
+		FROM `wkrj_sys_data_dictionary` 
+		where id = #{id}
+	
+	</select>
+	
+	<select id="getDataDictionaryChildCount" resultType="int" parameterType="String">
+		
+		SELECT count(id) 
+		FROM `wkrj_sys_data_dictionary` 
+		where typeparentid = #{parentId}
+	
+	</select>
+	
+	<select id="getDataDictionaryChildMaxByPid" resultType="String" parameterType="String">
+		
+		SELECT IF(ISNULL(MAX(id)),'00',MAX(id)) id FROM wkrj_sys_data_dictionary
+		where typeparentid = #{parentId}
+	
+	</select>
+	
+	<insert id="addDataDictionary" parameterType="WkrjDataDictionary" >
+		
+		insert wkrj_sys_data_dictionary(id,typecode,typename,typeid,typeparentid,value,notes) 
+		values(#{id},#{typecode},#{typename},#{typeid},#{typeparentid},#{value},#{notes})
+		
+	</insert>
+	
+	<update id="updateDataDictionary">
+	
+	   update wkrj_sys_data_dictionary set typecode=#{typecode},typename=#{typename},typeparentid=#{typeparentid},notes=#{notes}
+	   where id=#{id}
+	
+	</update>
+	
+	<delete id="delDataDictionary">
+		delete from wkrj_sys_data_dictionary where id=#{id}
+	</delete>
+	
+  <select id="getChildrenDictionary" resultType="map" parameterType="String">
+      SELECT id,typecode,typename,typeid,typeparentid,value 
+		FROM `wkrj_sys_data_dictionary` 
+		where typeparentid = #{id}
+  </select>
+  <select id="getDataDictionaryByTypeCode" resultType="WkrjDataDictionary" parameterType="String">
+		SELECT
+			*
+		FROM
+			`wkrj_sys_data_dictionary`
+		WHERE
+		 	typecode = #{typeCode}  
+  </select>
+  <select id="getDataDictionaryByName" resultType="WkrjDataDictionary" parameterType="String">
+		SELECT
+			*
+		FROM
+			`wkrj_sys_data_dictionary`
+		WHERE
+		 	typename = #{typeName}  
+  </select>	
+	
+</mapper>
+
