@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.wkrj.warning.dao.NoticeAnnounceDao">
+	<select id="getNoticeAnnounceList" resultType="map" parameterType="Object">
+		SELECT na_id,na_title,na_content,na_other,na_inputuser,na_inputuserdept,
+		DATE_FORMAT(na_inputtime,'%Y-%m-%d %H:%i:%s') AS na_inputtime,importance,
+		accept_user
+		FROM wkrj_noticeannounce 
+		
+		WHERE 1=1
+		
+		<if test="na_title != null and na_title != ''">
+             AND na_title LIKE CONCAT(#{na_title},'%')
+        </if>
+		
+		ORDER BY na_inputtime DESC 
+		LIMIT #{offset},#{rows}
+	</select>
+	
+	<insert id="addNoticeAnnounce" parameterType="NoticeAnnounce">
+		INSERT INTO wkrj_noticeannounce(na_id,na_title,na_content,na_other,na_inputuser,
+		na_inputuserdept,na_inputtime,importance,accept_user)
+		VALUES(#{na_id},#{na_title},#{na_content},#{na_other},#{na_inputuser},#{na_inputuserdept},
+		#{na_inputtime},#{importance},#{accept_user})
+	</insert>
+	<update id="updateNoticeAnnounce" parameterType="NoticeAnnounce">
+		UPDATE wkrj_noticeannounce SET na_title = #{na_title},na_content = #{na_content},
+		na_other = #{na_other},na_inputuser = #{na_inputuser},na_inputuserdept = #{na_inputuserdept},
+		importance = #{importance},accept_user = #{accept_user}
+		WHERE na_id = #{na_id}
+	</update>
+	<delete id="deleteNoticeAnnounce">
+		DELETE FROM wkrj_noticeannounce WHERE na_id = #{na_id}
+	</delete>
+	
+	
+	<select id="getNoticeAnnounceFileList" resultType="map" parameterType="Object">
+        SELECT * FROM wkrj_noticeannouncefile
+        <if test="file_id != null and file_id != ''">
+             WHERE file_id=#{file_id}
+        </if>
+        <if test="na_id != null and na_id != ''">
+             WHERE na_id=#{na_id}
+        </if>
+    </select>
+    
+    <insert id="addNoticeAnnounceFile" parameterType="NoticeAnnounceFile">
+		INSERT INTO wkrj_noticeannouncefile(na_id,file_id,file_yname,file_xname,file_inputtime,
+		file_inputuser,file_name,file_path)
+		VALUES(#{na_id},#{file_id},#{file_yname},#{file_xname},#{file_inputtime}
+		,#{file_inputuser},#{file_name},#{file_path})
+	</insert>
+	<update id="updateNoticeAnnounceFile" parameterType="NoticeAnnounceFile">
+		UPDATE wkrj_noticeannouncefile SET file_yname = #{file_yname},file_xname = #{file_xname},
+		file_inputtime = #{file_inputtime},file_inputuser = #{file_inputuser},
+		file_name = #{file_name},file_path = #{file_path}
+		WHERE file_id = #{file_id}
+	</update>
+	<delete id="deleteNoticeAnnounceFile">
+		DELETE FROM wkrj_noticeannouncefile 
+		<if test="file_id != null and file_id != ''">
+             WHERE file_id=#{file_id}
+        </if>
+        <if test="na_id != null and na_id != ''">
+             WHERE na_id=#{na_id}
+        </if>
+	</delete>
+	
+	
+</mapper>
