@@ -38,10 +38,11 @@ public class NoticeAnnounceController {
 	 */
 	@RequestMapping("getNoticeAnnounceList")
 	@ResponseBody
-	public Object getNoticeAnnounceList(int pagesize, int page,String na_title){
+	public Object getNoticeAnnounceList(int pagesize, int page,String na_title,
+			String na_inputtime,String end_date){
 		int offset = (page-1) * pagesize;
 		List<Map<String,Object>> list = new ArrayList<Map<String,Object>>();
-		list = service.getNoticeAnnounceList(offset,pagesize,na_title);
+		list = service.getNoticeAnnounceList(offset,pagesize,na_title,na_inputtime,end_date);
 		return UtilsHelper.returnMap(list, list.size());
 	}
 	
@@ -188,6 +189,29 @@ public class NoticeAnnounceController {
 		return json;
 		
 	}
+	
+	@RequestMapping("deleteFileById")
+	@ResponseBody
+	public Object deleteFileById(String file_id,String xFileName){
+		AjaxJson json = new AjaxJson();
+		try{
+			if (service.delSingleNaFile(file_id, xFileName)) {
+				json.setSuccess(true);
+				json.setMsg("删除成功");
+			}
+		}catch(Exception e){
+			if(e.getStackTrace()[0].getClassName().indexOf("SQLErrorCodeSQLExceptionTranslator")>=0){
+				json.setMsg("删除失败");
+			}else{
+				e.printStackTrace();
+			}
+		}
+		
+		return json;
+		
+	}
+	
+	
 
 	@RequestMapping("uploadFile")
 	@ResponseBody

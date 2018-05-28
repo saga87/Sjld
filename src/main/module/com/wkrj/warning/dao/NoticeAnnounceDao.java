@@ -10,7 +10,8 @@ import com.wkrj.warning.bean.NoticeAnnounceFile;
 
 public interface NoticeAnnounceDao {
 	/**通知公告增删改查**/
-	List<Map<String,Object>> getNoticeAnnounceList(@Param("offset")int offset,@Param("rows")int rows,@Param("na_title")String na_title);
+	List<Map<String,Object>> getNoticeAnnounceList(@Param("offset")int offset,@Param("rows")int rows,@Param("na_title")String na_title,
+			@Param("na_inputtime")String na_inputtime,@Param("end_date")String end_date);
 	boolean addNoticeAnnounce(NoticeAnnounce noticeAnnounce);
 	boolean updateNoticeAnnounce(NoticeAnnounce noticeAnnounce);
 	boolean deleteNoticeAnnounce(@Param("na_id")String na_id);

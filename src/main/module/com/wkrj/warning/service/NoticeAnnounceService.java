@@ -9,7 +9,11 @@ import java.util.Map;
 
 
 
+
+
 import javax.servlet.http.HttpServletRequest;
+
+
 
 
 
@@ -19,7 +23,8 @@ import com.wkrj.warning.bean.NoticeAnnounce;
 import com.wkrj.warning.bean.NoticeAnnounceFile;
 
 public interface NoticeAnnounceService {
-	List<Map<String,Object>> getNoticeAnnounceList(int offset,int rows,String na_title);
+	List<Map<String,Object>> getNoticeAnnounceList(int offset,int rows,String na_title,
+			String na_inputtime,String end_date);
 	boolean addNoticeAnnounce(NoticeAnnounce noticeAnnounce
 			,NoticeAnnounceFile file);
 	boolean updateNoticeAnnounce(NoticeAnnounce noticeAnnounce
@@ -30,4 +35,12 @@ public interface NoticeAnnounceService {
 	boolean deleteNoticeAnnounceFile(HttpServletRequest request,String file_id,String na_id);
 	
 	public String uploadPic(MultipartFile newsManage_icons,HttpServletRequest request,String foledArrress);
+	
+	/**
+	 * 删除单个附件
+	 * @param 
+	 * @return
+	 */
+	public boolean delSingleNaFile(String file_id, String xFileName);
+	
 }

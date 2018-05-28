@@ -24,6 +24,10 @@
 		                text : '预览',
 		                click : previewFile,
 		                icon : 'prev'
+		            },{
+		                text : '删除',
+		                click : delnewsManageFile,
+		                icon : 'delete'
 		            }]
 		        }
 		    });

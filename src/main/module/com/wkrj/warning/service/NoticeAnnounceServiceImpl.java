@@ -34,8 +34,9 @@ public class NoticeAnnounceServiceImpl implements NoticeAnnounceService {
 	private NoticeAnnounceDao dao;
 
 	@Override
-	public List<Map<String, Object>> getNoticeAnnounceList(int offset, int rows,String na_title) {
-		return dao.getNoticeAnnounceList(offset, rows,na_title);
+	public List<Map<String, Object>> getNoticeAnnounceList(int offset, int rows,String na_title,
+			String na_inputtime,String end_date) {
+		return dao.getNoticeAnnounceList(offset, rows,na_title,na_inputtime,end_date);
 	}
 
 	@Override
@@ -189,6 +190,31 @@ public class NoticeAnnounceServiceImpl implements NoticeAnnounceService {
 			System.err.println("上传附件出错了");
 		}
 		return "{\"success\":\"true\",\"filename\":\""+xFileName+"\",\"yFileName\":\""+yFileName+"\"}";
+	}
+
+	@Override
+	public boolean delSingleNaFile(String file_id, String xFileName) {
+		if (dao.deleteNoticeAnnounceFile(file_id,null) && this.delSingleFile(xFileName)) {
+			return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * 删除附件物理地址(单个)
+	 * @param icon
+	 * @return
+	 */
+	public boolean delSingleFile(String xFileName) {
+		//删除本地附件
+		String sPath = this.realPath+xFileName;
+		File file = new File(sPath);
+		   // 路径为文件且不为空则进行删除
+		if (file.isFile() && file.exists()) {
+			file.delete();
+		}
+		
+		return true;
 	}
 
 }

@@ -12,7 +12,14 @@
 		WHERE 1=1
 		
 		<if test="na_title != null and na_title != ''">
-             AND na_title LIKE CONCAT(#{na_title},'%')
+             AND na_title LIKE CONCAT(CONCAT('%',#{na_title}),'%')
+        </if>
+		
+		<if test="null!=na_inputtime and ''!=na_inputtime">
+            and na_inputtime >= #{na_inputtime}
+        </if>
+        <if test="null!=end_date and ''!=end_date">
+            and na_inputtime &lt;= #{end_date}
         </if>
 		
 		ORDER BY na_inputtime DESC 

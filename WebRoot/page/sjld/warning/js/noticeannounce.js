@@ -96,8 +96,8 @@ function delnewsManageFile(row){
 		if (param) {
 			$.ajax({
 		        //type: "get",
-		        url: 'wkrjsystem/newsManage/delnewsManageFile',
-		        data: { id: r.file_id, xFileName: r.file_xname },
+		        url: 'noticeAnnounce/deleteFileById',
+		        data: {file_id: r.file_id, xFileName: r.file_xname },
 		        cache: false,
 		        async: false,
 		        dataType : "json",  
@@ -151,11 +151,11 @@ function previewFile(){
 function news() {
 	//var dialog = frameElement.dialog; //调用页面的dialog对象(ligerui对象)
 	var g = $("#newsManage_maingrid").ligerGetGridManager();
-	var news_title = $('#news_title').val();
-	var news_inputtime = $('#news_inputtime').val();
+	var na_inputtime = $('#na_inputtime').val();
 	var end_date = $('#end_date').val();
-	var notice_inputtime = $("#notice_inputtime").val();
-	g.set({url:'wkrjsystem/newsManage/getNewsList?news_title='+encodeURI(news_title)+'&news_inputtime='+news_inputtime+'&end_date='+end_date});    
+	console.log(na_inputtime+"====="+end_date);
+	var na_title = $('#na_title').val();
+	g.set({url:'noticeAnnounce/getNoticeAnnounceList?na_title='+na_title+'&na_inputtime='+na_inputtime+'&end_date='+end_date});    
 	g.reload();
 }
 
@@ -164,7 +164,7 @@ function news() {
  */
 function allNews() {
 	var g = $("#newsManage_maingrid").ligerGetGridManager();
-	g.set({url:'wkrjsystem/newsManage/getNewsList'});
+	g.set({url:'noticeAnnounce/getNoticeAnnounceList'});
     g.reload();
 }
 
