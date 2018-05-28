@@ -37,7 +37,7 @@ import wkrjsystemdev.userdev.bean.WkrjUserDev;
 
 @Controller
 @RequestMapping("wkrjsystem/newsManage")
-public class WkrjNewsManageController {
+public class WkrjNewsManageController {  
 	
 	@Autowired
 	//@Qualifier("WkrjNewsInfoService")
