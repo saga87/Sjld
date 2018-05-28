@@ -52,7 +52,8 @@ public class NoticeAnnounceController {
 	@RequestMapping("getNoticeAnnounceFileList")
 	@ResponseBody
 	public Object getNoticeAnnounceFileList(String na_id){
-		return service.getNoticeAnnounceFileList(null, na_id);
+		List<Map<String,Object>> list = service.getNoticeAnnounceFileList(null, na_id);
+		return UtilsHelper.returnMap(list, list.size());
 	}
 	
 	/**

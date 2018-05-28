@@ -72,7 +72,7 @@
 		for (var i = 0; i < res.length; i++) {
 			$(".nafile").append('<div class="pdffile" style="margin-left:35px"><span>'+res[i].filename+'.'+res[i].fileextend+'</span>'+
 			'<div class="delebook"><i class="layui-icon" style="font-size: 20px; color: #000;background:#d0d0d0;border-radius:5px; margin-right: 11px;cursor: pointer;">&#xe640;</i></div>'+
-			' <input type="hidden" name="file_path" value="'+res[i].fileurl+'"><input type="hidden" name="file_name" value="'+res[i].filename+'"></div>');
+			' <input type="hidden" name="file_path" value="'+res[i].fileurl+'"><input type="hidden" name="file_name" value="'+res[i].filename+'"><input type="hidden" name="file_type" value="'+res[i].fileextend+'"></div>');
 		}
 	}
     }

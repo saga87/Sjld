@@ -33,7 +33,6 @@
 
 <link rel="stylesheet" type="text/css" href="system/icons/wkrjicon.css">
 <link rel="stylesheet" type="text/css" href="system/css/public.css">
-<link href="plug-in/layui/css/layui.css" rel="stylesheet" type="text/css" />
 <link href="plug-in/ligerui/ligerUI/skins/Aqua/css/ligerui-all.css" rel="stylesheet" type="text/css" />  
 <link href="plug-in/ligerui/ligerUI/skins/Gray/css/all.css" rel="stylesheet" type="text/css" />
 <link href="plug-in/ligerui/ligerUI/skins/ligerui-icons.css" rel="stylesheet" type="text/css" />  
@@ -45,7 +44,6 @@
 <script src="plug-in/ligerui/ligerUI/js/plugins/ligerToolBar.js" type="text/javascript"></script>
 <script src="plug-in/ligerui/ligerUI/js/plugins/ligerResizable.js" type="text/javascript"></script>
 <script src="plug-in/ligerui/ligerUI/js/plugins/ligerCheckBox.js" type="text/javascript"></script>
-<script src="plug-in/layui/layui.js" type="text/javascript"></script>
 <script src="plug-in/ligerui/jquery.cookie.js"></script>
 
 <script type="text/javascript" src="system/js/main/deve.js"></script>

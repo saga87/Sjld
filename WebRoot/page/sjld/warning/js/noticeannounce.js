@@ -27,28 +27,28 @@ $(function(){
 		toolbar : {
 			items : [ {
 				text : '增加',
-				click : newsManage_add,
+				click : na_add,
 				icon : 'add',
 				id:'noticeAnnounce/addNoticeAnnounce'
 			}, {
 				line : true
 			}, {
 				text : '修改',
-				click : newsManage_edit,
+				click : na_edit,
 				icon : 'modify',
 				id:'wkrjsystem/newsManage/updateNews'
 			}, {
 				line : true
 			}, {
 				text : '删除',
-				click : newsManage_delRow,
+				click : na_delRow,
 				icon : 'delete',
 				id:'noticeAnnounce/deleteNoticeAnnounce'
 			}, {
-				text : '查看详情',
+				text : '查看附件',
 				click : checkFileList,
 				icon : 'search',
-				id:'wkrjsystem/newsManage/checkFileList'
+				id:'noticeAnnounce/getNoticeAnnounceFileList'
 			}]
 		}
     });
@@ -68,7 +68,7 @@ function checkFileList(row){
 	}
 	
 	parent.$.ligerDialog.open({
-		url : "page/sjc/newsManage/newsManageFile.jsp",
+		url : "page/sjld/warning/na_File.jsp",
 		width : 600,
 		height : 460,
 		data: {
@@ -255,13 +255,13 @@ function newsManage_check(row){
 	//})
 }
 
-function newsManage_delRow(row){
+function na_delRow(row){
 	var g = $("#newsManage_maingrid").ligerGetGridManager();
 	var r = g.getSelectedRow();
-	if (r.news_inputuser != user_id) {
-		top.$.ligerDialog.alert("只能本人修改");
-		return;
-	}
+//	if (r.news_inputuser != user_id) {
+//		top.$.ligerDialog.alert("只能本人修改");
+//		return;
+//	}
 	if (r == undefined)	{
 		$.ligerDialog.alert('请选择一条记录进行删除!');
 		return;
@@ -270,8 +270,8 @@ function newsManage_delRow(row){
 		if (param) {
 			$.ajax({
 		        //type: "get",
-		        url: 'wkrjsystem/newsManage/delNews',
-		        data: { id: r.news_id },
+		        url: 'noticeAnnounce/deleteNoticeAnnounce',
+		        data: { id: r.na_id },
 		        cache: false,
 		        async: false,
 		        dataType : "json",  
@@ -356,7 +356,7 @@ function f_selectContactCancel(item, dialog) {
 /**
  * 添加通知公告
  */
-function newsManage_add(){
+function na_add(){
 	//$("#form1").show();
 	var g = $("#newsManage_maingrid").ligerGetGridManager();
 	parent.$.ligerDialog.open({
@@ -401,13 +401,15 @@ function newsManage_add(){
 				
 				var name = dialog.frame.$("input[name='file_name']");
 				var path = dialog.frame.$("input[name='file_path']");
+				var type = dialog.frame.$("input[name='file_type']");
 				var file_name = new Array();
 				var file_url = new Array();
 				for(var i=0;i<path.length;i++){
 					var nm = $(name[i]).attr("value");    //获取value
 				    var url = $(path[i]).attr("value");    //获取value
+				    var lb = $(type[i]).attr("value");
 				    file_url.push(url);
-				    file_name.push(nm);
+				    file_name.push(nm+"."+lb);
 				}
 				data.file_name = file_name.join();
 			    data.file_path = file_url.join();
@@ -454,7 +456,7 @@ function realAddNews(data,g,dialog){
 /**
  * 通知公告信息修改
  */
-function newsManage_edit(){
+function na_edit(){
 	var g = $("#newsManage_maingrid").ligerGetGridManager();
 	var r = g.getSelectedRow();
 	if (r == undefined)	{
