@@ -34,9 +34,9 @@ public class NoticeAnnounceServiceImpl implements NoticeAnnounceService {
 	private NoticeAnnounceDao dao;
 
 	@Override
-	public List<Map<String, Object>> getNoticeAnnounceList(int offset, int rows,String na_title,
+	public List<Map<String, Object>> getNoticeAnnounceList(int offset, int rows,String user_id,String user_dept,String na_title,
 			String na_inputtime,String end_date) {
-		return dao.getNoticeAnnounceList(offset, rows,na_title,na_inputtime,end_date);
+		return dao.getNoticeAnnounceList(offset, rows,user_id,user_dept,na_title,na_inputtime,end_date);
 	}
 
 	@Override
@@ -62,7 +62,7 @@ public class NoticeAnnounceServiceImpl implements NoticeAnnounceService {
 			}
 				dao.addNoticeAnnounce(noticeAnnounce);
 		} catch (Exception e) {
-			e.printStackTrace();
+//			e.printStackTrace();
 			return false;
 		}
 		return true;
@@ -91,7 +91,7 @@ public class NoticeAnnounceServiceImpl implements NoticeAnnounceService {
 			}
 			dao.updateNoticeAnnounce(noticeAnnounce);
 		} catch (Exception e) {
-			e.printStackTrace();
+//			e.printStackTrace();
 			return false;
 		}
 		return true;
@@ -108,7 +108,7 @@ public class NoticeAnnounceServiceImpl implements NoticeAnnounceService {
 			}
 			
 		} catch (Exception e) {
-			e.printStackTrace();
+//			e.printStackTrace();
 			return false;
 		}
 		
@@ -187,7 +187,7 @@ public class NoticeAnnounceServiceImpl implements NoticeAnnounceService {
 		try {
 			org.apache.commons.io.FileUtils.copyInputStreamToFile(newsManage_file.getInputStream(), new File(realPath,xFileName));
 		} catch (Exception e) {
-			System.err.println("上传附件出错了");
+//			System.err.println("上传附件出错了");
 		}
 		return "{\"success\":\"true\",\"filename\":\""+xFileName+"\",\"yFileName\":\""+yFileName+"\"}";
 	}

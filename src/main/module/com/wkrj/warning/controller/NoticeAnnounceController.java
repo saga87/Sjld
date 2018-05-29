@@ -38,11 +38,28 @@ public class NoticeAnnounceController {
 	 */
 	@RequestMapping("getNoticeAnnounceList")
 	@ResponseBody
-	public Object getNoticeAnnounceList(int pagesize, int page,String na_title,
+	public Object getNoticeAnnounceList(HttpServletRequest request,int pagesize, int page,String na_title,
 			String na_inputtime,String end_date){
+		
+		WkrjUser user = (WkrjUser) request.getSession().getAttribute("user");
+		WkrjUserDev userDev = (WkrjUserDev) request.getSession().getAttribute("userDev");
+		String user_name = "";
+		String user_dept = "";
+		String user_id = "";
+		if (user != null) {
+			user_name = user.getUser_name();
+			user_dept = user.getDept_id();
+			user_id = user.getUser_id();
+		} else if (userDev != null) {
+			user_name = userDev.getUser_name();
+			user_dept = userDev.getDept_id();
+			user_id = userDev.getUser_id();
+		}
+		
+		
 		int offset = (page-1) * pagesize;
 		List<Map<String,Object>> list = new ArrayList<Map<String,Object>>();
-		list = service.getNoticeAnnounceList(offset,pagesize,na_title,na_inputtime,end_date);
+		list = service.getNoticeAnnounceList(offset,pagesize,user_id,user_dept,na_title,na_inputtime,end_date);
 		return UtilsHelper.returnMap(list, list.size());
 	}
 	
@@ -93,7 +110,7 @@ public class NoticeAnnounceController {
 				noticeAnnounce.setAccept_user(noticeAnnounce.getAccept_user()+","+user_id);
 			}
 		}
-		noticeAnnounce.setNa_inputuser(user_name);
+		noticeAnnounce.setNa_inputuser(user_id);
 		noticeAnnounce.setNa_inputuserdept(user_dept);
 		
 		AjaxJson json = new AjaxJson();
@@ -105,7 +122,7 @@ public class NoticeAnnounceController {
 			file.setFile_xname(noticeAnnounce.getFile_xname());
 			file.setFile_yname(noticeAnnounce.getFile_yname());
 //			file.setFile_inputtime(date);
-			file.setFile_inputuser(user_name);
+			file.setFile_inputuser(user_id);
 		} 
 		
 		if (service.addNoticeAnnounce(noticeAnnounce, file)) {
@@ -150,7 +167,7 @@ public class NoticeAnnounceController {
 				noticeAnnounce.setAccept_user(noticeAnnounce.getAccept_user()+","+user_id);
 			}
 		}
-		noticeAnnounce.setNa_inputuser(user_name);
+		noticeAnnounce.setNa_inputuser(user_id);
 		noticeAnnounce.setNa_inputuserdept(user_dept);
 		
 		
@@ -161,7 +178,7 @@ public class NoticeAnnounceController {
 			file.setFile_xname(noticeAnnounce.getFile_xname());
 			file.setFile_yname(noticeAnnounce.getFile_yname());
 //			file.setFile_inputtime(date);
-			file.setFile_inputuser(user_name);
+			file.setFile_inputuser(user_id);
 		} 
 		
 		
@@ -203,7 +220,7 @@ public class NoticeAnnounceController {
 			if(e.getStackTrace()[0].getClassName().indexOf("SQLErrorCodeSQLExceptionTranslator")>=0){
 				json.setMsg("删除失败");
 			}else{
-				e.printStackTrace();
+//				e.printStackTrace();
 			}
 		}
 		

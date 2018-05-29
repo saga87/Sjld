@@ -26,7 +26,6 @@
 		
 		var dialog = frameElement.dialog;
 		var dialogData = dialog.get('data');//获取data参数
-		console.log(dialogData.content);
 		$("#newsManage_updateWindow_form").ligerForm().setData(dialogData.content);
 		
 		var str_userids = dialogData.content.accept_user;
@@ -45,7 +44,35 @@
 		var messagea_ue = UE.getEditor("na_content");
 	});
 	
-	
+	function showUserName(value) {
+		var userName = "";
+		if (value.split(",").length > 0) {
+			for (var i = 0; i < value.split(",").length; i++) {
+				var username = "";
+				$.ajax({
+					url : "wkrjsystem/newsManage/getUserNameById",
+					async : false, // 注意此处需要同步，因为返回完数据后，下面才能让结果的第一条selected  
+					type : "POST",
+					data : {
+						userId : value.split(",")[i]
+					},
+					dataType : "json",
+					success : function(res) {
+						if (res.obj) {
+							username = res.obj;
+						}
+					}
+				});
+
+				//return username;
+				userName += username;
+				if (i < value.split(",").length - 1) {
+					userName += ";";
+				}
+			}
+		}
+		return userName;
+	}
 	
 </script>
 

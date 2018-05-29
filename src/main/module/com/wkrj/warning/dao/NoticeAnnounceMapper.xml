@@ -7,9 +7,9 @@
 		SELECT na_id,na_title,na_content,na_other,na_inputuser,na_inputuserdept,
 		DATE_FORMAT(na_inputtime,'%Y-%m-%d %H:%i:%s') AS na_inputtime,importance,
 		accept_user
-		FROM wkrj_noticeannounce 
+		FROM wkrj_noticeannounce n,wkrj_sys_user u 
 		
-		WHERE 1=1
+		WHERE u.user_id = n.na_inputuser
 		
 		<if test="na_title != null and na_title != ''">
              AND na_title LIKE CONCAT(CONCAT('%',#{na_title}),'%')
@@ -21,6 +21,8 @@
         <if test="null!=end_date and ''!=end_date">
             and na_inputtime &lt;= #{end_date}
         </if>
+		
+		and (FIND_IN_SET(#{user_id},accept_user) or n.na_inputuserdept LIKE CONCAT('%',#{user_dept},'%'))
 		
 		ORDER BY na_inputtime DESC 
 		LIMIT #{offset},#{rows}

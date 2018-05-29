@@ -11,7 +11,9 @@ import java.util.Map;
 
 
 
+
 import javax.servlet.http.HttpServletRequest;
+
 
 
 
@@ -23,7 +25,7 @@ import com.wkrj.warning.bean.NoticeAnnounce;
 import com.wkrj.warning.bean.NoticeAnnounceFile;
 
 public interface NoticeAnnounceService {
-	List<Map<String,Object>> getNoticeAnnounceList(int offset,int rows,String na_title,
+	List<Map<String,Object>> getNoticeAnnounceList(int offset,int rows,String user_id,String user_dept,String na_title,
 			String na_inputtime,String end_date);
 	boolean addNoticeAnnounce(NoticeAnnounce noticeAnnounce
 			,NoticeAnnounceFile file);

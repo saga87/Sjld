@@ -23,7 +23,6 @@ $(function(){
         usePager :true,
 		rownumbers : true,
         alternatingRow: true,
-        //tree:{columnId:'newsManage_name',idField:'newsManage_id',parentIDField:'newsManage_parent_id'},
 		toolbar : {
 			items : [ {
 				text : '增加',
@@ -88,6 +87,10 @@ function checkFileList(row){
 function delnewsManageFile(row){
 	var g = $("#newsManageFile_maingrid").ligerGetGridManager();
 	var r = g.getSelectedRow();
+	if (r.na_inputuser != user_id) {
+		top.$.ligerDialog.alert("只能本人删除");
+		return;
+	}
 	if (r == undefined)	{
 		$.ligerDialog.alert('请选择一条记录进行删除!');
 		return;
@@ -95,7 +98,6 @@ function delnewsManageFile(row){
 	$.ligerDialog.confirm('确定要删除此记录吗', function (param) {
 		if (param) {
 			$.ajax({
-		        //type: "get",
 		        url: 'noticeAnnounce/deleteFileById',
 		        data: {file_id: r.file_id, xFileName: r.file_xname },
 		        cache: false,
@@ -153,7 +155,6 @@ function news() {
 	var g = $("#newsManage_maingrid").ligerGetGridManager();
 	var na_inputtime = $('#na_inputtime').val();
 	var end_date = $('#end_date').val();
-	console.log(na_inputtime+"====="+end_date);
 	var na_title = $('#na_title').val();
 	g.set({url:'noticeAnnounce/getNoticeAnnounceList?na_title='+na_title+'&na_inputtime='+na_inputtime+'&end_date='+end_date});    
 	g.reload();
@@ -212,8 +213,6 @@ function newsManage_check(row){
 		$.ligerDialog.alert('请选择一条记录进行查看!');
 		return;
 	}
-	//$.ligerDialog.confirm('确定要查看此记录吗', function (param) {
-		//if (param) {
 		$.ajax({
 	        url: 'wkrjsystem/newsManage/checkNews',
 	        data: { news_id: r.news_id },
@@ -251,17 +250,15 @@ function newsManage_check(row){
 	          }
 	        }
 	      });
-		//}
-	//})
 }
 
 function na_delRow(row){
 	var g = $("#newsManage_maingrid").ligerGetGridManager();
 	var r = g.getSelectedRow();
-//	if (r.news_inputuser != user_id) {
-//		top.$.ligerDialog.alert("只能本人修改");
-//		return;
-//	}
+	if (r.na_inputuser != user_id) {
+		top.$.ligerDialog.alert("只能本人删除");
+		return;
+	}
 	if (r == undefined)	{
 		$.ligerDialog.alert('请选择一条记录进行删除!');
 		return;
@@ -282,11 +279,9 @@ function na_delRow(row){
 		            }catch(e){
 		            }
 		          if (result.success) {
-		              //LG.showSuccess('删除成功');
 		        	  $.ligerDialog.alert('删除成功!');
 		        	  g.loadData();
 		          } else {
-		              //LG.showError('删除失败！');
 		        	  if (result.msg != null) {
 		        		  $.ligerDialog.alert(result.msg);
 		        	  } else {
@@ -304,7 +299,7 @@ function na_delRow(row){
  * 选择人员
  */
 function f_selectContact(){
-	var data = {"str_id":$("#news_lookarea").val(),
+	var data = {"str_id":$("#accept_user").val(),
 				"str_name":$("#txtContactName").val()}
 	top.$.ligerDialog.open({ 
 		title: '选择查看人员',
@@ -312,7 +307,7 @@ function f_selectContact(){
 			content:data
 		},
 		name:'winselector',width: 800, height: 600, 
-		url: 'page/sjc/newsManage/selectPerson.jsp', 
+		url: 'page/sjld/warning/selectperson.jsp', 
 		buttons: [{ text: '确定', onclick: f_selectContactOK },
 		          { text: '取消', onclick: f_selectContactCancel }
 		]
@@ -343,9 +338,8 @@ function f_selectContactOK(item, dialog) {
 	if(str_name.length>0){
 		str_name = str_name.substring(0,str_name.length-1);
 	}
-	$("#news_lookarea").val(str);
+	$("#accept_user").val(str);
 	$("#txtContactName").val(str_name);
-	// $("#hidCustomerID").val(data.CustomerID);
 	dialog.close();
 }
 
@@ -357,10 +351,8 @@ function f_selectContactCancel(item, dialog) {
  * 添加通知公告
  */
 function na_add(){
-	//$("#form1").show();
 	var g = $("#newsManage_maingrid").ligerGetGridManager();
 	parent.$.ligerDialog.open({
-		//target: $("#newsManage_addWindow"),
 		url : "page/sjld/warning/na_add.jsp",
 		width : 900,
 		height : 600,
@@ -370,7 +362,6 @@ function na_add(){
 			onclick : function(item, dialog) {
 				var m = dialog.frame;
 				var len = 0;
-				//len = m.$("#uploadify").data('uploadify').queueData.queueLength;
 				var data = dialog.frame.liger.get("newsManage_addWindow_form").getData();//alert()
 				if (data.na_title == null || data.na_title == "") {
 					top.$.ligerDialog.alert("公告标题不能为空");
@@ -379,10 +370,10 @@ function na_add(){
 					top.$.ligerDialog.alert("公告内容不能为空");
 					return;
 				}
-//				else if (data.accept_user == null || data.accept_user == "") {
-//					top.$.ligerDialog.alert("请选择查看范围");
-//					return;
-//				}
+				else if (data.accept_user == null || data.accept_user == "") {
+					top.$.ligerDialog.alert("请选择查看范围");
+					return;
+				}
 				var users = data.accept_user;
 //				if(dialog.frame.liger.get("txtContactName")){
 //					users = dialog.frame.liger.get("txtContactName").getValue();
@@ -396,31 +387,6 @@ function na_add(){
 		            }
 				}
 				data.accept_user = _user;
-				
-				
-				
-//				var name = dialog.frame.$("input[name='file_name']");
-//				var path = dialog.frame.$("input[name='file_path']");
-//				var type = dialog.frame.$("input[name='file_type']");
-//				
-//				
-//				console.log(name.attr("value")+'===='+path+'===='+type);
-//				
-//				var file_name = new Array();
-//				var file_url = new Array();
-//				for(var i=0;i<path.length;i++){
-//					var nm = $(name[i]).attr("value");    //获取value
-//				    var url = $(path[i]).attr("value");    //获取value
-//				    var lb = $(type[i]).attr("value");
-//				    file_url.push(url);
-//				    file_name.push(nm+"."+lb);
-//				}
-//				data.file_name = file_name.join();
-//			    data.file_path = file_url.join();
-				
-				
-				
-				
 				
 				realAddNews(data,g,dialog);
 			}
@@ -439,7 +405,6 @@ function na_add(){
  * @param {} isupdate
  */
 function realAddNews(data,g,dialog){
-	console.log(data);
 	 $.ajax({
         url: "noticeAnnounce/addNoticeAnnounce",
         dataType : "json",  
@@ -471,12 +436,11 @@ function na_edit(){
 		$.ligerDialog.alert('请选择一条记录进行修改!');
 		return;
 	}
-//	if (r.news_inputuser != user_id) {
-//		top.$.ligerDialog.alert("只能本人修改");
-//		return;
-//	}
+	if (r.na_inputuser != user_id) {
+		top.$.ligerDialog.alert("只能本人修改");
+		return;
+	}
 	var s = parent.$.ligerDialog.open({
-		//target: $("#newsManage_updateWindow_form"),
 		url : "page/sjld/warning/na_update.jsp",
 		//data : JSON.stringify(r),
 		width : 900,
@@ -487,8 +451,6 @@ function na_edit(){
 		buttons : [ {
 			text : '确定',
 			onclick : function(item, dialog) {
-				console.dir(dialog);
-				
 				var data = dialog.frame.liger.get("newsManage_updateWindow_form").getData();
 				if (data.na_title == null || data.na_title == "") {
 					top.$.ligerDialog.alert("公告标题不能为空");
@@ -497,26 +459,23 @@ function na_edit(){
 					top.$.ligerDialog.alert("公告内容不能为空");
 					return;
 				}
-//				else if (data.na_lookarea == null || data.na_lookarea == "") {
-//					top.$.ligerDialog.alert("请选择查看范围");
-//					return;
-//				}
-				//data['user[0].user_id'] = dialog.frame.liger.get("news_lookarea").getValue();
-//				if(dialog.frame.liger.get("news_lookarea")){
-//					var news_lookarea = dialog.frame.liger.get("news_lookarea").getValue();
-//					data.news_lookarea = news_lookarea;
-//				}
-//				var users = data.news_lookarea;
-//				var _user = "";
-//				var _users = users.split(";");
-//				for (var i = 0; i < _users.length; i++) {
-//					_user += _users[i];
-//		            if (i < _users.length-1) {
-//		            	_user +=",";
-//		            }
-//				}
-//				data.news_lookarea = _user;
-				//data.news_type = dialog.frame.liger.get("news_type").getValue();
+				
+				else if (data.accept_user == null || data.accept_user == "") {
+					top.$.ligerDialog.alert("请选择查看范围");
+					return;
+				}
+				
+				var users = data.accept_user;
+				var _user = "";
+				var _users = users.split(";");
+				for (var i = 0; i < _users.length; i++) {
+					_user += _users[i];
+		            if (i < _users.length-1) {
+		            	_user +=",";
+		            }
+				}
+				data.accept_user = _user;
+				
 				$.ajax({
 		            url: "noticeAnnounce/updateNoticeAnnounce",
 		            data: data,
@@ -576,7 +535,7 @@ function getUserName(rowdata, rowindex, value){
         url : "wkrjsystem/newsManage/getUserNameById",
         async : false, // 注意此处需要同步，因为返回完数据后，下面才能让结果的第一条selected
         type : "POST",
-        data:{userId:rowdata.news_lookarea},
+        data:{userId:rowdata.accept_user},
         dataType : "json",
         success : function(res) {
         	if(res.obj){

@@ -17,9 +17,6 @@
                 width : 300, height : 30, selectBoxWidth : 300, selectBoxHeight : 100, 
                 onBeforeOpen: f_selectContact//,valueFieldID: 'hidCustomerID'
             });
-           //$dialog = top.$("iframe[src='page/sjc/newsManage/news_add.jsp']")[0].contentWindow;//用于关闭dialog
-           
-            //var messagea_ue=UE.getEditor("news_content");
        });
        
 </script>
