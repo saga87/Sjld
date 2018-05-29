@@ -12,4 +12,6 @@ public interface MessageManageService {
 	
 	boolean updateLikeNumById(String must_read_id);
 	
+	boolean deleteMessage(String must_read_id);
+	
 }

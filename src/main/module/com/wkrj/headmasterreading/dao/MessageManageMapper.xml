@@ -55,4 +55,10 @@
 		WHERE  must_read_id = #{must_read_id}
 	</update>
 	
+	<delete id="deleteMessage">
+		DELETE FROM wkrj_messagemanager
+		WHERE  must_read_id = #{must_read_id}
+	</delete>
+	
+	
 </mapper>

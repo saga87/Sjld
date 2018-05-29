@@ -42,4 +42,9 @@ public class MessageManageServiceImpl implements MessageManageService {
 		return dao.updateLikeNumById(must_read_id);
 	}
 
+	@Override
+	public boolean deleteMessage(String must_read_id) {
+		return dao.deleteMessage(must_read_id);
+	}
+
 }

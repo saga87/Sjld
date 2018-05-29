@@ -16,4 +16,6 @@ public interface MessageManageDao {
 	boolean insertToLike(@Param("user_id")String user_id,@Param("must_read_id")String must_read_id);
 	
 	boolean updateLikeNumById(@Param("must_read_id")String must_read_id);
+	
+	boolean deleteMessage(@Param("must_read_id")String must_read_id);
 }

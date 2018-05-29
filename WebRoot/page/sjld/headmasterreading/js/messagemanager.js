@@ -64,29 +64,26 @@ function message_likeRow(row){
 function message_delRow(row){
 	var g = $("#messageManage_maingrid").ligerGetGridManager();
 	var r = g.getSelectedRow();
-//	if (r.na_inputuser != user_id) {
-//		top.$.ligerDialog.alert("只能本人删除");
-//		return;
-//	}
 	if (r == undefined)	{
 		$.ligerDialog.alert('请选择一条记录进行删除!');
 		return;
 	}
+	if (r.commenter != session_user_name) {
+		top.$.ligerDialog.alert("您不能删除他人留言");
+		return;
+	}
+	
 	$.ligerDialog.confirm('确定要删除此记录吗', function (param) {
 		if (param) {
 			$.ajax({
 		        //type: "get",
-		        url: 'noticeAnnounce/deleteNoticeAnnounce',
-		        data: {na_id: r.na_id},
+		        url: 'messageManage/deleteMessage',
+		        data: {must_read_id: r.must_read_id},
 		        cache: false,
 		        async: false,
 		        dataType : "json",  
 		        type : "POST",
 		        success: function (result) {
-		        	try{
-		                result = eval('('+result+')');
-		            }catch(e){
-		            }
 		          if (result.success) {
 		        	  $.ligerDialog.alert('删除成功!');
 		        	  g.loadData();

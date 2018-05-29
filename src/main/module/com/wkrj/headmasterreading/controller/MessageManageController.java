@@ -72,4 +72,17 @@ public class MessageManageController {
 		return json;
 	}
 	
+	
+	@RequestMapping("deleteMessage")
+	@ResponseBody
+	public Object deleteMessage(String must_read_id){
+		AjaxJson json = new AjaxJson();
+		if (service.deleteMessage(must_read_id)) {
+			json.setSuccess(true);
+			json.setMsg("删除成功");
+		}
+		return json;
+		
+	}
+	
 }
