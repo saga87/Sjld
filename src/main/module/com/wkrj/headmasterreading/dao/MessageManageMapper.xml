@@ -42,7 +42,10 @@
 	
 	<delete id="deleteFromLike">
 		DELETE FROM wkrj_like
-		WHERE user_id = #{user_id} AND must_read_id = #{must_read_id}
+		WHERE  must_read_id = #{must_read_id}
+		<if test="user_id != null and user_id != ''">
+			AND user_id = #{user_id}
+		</if>
 	</delete>
 	
 	<insert id="insertToLike">

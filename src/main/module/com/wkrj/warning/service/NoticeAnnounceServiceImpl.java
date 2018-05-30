@@ -18,7 +18,6 @@ import wkrjsystem.utils.FileUtils;
 import wkrjsystem.utils.Guid;
 import wkrjsystem.utils.UtilsHelper;
 
-import com.wkrj.newsManage.bean.WkrjNewsFile;
 import com.wkrj.warning.bean.NoticeAnnounce;
 import com.wkrj.warning.bean.NoticeAnnounceFile;
 import com.wkrj.warning.dao.NoticeAnnounceDao;
@@ -72,9 +71,10 @@ public class NoticeAnnounceServiceImpl implements NoticeAnnounceService {
 	public boolean updateNoticeAnnounce(NoticeAnnounce noticeAnnounce,
 			NoticeAnnounceFile file) {
 		try {
-			//先删除数据之前的附件信息重新添加
-			dao.deleteNoticeAnnounceFile(null, noticeAnnounce.getNa_id());
 			if(file.getFile_yname()!=null&&!"".equals(file.getFile_yname())){
+				//先删除数据之前的附件信息重新添加
+				dao.deleteNoticeAnnounceFile(null, noticeAnnounce.getNa_id());
+				
 				String yfilenames = file.getFile_yname();
 				String xfilenames = file.getFile_xname();
 				for (int i = 0, len = yfilenames.split(",").length; i < len; i++) {

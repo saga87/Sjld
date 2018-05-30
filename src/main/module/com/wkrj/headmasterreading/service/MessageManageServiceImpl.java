@@ -44,7 +44,7 @@ public class MessageManageServiceImpl implements MessageManageService {
 
 	@Override
 	public boolean deleteMessage(String must_read_id) {
-		return dao.deleteMessage(must_read_id);
+		return dao.deleteMessage(must_read_id)&&dao.deleteFromLike(null, must_read_id);
 	}
 
 }

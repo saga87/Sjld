@@ -68,10 +68,10 @@ function message_delRow(row){
 		$.ligerDialog.alert('请选择一条记录进行删除!');
 		return;
 	}
-	if (r.commenter != session_user_name) {
-		top.$.ligerDialog.alert("您不能删除他人留言");
-		return;
-	}
+//	if (r.commenter != session_user_name) {
+//		top.$.ligerDialog.alert("您不能删除他人留言");
+//		return;
+//	}
 	
 	$.ligerDialog.confirm('确定要删除此记录吗', function (param) {
 		if (param) {

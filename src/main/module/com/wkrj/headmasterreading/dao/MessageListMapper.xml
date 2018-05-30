@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.wkrj.headmasterreading.dao.MessageListDao">
+	<select id="getMessageList" parameterType="Object" resultType="map">
+		SELECT must_read_id,must_read_title,case_content,event_type
+		,file_yname,file_xname
+		FROM wkrj_readcase
+		WHERE 1=1
+		LIMIT #{offset},#{pagesize}
+	</select>
+	
+	<select id="getCaseReadFile" parameterType="String" resultType="map">
+		SELECT * FROM wkrj_readcasefile
+		WHERE must_read_id = #{must_read_id}
+	</select>
+	
+	
+	<delete id="deleteReadCase">
+		DELETE FROM wkrj_readcase
+		WHERE must_read_id = #{must_read_id}
+	</delete>
+	
+	<delete id="deleteReadCaseFile">
+		DELETE FROM wkrj_readcasefile
+		<if test="file_id != null and file_id != ''">
+             WHERE file_id=#{file_id}
+        </if>
+        <if test="must_read_id != null and must_read_id != ''">
+             WHERE must_read_id=#{must_read_id}
+        </if>
+	</delete>
+	
+	<select id="getCrFile" parameterType="String" resultType="ReadCaseFile">
+		SELECT must_read_id,file_id,file_yname,file_xname,file_inputtime,file_inputuser
+		FROM wkrj_readcasefile
+        WHERE must_read_id=#{must_read_id}
+	</select>
+	
+	<update id="updateReadCase" parameterType="ReadCase">
+		UPDATE wkrj_readcase SET must_read_title = #{must_read_title},
+		case_content = #{case_content},event_type = #{event_type},
+		file_yname = #{file_yname},file_xname = #{file_xname}
+		WHERE must_read_id = #{must_read_id}
+	</update>
+	
+</mapper>

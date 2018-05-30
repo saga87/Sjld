@@ -18,6 +18,12 @@ import wkrjsystemdev.userdev.bean.WkrjUserDev;
 
 import com.wkrj.headmasterreading.service.MessageManageService;
 
+/**
+ * 留言管理
+ * @author wlp
+ * @Description:
+ * @date 2018年5月30日 上午9:19:24
+ */
 @Controller
 @RequestMapping("messageManage")
 public class MessageManageController {

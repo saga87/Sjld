@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.wkrj.headmasterreading.dao.InformExtractDao">
+	<select id="getFinishedEvent" parameterType="Object" resultType="map">
+		SELECT a.event_no,event_title,event_content,accept_source,business_type,
+		DATE_FORMAT(a.input_time,'%Y-%m-%d %H:%i:%s')AS input_time,
+		DATE_FORMAT(a.qianshou_time,'%Y-%m-%d %H:%i:%s')AS qianshou_time,
+		DATE_FORMAT(b.opt_time,'%Y-%m-%d %H:%i:%s')AS opt_time,
+		content_type,chengban_dept,event_status,satisfy_status,
+		opt_user,opt_type,opt_content
+		FROM wkrj_reportevent_wf a,wkrj_procedurerecord b
+		WHERE 1=1 AND b.event_no = a.event_no
+		<if test="event_no != null and event_no != ''">
+			AND a.event_no = #{event_no}
+		</if>
+		<if test="event_title != null and event_title != ''">
+			AND event_title LIKE CONCAT(CONCAT('%',#{event_title}),'%')
+		</if>
+		<if test="event_content != null and event_content != ''">
+			AND event_content LIKE CONCAT(CONCAT('%',#{event_content}),'%')
+		</if>
+		<if test="business_type != null and business_type != ''">
+			AND business_type = #{business_type}
+		</if>
+		
+		ORDER BY input_time DESC 
+		LIMIT #{offset},#{pagesize}
+		
+	</select>
+	
+	<insert id="addReadCaseFile" parameterType="ReadCaseFile">
+		INSERT INTO wkrj_readcasefile(must_read_id,file_id,file_yname,file_xname,file_inputtime,
+		file_inputuser)
+		VALUES(#{must_read_id},#{file_id},#{file_yname},#{file_xname},#{file_inputtime}
+		,#{file_inputuser})
+	</insert>
+	
+	<insert id="addReadCase" parameterType="ReadCase">
+		INSERT INTO wkrj_readcase(must_read_id,must_read_title,case_content,event_type
+		,file_yname,file_xname)
+		VALUES(#{must_read_id},#{must_read_title},#{case_content},#{event_type}
+		,#{file_yname},#{file_xname})
+	</insert>
+	
+</mapper>
