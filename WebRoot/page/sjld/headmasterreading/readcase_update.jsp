@@ -15,6 +15,15 @@
 	$(function() {
 		var dialog = frameElement.dialog;
 		var dialogData = dialog.get('data');//获取data参数
+		
+		var r= dialogData.content;
+		
+		if(r.file_yname==''||r.file_yname==undefined||r.file_yname==null){
+			$("#fujian").hide();
+	    }else{
+	    	$("#fujian").show();
+	    }
+		
 		$("#readcase_updateWindow_form").ligerForm().setData(dialogData.content);
 	});
 </script>
@@ -34,7 +43,7 @@
             </div>
         </div>
         
-         <div class="Co">
+         <div class="Co" id="fujian">
             <label>&nbsp;&nbsp;附件:</label>
             <div class="r_div">
                 <input type="file" name="readcase_file" id="uploadify" />
