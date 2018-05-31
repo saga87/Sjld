@@ -34,8 +34,13 @@ public class InformExtractServiceImpl implements InformExtractService {
 	@Override
 	public boolean addReadCase(ReadCase readCase, ReadCaseFile file) {
 		try{
-			String must_read_id = Guid.getGuid();
-			readCase.setMust_read_id(must_read_id);
+			if(readCase.getMust_read_id()!=null
+					&&!"".equals(readCase.getMust_read_id())){
+				
+			}else{
+				String must_read_id = Guid.getGuid();
+				readCase.setMust_read_id(must_read_id);
+			}
 			if(file.getFile_yname()!=null&&!"".equals(file.getFile_yname())){
 				String yfilenames = file.getFile_yname();
 				String xfilenames = file.getFile_xname();

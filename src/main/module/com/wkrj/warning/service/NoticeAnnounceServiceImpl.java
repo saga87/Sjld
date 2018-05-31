@@ -100,8 +100,7 @@ public class NoticeAnnounceServiceImpl implements NoticeAnnounceService {
 	@Override
 	public boolean deleteNoticeAnnounce(HttpServletRequest request, String na_id) {
 		try {
-			if(deleteLocalFile(na_id) && dao.deleteNoticeAnnounceFile(null, na_id)
-					&&dao.deleteNoticeAnnounce(na_id)){
+			if(deleteLocalFile(na_id) &&dao.deleteNoticeAnnounce(na_id)){
 				return true;
 			}else{
 				return false;
@@ -126,6 +125,15 @@ public class NoticeAnnounceServiceImpl implements NoticeAnnounceService {
 				file.delete();  
 			}
 		}
+		
+		if(fileList.size()>0){
+			if(dao.deleteNoticeAnnounceFile(null, na_id)){
+				return true;
+			}else{
+				return false;
+			}
+		}
+		
 		return true;
 	}
 	

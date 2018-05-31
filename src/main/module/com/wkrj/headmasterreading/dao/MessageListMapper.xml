@@ -4,10 +4,11 @@
 
 <mapper namespace="com.wkrj.headmasterreading.dao.MessageListDao">
 	<select id="getMessageList" parameterType="Object" resultType="map">
-		SELECT must_read_id,must_read_title,case_content,event_type
+		SELECT  must_read_id,must_read_title,case_content,event_type
 		,file_yname,file_xname
 		FROM wkrj_readcase
 		WHERE 1=1
+		GROUP BY must_read_id
 		LIMIT #{offset},#{pagesize}
 	</select>
 	

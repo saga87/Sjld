@@ -155,7 +155,8 @@ function viewFile(){
 		$.ligerDialog.alert('请选择有附件记录的行进行查看!');
 		return;
 	}
-	if(r.file_yname==''){
+	console.log(r.file_yname);
+	if(r.file_yname==''||r.file_yname==undefined||r.file_yname==null){
 		$.ligerDialog.alert('该行无附件');
 		return;
 	}

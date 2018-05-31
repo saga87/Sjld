@@ -3,6 +3,9 @@ var url="";
 var lay;
 var manager;
 var perm;
+
+
+
 $(function(){
 
 	lay=$("#informExtract_layout").ligerLayout({rightWidth:560,isRightCollapse: true});
@@ -31,12 +34,71 @@ $(function(){
 				click : upload_case,
 				icon : 'add',
 				id:'informExtract/uploadCase'
+			}, {
+				line : true
+			}, {
+				text : '提取案例',
+				click : extract_case,
+				icon : 'add',
+				id:'messageList/extractCaseRead'
 			}]
 		}
     });
     
 	
 });
+
+
+function extract_case(){
+	var g = $("#informExtract_maingrid").ligerGetGridManager();
+	var r = g.getSelectedRow();
+	if (r == undefined)	{
+		$.ligerDialog.alert('请选择一条记录进行提取!');
+		return;
+	}
+	parent.$.ligerDialog.open({
+		url : "page/sjld/headmasterreading/readcase_extract.jsp",
+		width : 600,
+		height : 460,
+		data: {
+            content:r
+		},
+		buttons : [ {
+			text : '确定',
+			onclick : function(item, dialog) {
+				var m = dialog.frame;
+				var len = 0;
+				var data = dialog.frame.liger.get("readcase_extractWindow_form").getData();//alert()
+				
+				if (data.event_title == null || data.event_title == "") {
+					top.$.ligerDialog.alert("标题不能为空");
+					return;
+				}else if (data.event_content == null || data.event_content == "") {
+					top.$.ligerDialog.alert("内容不能为空");
+					return;
+				}
+				else if (data.content_type == null || data.content_type == "") {
+					top.$.ligerDialog.alert("类型不能为空");
+					return;
+				}
+				
+				data.must_read_id = data.event_no;
+				data.must_read_title = data.event_title;
+				data.case_content = data.event_content;
+				data.event_type = data.content_type
+				realAddCase(data,g,dialog);
+			}
+		},{
+			text : '取消',
+			onclick : function(item, dialog) {
+				dialog.close();
+			}
+		} ]
+	});
+	
+	
+}
+
 
 function upload_case(){
 	var g = $("#informExtract_maingrid").ligerGetGridManager();
@@ -51,6 +113,9 @@ function upload_case(){
 				var m = dialog.frame;
 				var len = 0;
 				var data = dialog.frame.liger.get("readcase_addWindow_form").getData();//alert()
+				
+				
+				
 				if (data.must_read_title == null || data.must_read_title == "") {
 					top.$.ligerDialog.alert("标题不能为空");
 					return;
@@ -62,6 +127,9 @@ function upload_case(){
 					top.$.ligerDialog.alert("类型不能为空");
 					return;
 				}
+				
+				
+				
 				realAddCase(data,g,dialog);
 			}
 		}, {

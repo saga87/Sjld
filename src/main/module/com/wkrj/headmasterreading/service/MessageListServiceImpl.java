@@ -44,21 +44,22 @@ public class MessageListServiceImpl implements MessageListService {
 	@Override
 	public boolean deleteCaseRead(String must_read_id) {
 		try {
-			if(deleteLocalFile(must_read_id) && dao.deleteReadCaseFile(null, must_read_id)
-					&&dao.deleteReadCase(must_read_id)){
+			if(deleteLocalFile(must_read_id)&&dao.deleteReadCase(must_read_id)){
 				return true;
 			}else{
 				return false;
 			}
 			
 		} catch (Exception e) {
+			e.printStackTrace();
 			return false;
 		}
 	}
 	
 	
 	public boolean deleteLocalFile(String must_read_id){
-		List<ReadCaseFile> fileList = dao.getCrFile(must_read_id);	
+		List<ReadCaseFile> fileList = dao.getCrFile(must_read_id);
+		
 		for (int i = 0; i < fileList.size(); i++) {
 			//删除本地附件
 			String sPath = this.realPath+fileList.get(i).getFile_xname();
@@ -68,6 +69,15 @@ public class MessageListServiceImpl implements MessageListService {
 				file.delete();  
 			}
 		}
+		
+		if(fileList.size()>0){
+			if(dao.deleteReadCaseFile(null, must_read_id)){
+				return true;
+			}else{
+				return false;
+			}
+		}
+		
 		return true;
 	}
 
