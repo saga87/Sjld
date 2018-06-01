@@ -24,20 +24,25 @@
 		$("#title").html(r.must_read_title);
 		$("#tsnr").html("&nbsp;&nbsp;"+r.case_content);
 		
-		$.ajax({
-		url:'messageManage/getList',
-		type:'post',
-		data:{page:1,pagesize:6,must_read_id:r.must_read_id},
-		dataType:'json',
-		success:function (data) {
-		 var lists = data.Rows;
-			if (lists.length>0) {
-				for (var i = 0; i < lists.length; i++) {
-					$("#commentul").append('<li class = "ulli">'+  lists[i].commenter+'&nbsp;&nbsp;'+lists[i].comment_school+'</br>'+lists[i].comment_content+'</li>');
-				}
-			}
-		}
-	});
+		
+	lay=$("#comment_layout").ligerLayout({rightWidth:360,isRightCollapse: true});
+	
+	manager = $("#comment_maingrid").ligerGrid({
+		url:'messageManage/getList?must_read_id='+r.must_read_id,
+        columns: [
+        { display: '评论者', name: 'commenter', id: 'commenter', width: '8%', align: 'center' },
+        { display: '学校', name: 'comment_school', id: 'comment_school', width: '12%', align: 'center' },
+        { display: '评论内容', name: 'comment_content', id: 'comment_content', width: '80%', align: 'center' },
+        ], height: '370px',
+        width:'100%',
+        usePager :true,
+        pageSize:"10",//分页页面大小
+        pageSizeOptions:[5,10],//可指定每页页面大小
+		rownumbers : true,
+        alternatingRow: true
+    });
+		
+		
 		
 		
 	});
@@ -50,10 +55,12 @@
 		<h3>投诉内容:</h3>
 		<p id="tsnr" style="margin-top: 5px;font-size: 16px"></p>
 		
-		<ul style = "margin-top: 10px;" id="commentul">
-			
-		</ul>
 		</div>
+		
+		<div id="comment_layout" style="height:400px">	
+		<div id="comment_maingrid"></div>
+		</div>
+		
 		<div class="Co">
             <div class="r_div">
                 <textarea id="comment_content" name="comment_content"  style="height:280px;width:800px;left:-50px;border:0px;"></textarea>

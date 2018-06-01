@@ -14,4 +14,6 @@ public interface MessageManageService {
 	
 	boolean deleteMessage(String must_read_id);
 	
+	long countMessage(String must_read_id,String must_read_title,
+			String comment_content,String start_date,String end_date);
 }

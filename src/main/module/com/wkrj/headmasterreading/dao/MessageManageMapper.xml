@@ -30,6 +30,27 @@
 
 	</select>
 	
+	 <select id="countMessage" resultType="Long" parameterType="Object">
+        SELECT COUNT(*)  FROM wkrj_messagemanager WHERE 1=1 
+        <if test="must_read_id != null and must_read_id != ''">
+			AND must_read_id = #{must_read_id}
+		</if>
+		<if test="must_read_title != null and must_read_title != ''">
+			AND must_read_title LIKE CONCAT(CONCAT('%',#{must_read_title}),'%')
+		</if>
+		<if test="comment_content != null and comment_content != ''">
+			AND comment_content LIKE CONCAT(CONCAT('%',#{comment_content}),'%')
+		</if>
+
+		<if test="null != start_date and '' != start_date">
+			and comment_time >= #{start_date}
+		</if>
+		<if test="null != end_date and '' != end_date">
+			and comment_time &lt;= #{end_date}
+		</if>
+    </select>
+	
+	
 	<select id="countFromLike"  resultType="Integer">
 		SELECT count(*) 
         FROM wkrj_like

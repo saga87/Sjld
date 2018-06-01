@@ -37,7 +37,8 @@ public class MessageManageController {
 		int offset = (page-1) * pagesize;
 		List<Map<String,Object>> list = new ArrayList<Map<String,Object>>();
 		list = service.getList(offset,pagesize,must_read_id,must_read_title,comment_content,start_date,end_date);
-		return UtilsHelper.returnMap(list, list.size());
+		long counts = service.countMessage(must_read_id, must_read_title, comment_content, start_date, end_date);
+		return UtilsHelper.returnMap(list, counts);
 	}
 	
 	@RequestMapping("likeMessage")

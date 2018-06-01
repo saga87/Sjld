@@ -47,4 +47,11 @@ public class MessageManageServiceImpl implements MessageManageService {
 		return dao.deleteMessage(must_read_id)&&dao.deleteFromLike(null, must_read_id);
 	}
 
+	@Override
+	public long countMessage(String must_read_id, String must_read_title,
+			String comment_content, String start_date, String end_date) {
+		// TODO Auto-generated method stub
+		return dao.countMessage(must_read_id, must_read_title, comment_content, start_date, end_date);
+	}
+
 }
