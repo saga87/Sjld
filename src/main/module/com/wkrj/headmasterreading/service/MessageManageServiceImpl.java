@@ -23,8 +23,9 @@ public class MessageManageServiceImpl implements MessageManageService {
 	}
 
 	@Override
-	public int countFromLike(String user_id, String must_read_id) {
-		return dao.countFromLike(user_id, must_read_id);
+	public int countFromLike(String user_id, String must_read_id,String commenter,
+			String comment_content) {
+		return dao.countFromLike(user_id, must_read_id,commenter,comment_content);
 	}
 
 	@Override
@@ -33,18 +34,19 @@ public class MessageManageServiceImpl implements MessageManageService {
 	}
 
 	@Override
-	public boolean insertToLike(String user_id, String must_read_id) {
-		return dao.insertToLike(user_id, must_read_id);
+	public boolean insertToLike(String user_id, String must_read_id,String commenter,
+			String comment_content) {
+		return dao.insertToLike(user_id, must_read_id,commenter,comment_content);
 	}
 
 	@Override
-	public boolean updateLikeNumById(String must_read_id) {
-		return dao.updateLikeNumById(must_read_id);
+	public boolean updateLikeNumById(String must_read_id,String commenter,String comment_content) {
+		return dao.updateLikeNumById(must_read_id,commenter,comment_content);
 	}
 
 	@Override
-	public boolean deleteMessage(String must_read_id) {
-		return dao.deleteMessage(must_read_id)&&dao.deleteFromLike(null, must_read_id);
+	public boolean deleteMessage(String must_read_id,String commenter,String comment_content) {
+		return dao.deleteMessage(must_read_id,commenter,comment_content)&&dao.deleteFromLike(null, must_read_id);
 	}
 
 	@Override

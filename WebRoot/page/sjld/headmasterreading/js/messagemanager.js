@@ -48,7 +48,8 @@ function message_likeRow(row){
 	}
 	$.ajax({
         url: 'messageManage/likeMessage',
-        data: {must_read_id: r.must_read_id},
+        data: {must_read_id: r.must_read_id,
+        	commenter:r.commenter,comment_content:r.comment_content},
         cache: false,
         async: false,
         dataType : "json",  
@@ -78,7 +79,8 @@ function message_delRow(row){
 			$.ajax({
 		        //type: "get",
 		        url: 'messageManage/deleteMessage',
-		        data: {must_read_id: r.must_read_id},
+		        data: {must_read_id: r.must_read_id,
+		        	commenter:r.commenter,comment_content:r.comment_content},
 		        cache: false,
 		        async: false,
 		        dataType : "json",  

@@ -43,7 +43,8 @@ public class MessageManageController {
 	
 	@RequestMapping("likeMessage")
 	@ResponseBody
-	public Object likeMessage(HttpServletRequest request,String must_read_id){
+	public Object likeMessage(HttpServletRequest request,String must_read_id,String commenter,
+			String comment_content){
 		WkrjUser user = (WkrjUser) request.getSession().getAttribute("user");
 		WkrjUserDev userDev = (WkrjUserDev) request.getSession().getAttribute("userDev");
 		String user_name = "";
@@ -60,14 +61,14 @@ public class MessageManageController {
 		}
 		AjaxJson json = new AjaxJson();
 		try{
-			int num = service.countFromLike(user_id, must_read_id);
+			int num = service.countFromLike(user_id, must_read_id,commenter,comment_content);
 			if(num>0){
 //				service.deleteFromLike(user_id, must_read_id);
 				json.setSuccess(true);
 				json.setMsg("该留言你已点过赞");
 			}else{
-				service.insertToLike(user_id, must_read_id);
-				service.updateLikeNumById(must_read_id);
+				service.insertToLike(user_id, must_read_id,commenter,comment_content);
+				service.updateLikeNumById(must_read_id,commenter,comment_content);
 				json.setSuccess(true);
 				json.setMsg("点赞成功");
 			}
@@ -82,9 +83,9 @@ public class MessageManageController {
 	
 	@RequestMapping("deleteMessage")
 	@ResponseBody
-	public Object deleteMessage(String must_read_id){
+	public Object deleteMessage(String must_read_id,String commenter,String comment_content){
 		AjaxJson json = new AjaxJson();
-		if (service.deleteMessage(must_read_id)) {
+		if (service.deleteMessage(must_read_id,commenter,comment_content)) {
 			json.setSuccess(true);
 			json.setMsg("删除成功");
 		}

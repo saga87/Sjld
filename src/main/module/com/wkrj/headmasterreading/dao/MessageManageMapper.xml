@@ -61,6 +61,12 @@
 		<if test="must_read_id != null and must_read_id != ''">
 			AND must_read_id = #{must_read_id}
 		</if>
+		<if test="commenter != null and commenter != ''">
+			AND commenter = #{commenter}
+		</if>
+		<if test="comment_content != null and comment_content != ''">
+			AND comment_content = #{comment_content}
+		</if>
 	</select>
 	
 	<delete id="deleteFromLike">
@@ -72,18 +78,30 @@
 	</delete>
 	
 	<insert id="insertToLike">
-		INSERT INTO wkrj_like(user_id,must_read_id)
-		VALUES(#{user_id},#{must_read_id})
+		INSERT INTO wkrj_like(user_id,must_read_id,commenter,comment_content)
+		VALUES(#{user_id},#{must_read_id},#{commenter},#{comment_content})
 	</insert>
 	
 	<update id="updateLikeNumById" parameterType="String">
 		UPDATE wkrj_messagemanager SET likenum = likenum +1
 		WHERE  must_read_id = #{must_read_id}
+		<if test="commenter != null and commenter != ''">
+			AND commenter = #{commenter}
+		</if>
+		<if test="comment_content != null and comment_content != ''">
+			AND comment_content = #{comment_content}
+		</if>
 	</update>
 	
 	<delete id="deleteMessage">
 		DELETE FROM wkrj_messagemanager
 		WHERE  must_read_id = #{must_read_id}
+		<if test="commenter != null and commenter != ''">
+			AND commenter = #{commenter}
+		</if>
+		<if test="comment_content != null and comment_content != ''">
+			AND comment_content = #{comment_content}
+		</if>
 	</delete>
 	
 	
