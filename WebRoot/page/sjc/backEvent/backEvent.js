@@ -16,7 +16,6 @@ $(function(){
         { display: '来电号码', name: 'caller_tel', id: 'caller_tel', width: '9%', align: 'center' },
         { display: '处理时限', name: 'deal_days', id: 'deal_days', width: '10%', align: 'center' },
         { display: '是否已审核', name: 'shenhe_status', id: 'shenhe_status', width: '10%', align: 'center', render: shenheTrans },
-        //{ display: '处理级别', name: 'level', id: 'level', width: '10%', align: 'center' },
         { display: '来电性质', name: 'nature', id: 'nature', width: '10%', align: 'center' },
         { display: '发布时间', name: 'event_inputtime', id: 'event_inputtime', width: '10%', align: 'center' }
 //        { display: '操作', isSort: false, width: '9%', render: function (rowdata, rowindex, value){
