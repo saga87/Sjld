@@ -39,9 +39,9 @@
 	
 	<insert id="addReadCase" parameterType="ReadCase">
 		INSERT INTO wkrj_readcase(must_read_id,must_read_title,case_content,event_type
-		,file_yname,file_xname)
+		,file_yname,file_xname,addtime)
 		VALUES(#{must_read_id},#{must_read_title},#{case_content},#{event_type}
-		,#{file_yname},#{file_xname})
+		,#{file_yname},#{file_xname},#{addtime})
 	</insert>
 	
 </mapper>

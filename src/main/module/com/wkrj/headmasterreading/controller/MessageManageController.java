@@ -32,11 +32,11 @@ public class MessageManageController {
 	
 	@RequestMapping("getList")
 	@ResponseBody
-	public Object getList(HttpServletRequest request,int pagesize, int page,String must_read_title,
-			String comment_content,String start_date,String end_date){
+	public Object getList(HttpServletRequest request,int pagesize, int page,String must_read_id,
+			String must_read_title,String comment_content,String start_date,String end_date){
 		int offset = (page-1) * pagesize;
 		List<Map<String,Object>> list = new ArrayList<Map<String,Object>>();
-		list = service.getList(offset,pagesize,must_read_title,comment_content,start_date,end_date);
+		list = service.getList(offset,pagesize,must_read_id,must_read_title,comment_content,start_date,end_date);
 		return UtilsHelper.returnMap(list, list.size());
 	}
 	

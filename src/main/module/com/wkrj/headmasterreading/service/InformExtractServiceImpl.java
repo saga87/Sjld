@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import wkrjsystem.utils.Guid;
+import wkrjsystem.utils.UtilsHelper;
 
 import com.wkrj.headmasterreading.bean.ReadCase;
 import com.wkrj.headmasterreading.bean.ReadCaseFile;
@@ -54,6 +55,7 @@ public class InformExtractServiceImpl implements InformExtractService {
 					}
 				}
 			}
+			readCase.setAddtime(UtilsHelper.getDateFormatTime());
 			dao.addReadCase(readCase);
 			return true;
 		}catch(Exception e){

@@ -7,7 +7,7 @@
  </head>
  <body>
 <script type="text/javascript"
-   src="page/sjld/warning/js/noticeannounce.js"></script>
+   src="page/sjld/headmasterreading/js/messagelist.js"></script>
    <script src="plug-in/uploadify/jquery.uploadify.min.js" type="text/javascript"></script>
  <link rel="stylesheet" type="text/css" href="plug-in/uploadify/uploadify.css">
  <script type="text/javascript" src="plug-in/uploadify/jquery.uploadify.js"></script>

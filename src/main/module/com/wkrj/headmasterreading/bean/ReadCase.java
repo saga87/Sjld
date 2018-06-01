@@ -13,8 +13,16 @@ public class ReadCase {
 	private String event_type;//案例类型
 	private String file_yname;
 	private String file_xname;
+	private String addtime;
 	
 	
+	
+	public String getAddtime() {
+		return addtime;
+	}
+	public void setAddtime(String addtime) {
+		this.addtime = addtime;
+	}
 	public String getFile_yname() {
 		return file_yname;
 	}

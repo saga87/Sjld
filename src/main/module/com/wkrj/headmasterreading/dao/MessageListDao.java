@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.wkrj.headmasterreading.bean.MessageManage;
 import com.wkrj.headmasterreading.bean.ReadCase;
 import com.wkrj.headmasterreading.bean.ReadCaseFile;
 
@@ -17,4 +18,6 @@ public interface MessageListDao {
 	boolean deleteReadCase(@Param("must_read_id")String must_read_id);
 	
 	boolean updateReadCase(ReadCase readCase);
+	
+	boolean addMessage(MessageManage mm);
 }

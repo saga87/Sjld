@@ -16,10 +16,10 @@ public class MessageManageServiceImpl implements MessageManageService {
 	private MessageManageDao dao;
 	
 	@Override
-	public List<Map<String, Object>> getList(int offset, int pagesize,
+	public List<Map<String, Object>> getList(int offset, int pagesize,String must_read_id,
 			String must_read_title, String comment_content, String start_date,
 			String end_date) {
-		return dao.getList(offset, pagesize, must_read_title, comment_content, start_date, end_date);
+		return dao.getList(offset, pagesize,must_read_id, must_read_title, comment_content, start_date, end_date);
 	}
 
 	@Override

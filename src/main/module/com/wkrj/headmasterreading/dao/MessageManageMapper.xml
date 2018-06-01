@@ -9,6 +9,9 @@
 		AS comment_time
 		FROM wkrj_messagemanager
 		WHERE 1=1
+		<if test="must_read_id != null and must_read_id != ''">
+			AND must_read_id = #{must_read_id}
+		</if>
 		<if test="must_read_title != null and must_read_title != ''">
 			AND must_read_title LIKE CONCAT(CONCAT('%',#{must_read_title}),'%')
 		</if>
@@ -22,7 +25,6 @@
 		<if test="null != end_date and '' != end_date">
 			and comment_time &lt;= #{end_date}
 		</if>
-		
 		ORDER BY comment_time DESC 
 		LIMIT #{offset},#{pagesize}
 

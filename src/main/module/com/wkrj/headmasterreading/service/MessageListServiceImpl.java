@@ -8,6 +8,7 @@ import java.util.Map;
 
 
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import wkrjsystem.utils.Guid;
 import wkrjsystem.utils.UtilsHelper;
 
+import com.wkrj.headmasterreading.bean.MessageManage;
 import com.wkrj.headmasterreading.bean.ReadCase;
 import com.wkrj.headmasterreading.bean.ReadCaseFile;
 import com.wkrj.headmasterreading.dao.InformExtractDao;
@@ -107,6 +109,12 @@ public class MessageListServiceImpl implements MessageListService {
 			return false;
 		}
 		return true;
+	}
+
+	@Override
+	public boolean addMessage(MessageManage mm) {
+		
+		return dao.addMessage(mm);
 	}
 	
 }

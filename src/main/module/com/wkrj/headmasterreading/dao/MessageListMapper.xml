@@ -5,7 +5,7 @@
 <mapper namespace="com.wkrj.headmasterreading.dao.MessageListDao">
 	<select id="getMessageList" parameterType="Object" resultType="map">
 		SELECT  must_read_id,must_read_title,case_content,event_type
-		,file_yname,file_xname
+		,file_yname,file_xname,DATE_FORMAT(addtime,'%Y-%m-%d %H:%i:%s') AS addtime
 		FROM wkrj_readcase
 		WHERE 1=1
 		GROUP BY must_read_id
@@ -45,5 +45,12 @@
 		file_yname = #{file_yname},file_xname = #{file_xname}
 		WHERE must_read_id = #{must_read_id}
 	</update>
+	
+	<insert id="addMessage" parameterType="MessageManage">
+		INSERT INTO wkrj_messagemanager(must_read_id,commenter,comment_school,
+		must_read_title,comment_time,comment_content,likenum)
+		VALUES(#{must_read_id},#{commenter},#{comment_school},#{must_read_title},
+		#{comment_time},#{comment_content},#{likenum})
+	</insert>
 	
 </mapper>

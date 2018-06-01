@@ -12,6 +12,7 @@ $(function(){
         { display: '编号', name: 'must_read_id', id: 'must_read_id', width: '20%', align: 'center' },
         { display: '标题', name: 'must_read_title', id: 'must_read_title', width: '30%', align: 'center' },
         { display: '类型', name: 'event_type', id: 'event_type', width: '10%', align: 'center' },
+        { display: '添加时间', name: 'addtime', id: 'addtime', width: '10%', align: 'center' },
         { display: '附件', name: 'file_yname', id: 'file_yname', width: '10%', align: 'center',render:function(rowdata, rowindex, value){
             if(value!=null && value!=""){
                 return "有";
@@ -30,7 +31,7 @@ $(function(){
 				text : '编辑',
 				click : cr_edit,
 				icon : 'modify',
-				id:'messageList/updateNoticeAnnounce'
+				id:'messageList/updateCaseRead'
 			}, {
 				line : true
 			}, {
@@ -43,11 +44,79 @@ $(function(){
 				click : viewFile,
 				icon : 'search',
 				id:'messageList/getCaseReadFile'
+			}, {
+				text : '评论',
+				click : cr_comment,
+				icon : 'search',
+				id:'messageList/getCaseReadFile'
 			}]
 		}
     });
 	
 });
+
+function cr_comment(){
+	var g = $("#messagelist_maingrid").ligerGetGridManager();
+	var r = g.getSelectedRow();
+	if (r == undefined)	{
+		$.ligerDialog.alert('请选择一条记录进行评论!');
+		return;
+	}
+	
+	var s = parent.$.ligerDialog.open({
+		url : "page/sjld/headmasterreading/comment.jsp",
+		width : 900,
+		height :600,
+		data: {
+            content:r
+        },
+		buttons : [ {
+			text : '评论',
+			onclick : function(item, dialog) {
+				var data = dialog.frame.liger.get("readcase_commentWindow_form").getData();
+				if (data.must_read_title == null || data.must_read_title == "") {
+					top.$.ligerDialog.alert("标题不能为空");
+					return;
+				}else if (data.comment_content == null || data.comment_content == "") {
+					top.$.ligerDialog.alert("评论内容不能为空");
+					return;
+				}
+				
+//				data.must_read_title = data.title;
+				
+				
+				$.ajax({
+		            url: "messageList/commentCaseRead",
+		            data: data,
+		            dataType : "json",  
+		            type : "POST",
+		            success: function(result){
+		                    try{
+		                        result = eval('('+result+')');
+		                    }catch(e){
+		                    }
+		                    if (result.success) {
+		                    	$.ligerDialog.alert(result.msg);
+		                    //	g.loadData();
+		                        dialog.close();
+		                    } else {
+		                    	top.$.ligerDialog.alert(result.msg);
+		                    }
+		                 }
+		           });
+			}
+		}, {
+			text : '取消',
+			onclick : function(item, dialog) {
+				dialog.close();
+			}
+		} ]
+
+	});
+	
+}
+
+
 
 
 function cr_edit(){

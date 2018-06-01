@@ -7,14 +7,22 @@ import java.util.Map;
 
 
 
+
+
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import wkrjsystem.user.bean.WkrjUser;
 import wkrjsystem.utils.AjaxJson;
 import wkrjsystem.utils.UtilsHelper;
+import wkrjsystemdev.userdev.bean.WkrjUserDev;
 
+import com.wkrj.headmasterreading.bean.MessageManage;
 import com.wkrj.headmasterreading.bean.ReadCase;
 import com.wkrj.headmasterreading.bean.ReadCaseFile;
 import com.wkrj.headmasterreading.service.MessageListService;
@@ -69,6 +77,36 @@ public class MessageListController {
 		if (service.updateCaseRead(readCase,file)) {
 			json.setSuccess(true);
 			json.setMsg("更新成功");
+		}
+		return json;
+	}
+	
+	@RequestMapping("commentCaseRead")
+	@ResponseBody
+	public Object commentCaseRead(HttpServletRequest request,MessageManage mm){
+		WkrjUser user = (WkrjUser) request.getSession().getAttribute("user");
+		WkrjUserDev userDev = (WkrjUserDev) request.getSession().getAttribute("userDev");
+		String user_name = "";
+		String user_dept = "";
+		String user_id = "";
+		if (user != null) {
+			user_name = user.getUser_name();
+			user_dept = user.getDept_id();
+			user_id = user.getUser_id();
+		} else if (userDev != null) {
+			user_name = userDev.getUser_name();
+			user_dept = userDev.getDept_id();
+			user_id = userDev.getUser_id();
+		}
+		
+		mm.setCommenter(user_name);
+		mm.setComment_school(user_dept);
+		mm.setComment_time(UtilsHelper.getDateFormatTime());
+		mm.setLikenum(0);
+		AjaxJson json = new AjaxJson();
+		if (service.addMessage(mm)) {
+			json.setSuccess(true);
+			json.setMsg("评论成功");
 		}
 		return json;
 	}
