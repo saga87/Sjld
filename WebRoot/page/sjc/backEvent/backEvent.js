@@ -133,10 +133,6 @@ function event_zhuanban(row){
                     top.$.ligerDialog.alert("承办单位不能为空");
                     return;
                 }
-//                if (data.user_secret == null || data.user_secret == "") {
-//                    top.$.ligerDialog.alert("用户保密不能为空");
-//                    return;
-//                }
                 data.deal_type = "转办";
                 $.ajax({
                     url: "eventReportWf/WkrjEventReportWf/zhuanbanEvent_back",
