@@ -9,11 +9,12 @@ $(function(){
 	manager = $("#messagelist_maingrid").ligerGrid({
 		url:'messageList/getMessageList',
         columns: [
-        { display: '编号', name: 'must_read_id', id: 'must_read_id', width: '20%', align: 'center' },
-        { display: '标题', name: 'must_read_title', id: 'must_read_title', width: '30%', align: 'center' },
+//        { display: '编号', name: 'must_read_id', id: 'must_read_id', width: '20%', align: 'center' },
+        { display: '标题', name: 'must_read_title', id: 'must_read_title', width: '20%', align: 'center' },
+        { display: '内容', name: 'case_content', id: 'case_content', width: '55%', align: 'center' },
         { display: '类型', name: 'event_type', id: 'event_type', width: '10%', align: 'center' },
         { display: '添加时间', name: 'addtime', id: 'addtime', width: '10%', align: 'center' },
-        { display: '附件', name: 'file_yname', id: 'file_yname', width: '10%', align: 'center',render:function(rowdata, rowindex, value){
+        { display: '附件', name: 'file_yname', id: 'file_yname', width: '5%', align: 'center',render:function(rowdata, rowindex, value){
             if(value!=null && value!=""){
                 return "有";
             }else{
@@ -48,7 +49,7 @@ $(function(){
 				text : '评论',
 				click : cr_comment,
 				icon : 'search',
-				id:'messageList/getCaseReadFile'
+				id:'messageList/commentCaseRead'
 			}]
 		}
     });

@@ -12,6 +12,10 @@ public interface WkrjUserService {
 	
 	public long getUserList(String deptId,String userName,boolean isGly,String user_dept);
 	
+	public List<WkrjUser> getPrincipleList(int offset, int page,String userName,String school_name,String counties);
+	public long countPrincipleList(String userName,String school_name,String counties);
+	
+	
 	public WkrjUser findUserInfoByName(String userName);
 	
 	public WkrjUser findUserInfoByName(String userName,String pw);

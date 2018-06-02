@@ -104,5 +104,30 @@ public interface WkrjUserDao {
 	 * @return
 	 */
 	public List<WkrjRole> getRoleTree(@Param("role_level")String role_level);
+	
+	/**
+	 * 获取检索校长用户列表
+	 * @param offset
+	 * @param page
+	 * @param userName
+	 * @param school_name
+	 * @param counties 县市区
+	 * @return
+	 */
+	public List<WkrjUser> getPrincipleList(@Param("offset")int offset, @Param("page")int page,
+			@Param("userName")String userName,@Param("school_name")String school_name,
+			@Param("counties")String counties);
+	
+	/**
+	 * 获取检索校长用户数量
+	 * @param userName
+	 * @param school_name
+	 * @param counties县市区
+	 * @return
+	 */
+	public long countPrincipleList(@Param("userName")String userName,
+			@Param("school_name")String school_name,@Param("counties")String counties);
+	
+	
 
 }

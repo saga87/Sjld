@@ -9,11 +9,10 @@
 <body style="overflow:hidden;">
 <div id="informExtract_layout" style="width:100%;">	
 	<div position="center">
-	<div style="height:110px; overflow:hidden;padding:5px 0">
+	<div style="height:90px; overflow:hidden;padding:5px 0">
 	<div style="margin-top:5px">&nbsp;&nbsp;编&nbsp;号：<input type="text" id="event_no" style="width:300px"/></div>
 	  <div style="margin-top:5px">&nbsp;&nbsp;标&nbsp;题：<input type="text" id="event_title" style="width:300px"/></div>
-	  <div style="margin-top:5px">&nbsp;&nbsp;内&nbsp;容：<input type="text" id="event_content" style="width:300px"/></div>
-      <div style="margin-top:5px">&nbsp;&nbsp;类&nbsp;别：<input type="text" id="business_type" style="width:300px"/>
+	  <div style="margin-top:5px">&nbsp;&nbsp;内&nbsp;容：<input type="text" id="event_content" style="width:300px">
       	<a href="javascript:void(0)"
                         iconCls="icon-search" plain="true"
                         style="text-decoration:none"

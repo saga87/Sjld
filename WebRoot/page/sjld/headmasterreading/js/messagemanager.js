@@ -12,9 +12,9 @@ $(function(){
         columns: [
         { display: '留言者', name: 'commenter', id: 'commenter', width: '8%', align: 'center' },
         { display: '学校', name: 'comment_school', id: 'comment_school', width: '10%', align: 'center' },
-        { display: '留言案例标题', name: 'must_read_title', id: 'must_read_title', width: '18%', align: 'center' },
+        { display: '留言案例标题', name: 'must_read_title', id: 'must_read_title', width: '17%', align: 'center' },
+        { display: '留言内容', name: 'comment_content', id: 'comment_content', width: '50%', align: 'center' },
         { display: '留言时间', name: 'comment_time', id: 'comment_time', width: '10%', align: 'center' },
-        { display: '留言内容', name: 'comment_content', id: 'comment_content', width: '48%', align: 'center' },
         { display: '点赞量', name: 'likenum', id: 'likenum', width: '5%', align: 'center' },
         ], height: '100%',
         width:'99.9%',

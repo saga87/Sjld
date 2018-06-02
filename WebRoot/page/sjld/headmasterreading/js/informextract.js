@@ -13,16 +13,15 @@ $(function(){
 	manager = $("#informExtract_maingrid").ligerGrid({
 		url:'informExtract/getFinishedEvent',
         columns: [
-        { display: '编号', name: 'event_no', id: 'event_no', width: '8%', align: 'center' },
-        { display: '标题', name: 'event_title', id: 'event_title', width: '16%', align: 'center' },
-        { display: '受理渠道', name: 'accept_source', id: 'accept_source', width: '8%', align: 'center' },
-        { display: '业务类型', name: 'business_type', id: 'business_type', width: '4%', align: 'center' },
+        { display: '编号', name: 'event_no', id: 'event_no', width: '10%', align: 'center' },
+        { display: '标题', name: 'event_title', id: 'event_title', width: '20%', align: 'center' },
+        { display: '受理渠道', name: 'source', id: 'source', width: '10%', align: 'center' },
+        { display: '业务类型', name: 'nature', id: 'nature', width: '5%', align: 'center' },
         { display: '受理时间', name: 'qianshou_time', id: 'qianshou_time', width: '10%', align: 'center' },
-        { display: '受理类别', name: 'content_type', id: 'content_type', width: '8%', align: 'center' },
-        { display: '受理单位', name: 'chengban_dept', id: 'chengban_dept', width: '5%', align: 'center' },
-        { display: '状态', name: 'event_status', id: 'event_status', width: '4%', align: 'center' },
-        { display: '满意度', name: 'satisfy_status', id: 'satisfy_status', width: '4%', align: 'center' },
-        { display: '提取',  width: '4%', align: 'center' },
+        { display: '受理类别', name: 'content_type', id: 'content_type', width: '10%', align: 'center' },
+        { display: '受理单位', name: 'chengban', id: 'chengban', width: '15%', align: 'center' },
+        { display: '状态', name: 'event_status', id: 'event_status', width: '10%', align: 'center' },
+        { display: '满意度', name: 'satisfy_status', id: 'satisfy_status', width: '10%', align: 'center' },
         ], height: '100%',
         width:'99.9%',
         usePager :true,
@@ -40,7 +39,8 @@ $(function(){
 				text : '提取案例',
 				click : extract_case,
 				icon : 'add',
-				id:'messageList/extractCaseRead'
+				id:'informExtract/uploadCase'
+			
 			}]
 		}
     });
@@ -169,11 +169,13 @@ function messages() {
 	var g = $("#informExtract_maingrid").ligerGetGridManager();
 	var event_no = $('#event_no').val();
 	var event_title = $('#event_title').val();
-	var business_type = $('#business_type').val();
+//	var business_type = $('#business_type').val();
 	var event_content = $('#event_content').val();
 	g.set({url:'informExtract/getFinishedEvent?event_no='+event_no
 		+'&event_title='+event_title
-		+'&event_content='+event_content+'&business_type='+business_type});    
+		+'&event_content='+event_content
+//		+'&business_type='+business_type
+		});    
 	g.reload();
 }
 

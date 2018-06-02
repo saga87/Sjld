@@ -366,6 +366,11 @@ function editUser(){
 		$.ligerDialog.alert('请选择一条记录进行修改!');
 		return;
 	}
+	
+	if (r.user_role !=null && r.user_role.length>0 && r.user_role[0].role_name =='校长')	{
+		$.ligerDialog.alert('校长用户 请到校长管理修改信息!');
+		return;
+	}
 
 	var s = parent.$.ligerDialog.open({
 		url : "system/user/user_update.jsp",

@@ -86,6 +86,50 @@ public class WkrjUserController {
 		return UtilsHelper.returnMap(list,count);
 	}
 	
+	@RequestMapping("getPrincipleList")
+	@ResponseBody
+	public Object getPrincipleList(HttpServletRequest request){
+		int page=Integer.parseInt(request.getParameter("page"));
+		String userName = request.getParameter("userName");
+		int pagesize=Integer.parseInt(request.getParameter("pagesize"));
+		
+		String counties = request.getParameter("counties");
+		String school_name = request.getParameter("school_name");
+		
+		int offset = (page-1)*pagesize;
+		
+		WkrjUser sessionUser = (WkrjUser) request.getSession().getAttribute("user");
+		WkrjUserDev userDev = (WkrjUserDev) request.getSession().getAttribute("userDev");
+		boolean isGly = false;
+		//String user_id = "";
+		String user_dept = "";
+		String roleIds = request.getSession().getAttribute("userRoleId")+"";
+		String[] role_ids = roleIds.split(",");
+		for (int i = 0; i < role_ids.length; i++) {
+			//如果是系统管理员
+			if ("2".equals(role_ids[i])) {
+				isGly = true;
+				break;
+			}
+		}
+		if (sessionUser != null) {
+			//user_id = sessionUser.getUser_id();
+			user_dept = sessionUser.getDept_id();
+		} else if (userDev != null) {
+			//user_id = userDev.getUser_id();
+			user_dept = userDev.getDept_id();
+		}
+		 
+		
+		List<WkrjUser> list = this.userService.getPrincipleList(offset, pagesize, userName, school_name, counties);
+		long count = this.userService.countPrincipleList(userName, school_name, counties);
+		
+		return UtilsHelper.returnMap(list,count);
+	}
+	
+	
+	
+	
 	
 	
 	@RequestMapping("getRoleTree")
