@@ -1,0 +1,533 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.wkrj.eventReportWf.dao.WkrjEventWfDao">
+    
+    <select id="getEventReportWfList" resultType="hashmap">
+        
+        SELECT n.*,
+        (select typename from wkrj_sys_data_dictionary where id=n.accept_source) source,(select typename from wkrj_sys_data_dictionary where id=n.content_type) type,
+        (select user_realname from wkrj_sys_user where user_id=n.input_user) user_realname,DATEDIFF(NOW(),DATE_SUB(input_time,INTERVAL -deal_days DAY)) remain_days,
+        DATE_FORMAT(DATE_SUB(input_time,INTERVAL -deal_days DAY),'%Y-%m-%d %H:%i:%s') daoqi_time,
+        round((UNIX_TIMESTAMP(NOW())-UNIX_TIMESTAMP(DATE_SUB(input_time,INTERVAL -deal_days DAY)))/3600) remain_hours,
+        (select dept_name from wkrj_sys_department where dept_id=n.chengban_dept) dept_name,(select typename from wkrj_sys_data_dictionary where id=n.business_type) nature,
+        DATE_FORMAT((select opt_time from wkrj_procedurerecord where event_id=n.event_id and opt_type=1 order by opt_time desc limit 1),'%Y-%m-%d %H:%i:%s') reply_time,
+        (select opt_content from wkrj_procedurerecord where event_id=n.event_id and opt_type=1 order by opt_time desc limit 1) reply_content,
+        (select opt_content from wkrj_procedurerecord where event_id=n.event_id and opt_type=2 order by input_time desc limit 1) delay_reason,
+        DATE_FORMAT((select input_time from wkrj_procedurerecord where event_id=n.event_id and opt_type=2 order by opt_time desc limit 1),'%Y-%m-%d %H:%i:%s') delay_time,
+        DATE_FORMAT(n.input_time,'%Y-%m-%d %H:%i:%s') event_inputtime,DATE_FORMAT(n.qianshou_time,'%Y-%m-%d %H:%i:%s') qianshoutime
+        FROM `wkrj_reportevent_wf` n
+        where 1=1
+        <if test="null!=user_id and ''!=user_id">
+            and n.input_user = #{user_id}
+        </if>
+        <if test="isGly==false">
+            <if test="null!=user_dept and ''!=user_dept">
+                and n.chengban_dept = #{user_dept}
+            </if>
+        </if>
+        <if test="null!=event_status and ''!=event_status">
+            and n.event_status like concat("%", #{event_status},"%")
+            <if test="'完成'==event_status">
+                and n.event_status != '未完成'
+            </if>
+        </if>
+        <if test="null!=qianshou_status and ''!=qianshou_status">
+            and n.qianshou_status = #{qianshou_status}
+        </if>
+        <if test="null!=cuiban_status and ''!=cuiban_status">
+            and n.cuiban_status = #{cuiban_status}
+        </if>
+        <if test="null!=event_no and ''!=event_no">
+            and n.event_no like concat("%", #{event_no},"%")
+        </if>
+        <if test="null!=event_content and ''!=event_content">
+            and n.event_content like concat("%", #{event_content},"%")
+        </if>
+        <if test="null!=dateF and ''!=dateF">
+            and n.event_no like concat("%", #{dateF},"%")
+        </if>
+        <if test="null!=shenhe_status and ''!=shenhe_status">
+            and n.shenhe_status = #{shenhe_status}
+        </if>
+        <if test="null!=caller_username and ''!=caller_username">
+            and n.caller_username like concat("%", #{caller_username},"%")
+        </if>
+        <if test="null!=caller_tel and ''!=caller_tel">
+            and n.caller_tel like concat("%", #{caller_tel},"%") 
+        </if>
+        <choose>
+            <when test="1==qianshou_status">
+                order by daoqi_time asc
+            </when>
+            <when test="2==qianshou_status">
+                order by opt_time desc
+            </when>
+            <otherwise>
+                order by event_inputtime desc
+            </otherwise>
+        </choose>
+         limit #{offset},#{page}
+         
+    </select>
+
+    <select id="getEventReportWfListCount" resultType="Long" parameterType="Object">
+        
+        SELECT count(1) 
+        FROM `wkrj_reportevent_wf` n
+        where 1=1
+        <if test="null!=user_id and ''!=user_id">
+            and n.input_user = #{user_id}
+        </if>
+        <if test="isGly==false">
+            <if test="null!=user_dept and ''!=user_dept">
+                and n.chengban_dept = #{user_dept}
+            </if>
+        </if>
+        <if test="null!=event_status and ''!=event_status">
+            and n.event_status like concat("%", #{event_status},"%")
+            <if test="'完成'==event_status">
+                and n.event_status != '未完成'
+            </if>
+        </if>
+        <if test="null!=qianshou_status and ''!=qianshou_status">
+            and n.qianshou_status = #{qianshou_status}
+        </if>
+        <if test="null!=cuiban_status and ''!=cuiban_status">
+            and n.cuiban_status = #{cuiban_status}
+        </if>
+        <if test="null!=event_no and ''!=event_no">
+            and n.event_no like concat("%", #{event_no},"%")
+        </if>
+        <if test="null!=event_content and ''!=event_content">
+            and n.event_content like concat("%", #{event_content},"%")
+        </if>
+        <if test="null!=dateF and ''!=dateF">
+            and n.event_no like concat("%", #{dateF},"%")
+        </if>
+        <if test="null!=shenhe_status and ''!=shenhe_status">
+            and n.shenhe_status = #{shenhe_status}
+        </if>
+        <if test="null!=caller_username and ''!=caller_username">
+            and n.caller_username like concat("%", #{caller_username},"%")
+        </if>
+        <if test="null!=caller_tel and ''!=caller_tel">
+            and n.caller_tel like concat("%", #{caller_tel},"%") 
+        </if>
+
+    </select>
+    
+    <select id="getAllEventWfList" resultType="hashmap">
+        
+        SELECT n.*,
+        (select typename from wkrj_sys_data_dictionary where id=n.accept_source) source,(select typename from wkrj_sys_data_dictionary where id=n.content_type) type,
+        (select user_realname from wkrj_sys_user where user_id=n.input_user) user_realname,DATEDIFF(NOW(),DATE_SUB(input_time,INTERVAL -deal_days DAY)) remain_days,
+        DATE_FORMAT(DATE_SUB(input_time,INTERVAL -deal_days DAY),'%Y-%m-%d %H:%i:%s') daoqi_time,
+        round((UNIX_TIMESTAMP(NOW())-UNIX_TIMESTAMP(DATE_SUB(input_time,INTERVAL -deal_days DAY)))/3600) remain_hours,
+        (select dept_name from wkrj_sys_department where dept_id=n.chengban_dept) dept_name,(select typename from wkrj_sys_data_dictionary where id=n.business_type) nature,
+        DATE_FORMAT((select opt_time from wkrj_procedurerecord where event_id=n.event_id and opt_type=1 order by opt_time desc limit 1),'%Y-%m-%d %H:%i:%s') reply_time,
+        (select opt_content from wkrj_procedurerecord where event_id=n.event_id and opt_type=1 order by opt_time desc limit 1) reply_content,
+        (select opt_content from wkrj_procedurerecord where event_id=n.event_id and opt_type=2 order by input_time desc limit 1) delay_reason,
+        DATE_FORMAT((select input_time from wkrj_procedurerecord where event_id=n.event_id and opt_type=2 order by opt_time desc limit 1),'%Y-%m-%d %H:%i:%s') delay_time,
+        DATE_FORMAT(n.input_time,'%Y-%m-%d %H:%i:%s') event_inputtime,DATE_FORMAT(n.qianshou_time,'%Y-%m-%d %H:%i:%s') qianshoutime
+        FROM `wkrj_reportevent_wf` n
+        order by event_inputtime desc
+         
+    </select>
+    
+    <select id="getEventWfCntByNo" resultType="Long" parameterType="Object">
+        
+        SELECT count(1) 
+        FROM `wkrj_reportevent_wf` n
+        where n.event_no like concat("%", #{event_no},"%")
+
+    </select>
+    
+    <select id="getEventInfoById" resultType="WkrjEventWf">
+        
+        SELECT n.*,
+        (select typename from wkrj_sys_data_dictionary where id=n.accept_source) source,(select typename from wkrj_sys_data_dictionary where id=n.content_type) type,
+        (select user_realname from wkrj_sys_user where user_id=n.input_user) user_realname,DATEDIFF(NOW(),DATE_SUB(input_time,INTERVAL -deal_days DAY)) remain_days,
+        DATE_FORMAT(DATE_SUB(input_time,INTERVAL -deal_days DAY),'%Y-%m-%d %H:%i:%s') daoqi_time,
+        round((UNIX_TIMESTAMP(NOW())-UNIX_TIMESTAMP(DATE_SUB(input_time,INTERVAL -deal_days DAY)))/3600) remain_hours,
+        (select dept_name from wkrj_sys_department where dept_id=n.chengban_dept) dept_name,(select typename from wkrj_sys_data_dictionary where id=n.business_type) nature,
+        DATE_FORMAT((select opt_time from wkrj_procedurerecord where event_id=n.event_id and opt_type=1 order by opt_time desc limit 1),'%Y-%m-%d %H:%i:%s') reply_time,
+        (select opt_content from wkrj_procedurerecord where event_id=n.event_id and opt_type=1 order by opt_time desc limit 1) reply_content,
+        (select opt_content from wkrj_procedurerecord where event_id=n.event_id and opt_type=2 order by input_time desc limit 1) delay_reason,
+        DATE_FORMAT((select input_time from wkrj_procedurerecord where event_id=n.event_id and opt_type=2 order by opt_time desc limit 1),'%Y-%m-%d %H:%i:%s') delay_time,
+        DATE_FORMAT(n.input_time,'%Y-%m-%d %H:%i:%s') event_inputtime,DATE_FORMAT(n.qianshou_time,'%Y-%m-%d %H:%i:%s') qianshoutime
+        FROM `wkrj_reportevent_wf` n
+        where n.event_id=#{event_id}
+         
+    </select>
+    
+    <select id="searchEventWfList" resultType="hashmap">
+        
+        SELECT n.*,
+        (select typename from wkrj_sys_data_dictionary where id=n.accept_source) source,(select typename from wkrj_sys_data_dictionary where id=n.content_type) type,
+        (select user_realname from wkrj_sys_user where user_id=n.input_user) user_realname,DATEDIFF(NOW(),DATE_SUB(input_time,INTERVAL -deal_days DAY)) remain_days,
+        DATE_FORMAT(DATE_SUB(input_time,INTERVAL -deal_days DAY),'%Y-%m-%d %H:%i:%s') daoqi_time,
+        round((UNIX_TIMESTAMP(NOW())-UNIX_TIMESTAMP(DATE_SUB(input_time,INTERVAL -deal_days DAY)))/3600) remain_hours,
+        (select dept_name from wkrj_sys_department where dept_id=n.chengban_dept) dept_name,(select typename from wkrj_sys_data_dictionary where id=n.business_type) nature,
+        DATE_FORMAT((select opt_time from wkrj_procedurerecord where event_id=n.event_id and opt_type=1 order by opt_time desc limit 1),'%Y-%m-%d %H:%i:%s') reply_time,
+        (select opt_content from wkrj_procedurerecord where event_id=n.event_id and opt_type=1 order by opt_time desc limit 1) reply_content,
+        (select opt_content from wkrj_procedurerecord where event_id=n.event_id and opt_type=2 order by input_time desc limit 1) delay_reason,
+        DATE_FORMAT((select input_time from wkrj_procedurerecord where event_id=n.event_id and opt_type=2 order by opt_time desc limit 1),'%Y-%m-%d %H:%i:%s') delay_time,
+        DATE_FORMAT(n.input_time,'%Y-%m-%d %H:%i:%s') event_inputtime,DATE_FORMAT(n.qianshou_time,'%Y-%m-%d %H:%i:%s') qianshoutime
+        FROM `wkrj_reportevent_wf` n
+        where 1=1
+        <if test="null!=event_status and ''!=event_status">
+            and n.event_status like concat("%", #{event_status},"%")
+            <if test="'完成'==event_status">
+                and n.event_status != '未完成'
+            </if>
+        </if>
+        <if test="null!=qianshou_status and ''!=qianshou_status">
+            and n.qianshou_status = #{qianshou_status}
+        </if>
+        <if test="null!=business_type and ''!=business_type">
+            and n.business_type = #{business_type}
+        </if>
+        <if test="null!=content_type and ''!=content_type">
+            and n.content_type like concat("%", #{content_type},"%")
+        </if>
+        <if test="null!=event_no and ''!=event_no">
+            and n.event_no like concat("%", #{event_no},"%")
+        </if>
+        <if test="null!=start_date and ''!=start_date">
+            and n.input_time > #{start_date} 
+        </if>
+        <if test="null!=end_date and ''!=end_date">
+            and n.input_time &lt; #{end_date}
+        </if>
+        <if test="null!=event_content and ''!=event_content">
+            and n.event_content like concat("%", #{event_content},"%")
+        </if>
+        <if test="null!=caller_tel and ''!=caller_tel">
+            and n.caller_tel like concat("%", #{caller_tel},"%")
+        </if>
+        order by event_inputtime desc
+         limit #{offset},#{page}
+         
+    </select>
+
+    <select id="searchEventWfListCount" resultType="Long" parameterType="Object">
+        
+        SELECT count(1) 
+        FROM `wkrj_reportevent_wf` n
+        where 1=1
+        <if test="null!=event_status and ''!=event_status">
+            and n.event_status like concat("%", #{event_status},"%")
+            <if test="'完成'==event_status">
+                and n.event_status != '未完成'
+            </if>
+        </if>
+        <if test="null!=qianshou_status and ''!=qianshou_status">
+            and n.qianshou_status = #{qianshou_status}
+        </if>
+        <if test="null!=business_type and ''!=business_type">
+            and n.business_type = #{business_type}
+        </if>
+        <if test="null!=content_type and ''!=content_type">
+            and n.content_type like concat("%", #{content_type},"%")
+        </if>
+        <if test="null!=event_no and ''!=event_no">
+            and n.event_no like concat("%", #{event_no},"%")
+        </if>
+        <if test="null!=start_date and ''!=start_date">
+            and n.input_time > #{start_date} 
+        </if>
+        <if test="null!=end_date and ''!=end_date">
+            and n.input_time &lt; #{end_date}
+        </if>
+        <if test="null!=event_content and ''!=event_content">
+            and n.event_content like concat("%", #{event_content},"%")
+        </if>
+        <if test="null!=caller_tel and ''!=caller_tel">
+            and n.caller_tel like concat("%", #{caller_tel},"%")
+        </if>
+
+    </select>
+    
+    <select id="getFinishedEventWfList" resultType="hashmap">
+        
+        SELECT n.*,(select typename from wkrj_sys_data_dictionary where id=n.deal_level) level,(select typename from wkrj_sys_data_dictionary where id=n.address1) jiedao,
+        (select typename from wkrj_sys_data_dictionary where id=n.accept_source) source,(select typename from wkrj_sys_data_dictionary where id=n.content_type) type,
+        (select user_realname from wkrj_sys_user where user_id=n.input_user) user_realname,DATEDIFF(NOW(),DATE_SUB(input_time,INTERVAL -deal_days DAY)) remain_days,
+        DATE_FORMAT(DATE_SUB(input_time,INTERVAL -deal_days DAY),'%Y-%m-%d %H:%i:%s') daoqi_time,
+        round((UNIX_TIMESTAMP(NOW())-UNIX_TIMESTAMP(DATE_SUB(input_time,INTERVAL -deal_days DAY)))/3600) remain_hours,
+        (select dept_name from wkrj_sys_department where dept_id=n.chengban_dept) dept_name,(select typename from wkrj_sys_data_dictionary where id=n.business_type) nature,
+        DATE_FORMAT((select opt_time from wkrj_procedurerecord where event_id=n.event_id order by opt_time desc limit 1),'%Y-%m-%d %H:%i:%s') opt_time,
+        (select leader_pishi from wkrj_procedurerecord where event_id=n.event_id order by opt_time desc limit 1) leader_pishi,
+        (select opt_content from wkrj_procedurerecord where event_id=n.event_id order by opt_time desc limit 1) opt_content,
+        (select delay_reason from wkrj_procedurerecord where event_id=n.event_id order by input_time desc limit 1) delay_reason,
+        DATE_FORMAT(n.opt_time,'%Y-%m-%d %H:%i:%s') opttime,IF((select count(1) from wkrj_eventjianfen_wf where event_id=n.event_id)>0,1,0) AS is_jianfen,
+        DATE_FORMAT(n.huifang_time,'%Y-%m-%d %H:%i:%s') huifangtime,DATE_FORMAT(n.cbd_time,'%Y-%m-%d %H:%i:%s') cbdtime,
+        DATE_FORMAT(n.input_time,'%Y-%m-%d %H:%i:%s') event_inputtime,DATE_FORMAT(n.qianshou_time,'%Y-%m-%d %H:%i:%s') qianshoutime
+        FROM `wkrj_reportevent_wf` n
+        where 1=1 and (n.event_status = '回访完成' or (n.event_status = '完成' and n.caller_username = '隐藏')) 
+        <if test="null!=satisfy_status_dept and ''!=satisfy_status_dept">
+            and n.satisfy_status_dept = #{satisfy_status_dept}
+        </if>
+        <if test="null!=chengban_dept and ''!=chengban_dept">
+            and n.chengban_dept like concat("%", #{chengban_dept},"%")
+        </if>
+        <if test="null!=event_no and ''!=event_no">
+            and n.event_no like concat("%", #{event_no},"%")
+        </if>
+        <if test="null!=event_content and ''!=event_content">
+            and n.event_content like concat("%", #{event_content},"%")
+        </if>
+        <if test="null!=start_date and ''!=start_date">
+            and n.input_time > #{start_date} 
+        </if>
+        <if test="null!=end_date and ''!=end_date">
+            and n.input_time &lt; #{end_date}
+        </if>
+        order by event_inputtime desc
+         limit #{offset},#{page}
+         
+    </select>
+
+    <select id="getFinishedEventWfListCount" resultType="Long" parameterType="Object">
+        
+        SELECT count(1) 
+        FROM `wkrj_reportevent_wf` n
+        where 1=1 and (n.event_status = '回访完成' or (n.event_status = '完成' and n.caller_username = '隐藏')) 
+        <if test="null!=satisfy_status_dept and ''!=satisfy_status_dept">
+            and n.satisfy_status_dept = #{satisfy_status_dept}
+        </if>
+        <if test="null!=chengban_dept and ''!=chengban_dept">
+            and n.chengban_dept like concat("%", #{chengban_dept},"%")
+        </if>
+        <if test="null!=event_no and ''!=event_no">
+            and n.event_no like concat("%", #{event_no},"%")
+        </if>
+        <if test="null!=event_content and ''!=event_content">
+            and n.event_content like concat("%", #{event_content},"%")
+        </if>
+        <if test="null!=start_date and ''!=start_date">
+            and n.input_time > #{start_date} 
+        </if>
+        <if test="null!=end_date and ''!=end_date">
+            and n.input_time &lt; #{end_date}
+        </if>
+
+    </select>
+    
+    <select id="getDelayedEventWfList" resultType="hashmap">
+        
+        SELECT n.*,d.*,(select typename from wkrj_sys_data_dictionary where id=n.content_type) type,(select typename from wkrj_sys_data_dictionary where id=n.business_type) nature,
+        (select dept_name from wkrj_sys_department where dept_id=n.chengban_dept) dept_name,DATE_FORMAT(n.cbd_time,'%Y-%m-%d %H:%i:%s') cbdtime,
+        DATE_FORMAT(n.input_time,'%Y-%m-%d %H:%i:%s') event_inputtime,DATE_FORMAT(d.input_time,'%Y-%m-%d %H:%i:%s') delay_time
+        FROM `wkrj_reportevent_wf` n right join wkrj_procedurerecord d on n.event_id=d.event_id
+        where 1=1 and n.event_status='延时'
+        <if test="null!=user_id and ''!=user_id">
+            and n.input_user = #{user_id}
+        </if>
+        order by d.input_time desc
+         limit #{offset},#{page}
+         
+    </select>
+
+    <select id="getDelayedEventWfListCount" resultType="Long" parameterType="Object">
+        
+        SELECT count(1) 
+        FROM `wkrj_reportevent_wf` n right join wkrj_procedurerecord d on n.event_id=d.event_id
+        where 1=1 and n.event_status='延时'
+        <if test="null!=user_id and ''!=user_id">
+            and n.input_user = #{user_id}
+        </if>
+
+    </select>
+    
+    <select id="getDelayedEventWfList_S" resultType="hashmap">
+        
+        SELECT n.*,d.*,(select typename from wkrj_sys_data_dictionary where id=n.content_type) type,(select typename from wkrj_sys_data_dictionary where id=n.business_type) nature,
+        (select dept_name from wkrj_sys_department where dept_id=n.chengban_dept) dept_name,
+        DATE_FORMAT(n.input_time,'%Y-%m-%d %H:%i:%s') event_inputtime,DATE_FORMAT(d.input_time,'%Y-%m-%d %H:%i:%s') delay_time
+        FROM `wkrj_reportevent_wf` n right join wkrj_procedurerecord d on n.event_id=d.event_id
+        where 1=1
+        <if test="null!=business_type and ''!=business_type">
+            and n.business_type = #{business_type}
+        </if>
+        <if test="null!=content_type and ''!=content_type">
+            and n.content_type like concat("%", #{content_type},"%")
+        </if>
+        <if test="null!=event_no and ''!=event_no">
+            and n.event_no like concat("%", #{event_no},"%")
+        </if>
+        <if test="null!=start_date and ''!=start_date">
+            and n.input_time > #{start_date} 
+        </if>
+        <if test="null!=end_date and ''!=end_date">
+            and n.input_time &lt; #{end_date}
+        </if>
+        <if test="null!=caller_tel and ''!=caller_tel">
+            and n.caller_tel like concat("%", #{caller_tel},"%")
+        </if>
+        order by event_inputtime desc
+         limit #{offset},#{page}
+         
+    </select>
+
+    <select id="getDelayedEventWfListCount_S" resultType="Long" parameterType="Object">
+        
+        SELECT count(1) 
+        FROM `wkrj_reportevent_wf` n right join wkrj_procedurerecord d on n.event_id=d.event_id
+        where 1=1
+        <if test="null!=business_type and ''!=business_type">
+            and n.business_type = #{business_type}
+        </if>
+        <if test="null!=content_type and ''!=content_type">
+            and n.content_type like concat("%", #{content_type},"%")
+        </if>
+        <if test="null!=event_no and ''!=event_no">
+            and n.event_no like concat("%", #{event_no},"%")
+        </if>
+        <if test="null!=start_date and ''!=start_date">
+            and n.input_time > #{start_date} 
+        </if>
+        <if test="null!=end_date and ''!=end_date">
+            and n.input_time &lt; #{end_date}
+        </if>
+        <if test="null!=caller_tel and ''!=caller_tel">
+            and n.caller_tel like concat("%", #{caller_tel},"%")
+        </if>
+
+    </select>
+    
+    <select id="getReplyInfoWfList" resultType="hashmap">
+        
+        SELECT n.*,(select user_realname from wkrj_sys_user where user_id=n.opt_user) user_realname,r.event_no,
+        DATE_FORMAT(n.opt_time,'%Y-%m-%d %H:%i:%s') opttime
+        FROM `wkrj_procedurerecord` n left join wkrj_reportevent_wf r on n.event_id=r.event_id
+        where 1=1 and n.event_id=#{event_id}
+        order by opt_time desc
+         limit #{offset},#{page}
+         
+    </select>
+
+    <select id="getReplyInfoWfListCount" resultType="Long" parameterType="Object">
+        
+        SELECT count(1) 
+        FROM `wkrj_procedurerecord` n 
+        where 1=1 and n.event_id=#{event_id}
+
+    </select>
+    
+    <select id="getReplyFileInfoWf" resultType="hashmap">
+        
+        SELECT d.*,o.* FROM wkrj_reportevent_wf e right JOIN wkrj_procedurerecord d ON e.event_id=d.event_id right JOIN wkrj_opinionfile_wf o ON d.opinionID=o.opinionID
+         WHERE d.event_id=#{event_id}
+         
+    </select>
+
+    <insert id="addEventWf" parameterType="WkrjEventWf" >
+        
+        insert wkrj_reportevent_wf(event_no,event_title,event_content,deal_days,business_type,input_time,
+        input_user,accept_source,content_type,event_other,chengban_dept,event_status)
+        values(#{event_no},#{event_title},#{event_content},#{deal_days},#{business_type},#{input_time},
+        #{input_user},#{accept_source},#{content_type},#{event_other},#{chengban_dept},#{event_status});
+    
+    </insert>
+    
+    <insert id="delayEventWf" parameterType="WkrjProcedureRecord" >
+        
+        insert wkrj_procedurerecord(event_id,event_no,pr_id,opt_content,opt_type,input_user,input_time)
+        values(#{event_id},#{event_no},#{pr_id},#{opt_content},#{opt_type},#{input_user},#{input_time});
+    
+    </insert>
+    
+    <insert id="replyEventWf" parameterType="WkrjProcedureRecord" >
+        
+        insert wkrj_procedurerecord(event_id,event_no,pr_id,opt_content,opt_user,opt_time,opt_type)
+        values(#{event_id},#{event_no},#{pr_id},#{opt_content},#{opt_user},#{opt_time},#{opt_type});
+    
+    </insert>
+    
+    <!-- <insert id="addDeptOpinionFileWf" parameterType="WkrjDeptOpinionFileWf" >
+        
+        insert wkrj_opinionfile_wf(file_id,opinionID,file_yname,file_xname,file_inputtime,file_inputuser)
+        values(#{file_id},#{opinionID},#{file_yname},#{file_xname},#{file_inputtime},#{file_inputuser});
+    
+    </insert> -->
+    
+    <update id="signEventWf" parameterType="WkrjEventWf" >
+        
+        update wkrj_reportevent_wf set qianshou_time=#{qianshou_time},qianshou_status=#{qianshou_status},accept_dept=#{accept_dept}
+        where event_id=#{event_id}
+    
+    </update>
+    
+    <update id="setRepliedStatus" parameterType="WkrjEventWf" >
+        
+        update wkrj_reportevent_wf set qianshou_status=#{qianshou_status}
+        where event_id=#{event_id}
+    
+    </update>
+    
+    <update id="setDubanStatusWf" parameterType="WkrjEventWf" >
+        
+        update wkrj_reportevent_wf set duban_status=#{duban_status},duban_opinion=#{duban_opinion},duban_time=#{duban_time},duban_systime=#{duban_systime}
+        where event_id=#{event_id}
+    
+    </update>
+    
+    <update id="cuibanEvent" parameterType="WkrjEventWf" >
+        
+        update wkrj_reportevent_wf set cuiban_status=#{cuiban_status} where event_id=#{event_id}
+    
+    </update>
+    
+    <update id="updateEventStatus" parameterType="WkrjEventWf" >
+        
+        update wkrj_reportevent_wf set event_status=#{event_status} where event_id=#{event_id}
+    
+    </update>
+    
+    <update id="updateShenheStatus" parameterType="WkrjEventWf" >
+        
+        update wkrj_reportevent_wf set shenhe_status=#{shenhe_status} where event_id=#{event_id}
+    
+    </update>
+    
+    <update id="updateZhuanban" parameterType="WkrjEventWf" >
+        
+        update wkrj_reportevent_wf set zhuanbanornot=#{zhuanbanornot} where event_id=#{event_id}
+    
+    </update>
+    
+    <update id="updateSatisfyDu" parameterType="WkrjEventWf" >
+        
+        update wkrj_reportevent_wf set satisfy_status_dept=#{satisfy_status_dept} where event_no=#{event_no}
+    
+    </update>
+    
+    <update id="updateEventWf" parameterType="WkrjEventWf">
+        
+        update wkrj_reportevent_wf set event_title=#{event_title},event_content=#{event_content},event_other=#{event_other}
+        where event_id=#{event_id}
+        
+    </update>
+    
+    <delete id="delEventWf">
+        
+        delete from wkrj_reportevent_wf where event_id=#{event_id}
+        
+    </delete>
+    
+    <select id="isSignOrNot" resultType="boolean">
+        SELECT count(event_id) FROM wkrj_reportevent_wf where event_id=#{event_id} and accept_dept=#{accept_dept}
+    </select>
+    
+    <select id="getUserList" resultType="WkrjUser" parameterType="String">
+        
+        SELECT user_id,user_name,user_realname 
+        FROM `wkrj_sys_user` 
+    
+    </select>
+    
+</mapper>
+

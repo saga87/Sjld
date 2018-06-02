@@ -15,6 +15,13 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFFont;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.hssf.util.HSSFColor;
+import org.apache.poi.xssf.usermodel.XSSFCellStyle;
+import org.apache.poi.xssf.usermodel.XSSFFont;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
@@ -148,5 +155,212 @@ public class FileUtils {
 			e.printStackTrace();
 		}  
     }  
+	
+	    /*
+	     * 列头单元格样式 (2003excel)
+	     */
+	    public static HSSFCellStyle getColumnTopStyle(HSSFWorkbook workbook) {
+
+	        // 设置字体
+	        HSSFFont font = workbook.createFont();
+	        // 设置字体大小
+	        font.setFontHeightInPoints((short) 11);
+	        // 字体加粗
+	        font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+	        // 设置字体名字
+	        font.setFontName("Courier New");
+	        // 设置样式;
+	        HSSFCellStyle style = workbook.createCellStyle();
+	        // 设置底边框;
+	        style.setBorderBottom(HSSFCellStyle.BORDER_THIN);
+	        // 设置底边框颜色;
+	        style.setBottomBorderColor(HSSFColor.BLACK.index);
+	        // 设置左边框;
+	        style.setBorderLeft(HSSFCellStyle.BORDER_THIN);
+	        // 设置左边框颜色;
+	        style.setLeftBorderColor(HSSFColor.BLACK.index);
+	        // 设置右边框;
+	        style.setBorderRight(HSSFCellStyle.BORDER_THIN);
+	        // 设置右边框颜色;
+	        style.setRightBorderColor(HSSFColor.BLACK.index);
+	        // 设置顶边框;
+	        style.setBorderTop(HSSFCellStyle.BORDER_THIN);
+	        // 设置顶边框颜色;
+	        style.setTopBorderColor(HSSFColor.BLACK.index);
+	        // 在样式用应用设置的字体;
+	        style.setFont(font);
+	        // 设置自动换行;
+	        style.setWrapText(false);
+	        // 设置水平对齐的样式为居中对齐;
+	        style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+	        // 设置垂直对齐的样式为居中对齐;
+	        style.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+
+	        return style;
+
+	    }
+
+	    /*
+	     * 列数据信息单元格样式 (2003excel)
+	     */
+	    public static HSSFCellStyle getStyle(HSSFWorkbook workbook) {
+	        // 设置字体
+	        HSSFFont font = workbook.createFont();
+	        // 设置字体大小
+	        // font.setFontHeightInPoints((short)10);
+	        // 字体加粗
+	        // font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+	        // 设置字体名字
+	        font.setFontName("Courier New");
+	        // 设置样式;
+	        HSSFCellStyle style = workbook.createCellStyle();
+	        // 设置底边框;
+	        style.setBorderBottom(HSSFCellStyle.BORDER_THIN);
+	        // 设置底边框颜色;
+	        style.setBottomBorderColor(HSSFColor.BLACK.index);
+	        // 设置左边框;
+	        style.setBorderLeft(HSSFCellStyle.BORDER_THIN);
+	        // 设置左边框颜色;
+	        style.setLeftBorderColor(HSSFColor.BLACK.index);
+	        // 设置右边框;
+	        style.setBorderRight(HSSFCellStyle.BORDER_THIN);
+	        // 设置右边框颜色;
+	        style.setRightBorderColor(HSSFColor.BLACK.index);
+	        // 设置顶边框;
+	        style.setBorderTop(HSSFCellStyle.BORDER_THIN);
+	        // 设置顶边框颜色;
+	        style.setTopBorderColor(HSSFColor.BLACK.index);
+	        // 在样式用应用设置的字体;
+	        style.setFont(font);
+	        // 设置自动换行;
+	        style.setWrapText(true);
+	        // 设置水平对齐的样式为居中对齐;
+	        // style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+	        // 设置垂直对齐的样式为居中对齐;
+	        style.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+
+	        return style;
+
+	    }
+
+	    /*
+	     * 列头单元格样式 (2007excel)
+	     */
+	    public static XSSFCellStyle getColumnTopStyle(XSSFWorkbook workbook) {
+
+	        // 设置字体
+	        XSSFFont font = workbook.createFont();
+	        // 设置字体大小
+	        font.setFontHeightInPoints((short) 11);
+	        // 字体加粗
+	        font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+	        // 设置字体名字
+	        font.setFontName("Courier New");
+	        // 设置样式;
+	        XSSFCellStyle style = workbook.createCellStyle();
+	        // 设置底边框;
+	        style.setBorderBottom(HSSFCellStyle.BORDER_THIN);
+	        // 设置底边框颜色;
+	        style.setBottomBorderColor(HSSFColor.BLACK.index);
+	        // 设置左边框;
+	        style.setBorderLeft(HSSFCellStyle.BORDER_THIN);
+	        // 设置左边框颜色;
+	        style.setLeftBorderColor(HSSFColor.BLACK.index);
+	        // 设置右边框;
+	        style.setBorderRight(HSSFCellStyle.BORDER_THIN);
+	        // 设置右边框颜色;
+	        style.setRightBorderColor(HSSFColor.BLACK.index);
+	        // 设置顶边框;
+	        style.setBorderTop(HSSFCellStyle.BORDER_THIN);
+	        // 设置顶边框颜色;
+	        style.setTopBorderColor(HSSFColor.BLACK.index);
+	        // 在样式用应用设置的字体;
+	        style.setFont(font);
+	        // 设置自动换行;
+	        style.setWrapText(false);
+	        // 设置水平对齐的样式为居中对齐;
+	        style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+	        // 设置垂直对齐的样式为居中对齐;
+	        style.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+
+	        return style;
+
+	    }
+
+	    /*
+	     * 列数据信息单元格样式 (2007excel)
+	     */
+	    public static XSSFCellStyle getStyle(XSSFWorkbook workbook) {
+	        // 设置字体
+	        XSSFFont font = workbook.createFont();
+	        // 设置字体大小
+	        // font.setFontHeightInPoints((short)10);
+	        // 字体加粗
+	        // font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+	        // 设置字体名字
+	        font.setFontName("Courier New");
+	        // 设置样式;
+	        XSSFCellStyle style = workbook.createCellStyle();
+	        // 设置底边框;
+	        style.setBorderBottom(HSSFCellStyle.BORDER_THIN);
+	        // 设置底边框颜色;
+	        style.setBottomBorderColor(HSSFColor.BLACK.index);
+	        // 设置左边框;
+	        style.setBorderLeft(HSSFCellStyle.BORDER_THIN);
+	        // 设置左边框颜色;
+	        style.setLeftBorderColor(HSSFColor.BLACK.index);
+	        // 设置右边框;
+	        style.setBorderRight(HSSFCellStyle.BORDER_THIN);
+	        // 设置右边框颜色;
+	        style.setRightBorderColor(HSSFColor.BLACK.index);
+	        // 设置顶边框;
+	        style.setBorderTop(HSSFCellStyle.BORDER_THIN);
+	        // 设置顶边框颜色;
+	        style.setTopBorderColor(HSSFColor.BLACK.index);
+	        // 在样式用应用设置的字体;
+	        style.setFont(font);
+	        // 设置自动换行;
+	        style.setWrapText(false);
+	        // 设置水平对齐的样式为居中对齐;
+	        style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+	        // 设置垂直对齐的样式为居中对齐;
+	        style.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+
+	        return style;
+
+	    }
+
+	    // 删除指定文件夹下所有文件
+	    // param path 文件夹完整绝对路径
+	    public static boolean delAllFile(String path) {
+	        // path = getClass().getClassLoader().getResource("/").getPath()
+	        // + "../../upload/";
+	        boolean flag = false;
+	        File file = new File(path);
+	        if (!file.exists()) {
+	            return flag;
+	        }
+	        if (!file.isDirectory()) {
+	            return flag;
+	        }
+	        String[] tempList = file.list();
+	        File temp = null;
+	        for (int i = 0; i < tempList.length; i++) {
+	            if (path.endsWith(File.separator)) {
+	                temp = new File(path + tempList[i]);
+	            } else {
+	                temp = new File(path + File.separator + tempList[i]);
+	            }
+	            if (temp.isFile()) {
+	                temp.delete();
+	            }
+	            // if (temp.isDirectory()) {
+	            // delAllFile(path + "/" + tempList[i]);// 先删除文件夹里面的文件
+	            // //delFolder(path + "/" + tempList[i]);// 再删除空文件夹
+	            // flag = true;
+	            // }
+	        }
+	        return flag;
+	    }
 
 }
