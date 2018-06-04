@@ -19,7 +19,7 @@
 	
 	<select id="countXiaozhang" parameterType="Object" resultType="map">
 		SELECT must_read_id,commenter,COUNT(commenter) AS cts,
-				user_name,user_realname
+				user_name,user_realname,school_name
 		FROM wkrj_messagemanager,wkrj_sys_user
 		where user_name=commenter
 		Group by commenter

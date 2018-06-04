@@ -16,8 +16,9 @@ $(function(){
         		manager2 = $("#xzliuyan_maingrid").ligerGrid({
         			url:'viewStt/countXiaozhang',
         	        columns: [
-        	        { display: '校长', name: 'user_realname', id: 'user_realname', width: '70%', align: 'center' },
-        	        { display: '留言数', name: 'cts', id: 'cts', width: '30%', align: 'center' },
+        	        { display: '校长', name: 'user_realname', id: 'user_realname', width: '20%', align: 'center' },
+        	        { display: '学校', name: 'school_name', id: 'school_name', width: '60%', align: 'center' },
+        	        { display: '留言数', name: 'cts', id: 'cts', width: '20%', align: 'center' },
         	        ], height: '100%',
         	        width:'99.9%',
         	        usePager :true,

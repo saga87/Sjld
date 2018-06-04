@@ -25,7 +25,7 @@
 		$("#tsnr").html("&nbsp;&nbsp;"+r.case_content);
 		
 		
-	lay=$("#comment_layout").ligerLayout({rightWidth:360,isRightCollapse: true});
+	
 	
 	manager = $("#comment_maingrid").ligerGrid({
 		url:'messageManage/getList?must_read_id='+r.must_read_id,
@@ -57,9 +57,9 @@
 		
 		</div>
 		
-		<div id="comment_layout" style="height:380px;">	
+		
 		<div id="comment_maingrid"></div>
-		</div>
+		
 		
 		<div class="Co">
             <div class="r_div">
