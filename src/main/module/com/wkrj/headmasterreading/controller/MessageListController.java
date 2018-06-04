@@ -100,7 +100,7 @@ public class MessageListController {
 		}
 		
 		mm.setCommenter(user_name);
-		mm.setComment_school(user_dept);
+//		mm.setComment_school(user_dept);
 		mm.setComment_time(UtilsHelper.getDateFormatTime());
 		mm.setLikenum(0);
 		AjaxJson json = new AjaxJson();
