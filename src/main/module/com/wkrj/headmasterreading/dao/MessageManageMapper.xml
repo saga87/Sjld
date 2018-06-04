@@ -8,6 +8,7 @@
 		comment_content,likenum,DATE_FORMAT(comment_time,'%Y-%m-%d %H:%i:%s')
 		AS comment_time
 		,(select school_name from wkrj_sys_user where user_name= commenter) as school
+		,(select user_realname from wkrj_sys_user where user_name= commenter) as user_realname
 		FROM wkrj_messagemanager
 		WHERE 1=1
 		<if test="must_read_id != null and must_read_id != ''">

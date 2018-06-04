@@ -30,7 +30,7 @@
 	manager = $("#comment_maingrid").ligerGrid({
 		url:'messageManage/getList?must_read_id='+r.must_read_id,
         columns: [
-        { display: '评论者', name: 'commenter', id: 'commenter', width: '8%', align: 'center' },
+        { display: '评论者', name: 'user_realname', id: 'user_realname', width: '8%', align: 'center' },
         { display: '学校', name: 'school', id: 'school', width: '20%', align: 'center' },
         { display: '评论内容', name: 'comment_content', id: 'comment_content', width: '72%', align: 'center' },
         ], height: '370px',

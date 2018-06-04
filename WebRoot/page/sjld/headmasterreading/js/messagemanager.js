@@ -10,7 +10,7 @@ $(function(){
 	manager = $("#messageManage_maingrid").ligerGrid({
 		url:'messageManage/getList',
         columns: [
-        { display: '留言者', name: 'commenter', id: 'commenter', width: '8%', align: 'center' },
+        { display: '留言者', name: 'user_realname', id: 'user_realname', width: '8%', align: 'center' },
         { display: '学校', name: 'school', id: 'school', width: '10%', align: 'center' },
         { display: '留言案例标题', name: 'must_read_title', id: 'must_read_title', width: '17%', align: 'center' },
         { display: '留言内容', name: 'comment_content', id: 'comment_content', width: '50%', align: 'center' },
