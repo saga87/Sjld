@@ -6,14 +6,14 @@
  <head>
   <meta charset="UTF-8">
     <script type="text/javascript"
-   src="system/js/user/user.js"></script>
+   src="system/js/user/principle.js"></script>
 
 <script type="text/javascript">
        $(function (){
            var dialog = frameElement.dialog;
            var dialogData = dialog.get('data');//获取data参数
            $("#user_updateWindow_form").ligerForm().setData(dialogData.content);
-           $dialog = top.$("iframe[src='system/user/user_update.jsp']")[0].contentWindow;//用于关闭dialog    
+           $dialog = top.$("iframe[src='system/user/principle_update.jsp']")[0].contentWindow;//用于关闭dialog    
        });
      
 </script>
@@ -23,8 +23,8 @@
 <form id="user_updateWindow_form" method="post" class="liger-form">
 	<div style="overflow:hidden;">
             <div class="formdiv">
-                <label style="text-align:right;"><font color="red">*</font>账号名称:</label>
-                <input id="sjc_user_userName"
+                <label style="text-align:right;">账号名称:</label>
+                <input id="sjc_user_userName" disabled="disabled"
                     name="user_name" data-options="required:true" />
             </div>
             <div class="formdiv" id="sjc_user_password" style="display: none;">
@@ -33,19 +33,19 @@
                     type="password" class="ui-textbox" data-options="required:true" />
             </div>
             <div class="formdiv">
-                <label style="text-align:right;"><font color="red">*</font>真实姓名:</label>
-                <input data-options="required:true" name="user_realname" />
+                <label style="text-align:right;">真实姓名:</label>
+                <input data-options="required:true" disabled="disabled" name="user_realname" />
             </div>
             
             <div class="formdiv">
-                <label style="text-align:right;"><font color="red">*</font>所属学校:</label>
+                <label style="text-align:right;">所属学校:</label>
                 <div class="r_div">
                 	<input id="school_name" name="school_name"  />
                 </div>
             </div>
             
             <div class="formdiv">
-                <label style="text-align:right;"><font color="red">*</font>县市区:</label>
+                <label style="text-align:right;">县市区:</label>
                 <div class="r_div">
                 	<input id="counties" name="counties"  />
                 </div>

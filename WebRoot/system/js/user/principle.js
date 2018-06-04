@@ -282,6 +282,10 @@ function addPrinciple(){
 					top.$.ligerDialog.alert("请输入县市区");
 					return;
 				}
+				if (data.user_tel == "" || data.user_tel == null) {
+					top.$.ligerDialog.alert("手机号不能为空");
+					return;
+				}
 				//校长角色
 				data['user_role[0].role_id'] = 'a1f646f6-7e71-4e1a-b544-f190785b044c';
 				data.user_is_enable = '0';
@@ -348,6 +352,11 @@ function editPrincipal(){
 				
 				if (data.counties == "" || data.counties == null) {
 					top.$.ligerDialog.alert("请输入县市区");
+					return;
+				}
+				
+				if (data.user_tel == "" || data.user_tel == null) {
+					top.$.ligerDialog.alert("手机号不能为空");
 					return;
 				}
 				

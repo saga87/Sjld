@@ -53,7 +53,7 @@
             </div>
             
             <div class="formdiv">
-                <label style="text-align:right;">手机:</label>
+                <label style="text-align:right;"><font color="red">*</font>手机:</label>
                 <input onblur="checkTel()" id="sjc_userview_tel"
                     name="user_tel" />
             </div>
