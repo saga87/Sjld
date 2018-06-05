@@ -5,7 +5,7 @@
  <head>
 <script type="text/javascript" src="page/sjc/notReply/notReply.js"></script>
 <script type="text/javascript" src="system/js/commonStatus.js"></script>
-<script language="javascript" src="plug-in/lodop/LodopFuncs.js"></script>
+<!-- <script language="javascript" src="plug-in/lodop/LodopFuncs.js"></script> -->
 <script type="text/javascript">
  $(function (){
      $("#start_date").ligerDateEditor({ showTime: false, label: '', labelWidth: 100, labelAlign: 'left' });

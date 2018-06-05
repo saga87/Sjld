@@ -4,7 +4,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<script language="javascript" src="plug-in/lodop/LodopFuncs.js"></script>
+<!-- <script language="javascript" src="plug-in/lodop/LodopFuncs.js"></script> -->
 <script type="text/javascript" src="system/js/commonStatus.js"></script>
 <style type="text/css">
 #reply_content_div span {
@@ -36,7 +36,7 @@
 		}
 		$("#item1").html(dialogData.content.dept_name);
 		$("#item2").html(dialogData.content.event_no);
-		//根据radio值设置原因框可见不可见
+		//根据radio值设置可见不可见
 		$(":radio").click(function() {
 			if ($(this).val() == 1) {
 				$("#reply_div").show();
@@ -56,7 +56,6 @@
                 $("#back_div").show();
             }
 		});
-		
 		
 		/* var reply_ue=UE.getEditor("reply_content");
 		reply_ue.ready(function() {
@@ -133,6 +132,7 @@
         <div class="Co">
             <label><span class="text_red" >*</span>&nbsp;&nbsp;受理渠道:</label>
             <input type="text" name="source" id="source" disabled/>
+            <input type="hidden" id="accept_source" name="accept_source">
             <label><span class="text_red" >*</span>&nbsp;&nbsp;处理时限:</label>
             <input type="text" id="deal_days" name="deal_days" disabled/>
         </div>
@@ -142,6 +142,7 @@
             <input type="hidden" id="content_type_hidden">
             <label><span class="text_red" >*</span>&nbsp;&nbsp;业务类型:</label>
             <input type="text" id="nature" name="nature" disabled/>
+            <input type="hidden" id="business_type" name="business_type">
         </div>
         <div class="Co">
             <label><span class="text_red" >*</span>&nbsp;&nbsp;投诉标题:</label>

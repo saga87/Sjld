@@ -15,10 +15,10 @@ $(function(){
         { display: '受理类别', name: 'content_type', id: 'content_type', width: '10%', align: 'center' },
         { display: '处理时限', name: 'deal_days', id: 'deal_days', width: '5%', align: 'center' },
         { display: '限制期限', name: 'remain_hours', id: 'remain_hours', width: '15%', align: 'center', render: showPic },
-        { display: '业务类型', name: 'nature', id: 'nature', width: '10%', align: 'center' },
+        { display: '业务类型', name: 'nature', id: 'nature', width: '5%', align: 'center' },
         { display: '受理时间', name: 'event_inputtime', id: 'event_inputtime', width: '10%', align: 'center' },
-        { display: '受理渠道', name: 'source', id: 'source', width: '10%', align: 'center' },
-        //{ display: '备注', name: 'event_other', id: 'event_other', width: '9%', align: 'center' },
+        { display: '受理渠道', name: 'source', id: 'source', width: '6%', align: 'center' },
+        { display: '是否转办', name: 'zhuanbanornot', id: 'zhuanbanornot', width: '9%', align: 'center', render: zhuanbanTrans },
         { display: '状态', name: 'event_status', id: 'event_status', width: '10%', align: 'center', render: statusTrans }
 //        { display: '操作', isSort: false, width: '9%', render: function (rowdata, rowindex, value){
 //            var h = "<a style='text-decoration:none;' onclick='print(\""+rowindex+"\")' href='javascript:void(0)'>[打印]</a>";
@@ -53,6 +53,10 @@ $(function(){
             }*/ ]
         },
         onDblClickRow: function (data, rowindex, rowobj) {
+        	if (data.zhuanbanornot == 1) {
+            	top.$.ligerDialog.alert("已转办");
+                return;
+            }
             var s = parent.$.ligerDialog.open({
                 //target: $("#wfNotReply_updateWindow_form"),
                 url : "page/sjc/notReply/eventWfReply.jsp",
@@ -63,7 +67,7 @@ $(function(){
                     content:data
                 },
                 buttons : [ {
-                    text : '回复',
+                    text : '确定',
                     onclick : function(item, dialog) {
                         var data = dialog.frame.liger.get("wfNotReply_replyWindow_form").getData();
                         //data.opt_content = dialog.frame.$("#reply_content_div").html();
@@ -74,7 +78,7 @@ $(function(){
                             return;
                         }
                         if (data.deal_result == 1) {
-                        	data.opt_content = dialog.frame.liger.get("reply_content").getValue();
+                        	data.opt_content = dialog.frame.$("#reply_content").val();
                         	$.ajax({
                                 url: "eventWf/WkrjEventWf/replyEventWf",
                                 data: data,
@@ -98,7 +102,7 @@ $(function(){
                         if (data.deal_result == 2) {
                         	data.chengban_dept = dialog.frame.liger.get("chengban_dept").getValue();
                         	$.ajax({
-                                url: "eventWf/WkrjEventWf/zhuanbanEvent_delay",
+                                url: "eventWf/WkrjEventWf/zhuanbanEvent",
                                 data: data,
                                 dataType : "json",  
                                 type : "POST",
@@ -118,7 +122,7 @@ $(function(){
                                });
                         }
                         if (data.deal_result == 3) {
-                        	data.opt_content = dialog.frame.liger.get("back_reason").getValue();
+                        	data.opt_content = dialog.frame.dialog.frame.$("#back_reason").val();
                         	$.ajax({
                                 url: "eventWf/WkrjEventWf/sendBackEventWf",
                                 data: data,
@@ -159,9 +163,13 @@ function eventReport_delay(row){
         $.ligerDialog.alert('请选择一条记录进行延时!');
         return;
     }
+    if (r.zhuanbanornot == 1) {
+    	top.$.ligerDialog.alert("已转办");
+        return;
+    }
     var s = parent.$.ligerDialog.open({
         //target: $("#eventReport_updateWindow_form"),
-        url : "page/sjc/wfNotReply/eventWfDelay.jsp",
+        url : "page/sjc/notReply/eventWfDelay.jsp",
         //data : JSON.stringify(r),
         width : 900,
         height :650,

@@ -4,7 +4,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<script language="javascript" src="plug-in/lodop/LodopFuncs.js"></script>
+<!-- <script language="javascript" src="plug-in/lodop/LodopFuncs.js"></script> -->
 <script type="text/javascript" src="system/js/commonStatus.js"></script>
 <script type="text/javascript">
 	var cbd_fileurl;
