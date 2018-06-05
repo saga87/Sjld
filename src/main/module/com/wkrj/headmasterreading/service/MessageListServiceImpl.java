@@ -9,6 +9,7 @@ import java.util.Map;
 
 
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -115,6 +116,12 @@ public class MessageListServiceImpl implements MessageListService {
 	public boolean addMessage(MessageManage mm) {
 		
 		return dao.addMessage(mm);
+	}
+
+	@Override
+	public boolean addPageviews(String must_read_id) {
+		// TODO Auto-generated method stub
+		return dao.addPageviews(must_read_id);
 	}
 	
 }

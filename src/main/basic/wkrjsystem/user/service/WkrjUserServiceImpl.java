@@ -235,4 +235,18 @@ public class WkrjUserServiceImpl implements WkrjUserService {
 		return this.dao.getRoleListByUserId(user_id);
 	}
 
+	@Override
+	public List<WkrjUser> getPrincipleList(int offset, int page,
+			String userName, String school_name, String counties) {
+		// TODO Auto-generated method stub
+		return dao.getPrincipleList(offset, page, userName, school_name, counties);
+	}
+
+	@Override
+	public long countPrincipleList(String userName, String school_name,
+			String counties) {
+		// TODO Auto-generated method stub
+		return dao.countPrincipleList(userName, school_name, counties);
+	}
+
 }

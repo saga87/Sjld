@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.wkrj.viewStatistics.dao.ViewStatisticsDao">
+	<select id="countTitleNum" parameterType="Object" resultType="map">
+		SELECT m.must_read_id,commenter,must_read_title
+		,DATE_FORMAT(comment_time,'%Y-%m-%d %H:%i:%s') AS comment_time
+		,COUNT(must_read_id) AS cts,
+		(select pageview from wkrj_readcase r where r.must_read_id=m.must_read_id) as pv
+		FROM wkrj_messagemanager m
+		Group by m.must_read_id
+		ORDER BY comment_time DESC 
+		LIMIT #{offset},#{pagesize}
+	</select>
+	
+	<select id="countCaseTotal"  resultType="Long">
+		SELECT COUNT(*) FROM wkrj_readcase
+	</select>
+	
+	<select id="countXiaozhang" parameterType="Object" resultType="map">
+		SELECT must_read_id,commenter,COUNT(commenter) AS cts,
+				user_name,user_realname,school_name
+		FROM wkrj_messagemanager,wkrj_sys_user
+		where user_name=commenter
+		Group by commenter
+		ORDER BY cts DESC 
+		LIMIT #{offset},#{pagesize}
+	</select>
+	
+	<select id="countByCounties" parameterType="Object" resultType="map">
+		SELECT must_read_id,commenter,counties,user_name,
+			   count(counties) as cts
+		from wkrj_messagemanager ,wkrj_sys_user 
+		where commenter=user_name and counties is NOT NULL
+		group by counties
+		ORDER BY cts DESC 
+		LIMIT #{offset},#{pagesize}
+	</select>
+	
+	<select id="countCase" parameterType="Object" resultType="map">
+		SELECT r.must_read_id,must_read_title,event_type,pageview
+		,DATE_FORMAT(addtime,'%Y-%m-%d %H:%i:%s') AS addtime
+		,(select COUNT(m.must_read_id) from wkrj_messagemanager m 
+		  where m.must_read_id = r.must_read_id) as cts
+		FROM wkrj_readcase r
+		ORDER BY pageview DESC 
+	</select>
+	
+	
+</mapper>

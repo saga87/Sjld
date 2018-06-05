@@ -25,14 +25,14 @@
 		$("#tsnr").html("&nbsp;&nbsp;"+r.case_content);
 		
 		
-	lay=$("#comment_layout").ligerLayout({rightWidth:360,isRightCollapse: true});
+	
 	
 	manager = $("#comment_maingrid").ligerGrid({
 		url:'messageManage/getList?must_read_id='+r.must_read_id,
         columns: [
-        { display: '评论者', name: 'commenter', id: 'commenter', width: '8%', align: 'center' },
-        { display: '学校', name: 'comment_school', id: 'comment_school', width: '12%', align: 'center' },
-        { display: '评论内容', name: 'comment_content', id: 'comment_content', width: '80%', align: 'center' },
+        { display: '评论者', name: 'user_realname', id: 'user_realname', width: '8%', align: 'center' },
+        { display: '学校', name: 'school', id: 'school', width: '20%', align: 'center' },
+        { display: '评论内容', name: 'comment_content', id: 'comment_content', width: '72%', align: 'center' },
         ], height: '370px',
         width:'100%',
         usePager :true,
@@ -53,13 +53,13 @@
 		<div style = "padding: 30px">
 		<h1  id = "title" name="title" style="text-align: center;margin-top: 5px"></h1>
 		<h3>投诉内容:</h3>
-		<p id="tsnr" style="margin-top: 5px;font-size: 16px"></p>
+		<p id="tsnr" style="margin-top: 5px;font-size: 16px;word-wrap: break-word;"></p>
 		
 		</div>
 		
-		<div id="comment_layout" style="height:400px">	
+		
 		<div id="comment_maingrid"></div>
-		</div>
+		
 		
 		<div class="Co">
             <div class="r_div">

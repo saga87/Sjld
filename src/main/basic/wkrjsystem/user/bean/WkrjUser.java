@@ -32,6 +32,46 @@ public class WkrjUser {
 	private String inputuserdept;// 录入人所在部门
 	private String unit_name;// 单位名称
 	
+	/*以下给校长用户属性*/
+	private String school_name;//学校
+	private String counties;//县市区
+	private String telephone;//办公电话
+	private String email;//邮箱
+	
+	
+	
+	public String getSchool_name() {
+		return school_name;
+	}
+
+	public void setSchool_name(String school_name) {
+		this.school_name = school_name;
+	}
+
+	public String getCounties() {
+		return counties;
+	}
+
+	public void setCounties(String counties) {
+		this.counties = counties;
+	}
+
+	public String getTelephone() {
+		return telephone;
+	}
+
+	public void setTelephone(String telephone) {
+		this.telephone = telephone;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
 	public String getUnit_name() {
 		return unit_name;
 	}

@@ -19,5 +19,7 @@ public interface MessageListDao {
 	
 	boolean updateReadCase(ReadCase readCase);
 	
+	boolean addPageviews(@Param("must_read_id")String must_read_id);//浏览量
+	
 	boolean addMessage(MessageManage mm);
 }

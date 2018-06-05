@@ -4,12 +4,15 @@
 
 <mapper namespace="com.wkrj.headmasterreading.dao.InformExtractDao">
 	<select id="getFinishedEvent" parameterType="Object" resultType="map">
-		SELECT a.event_no,event_title,event_content,accept_source,business_type,
+		SELECT a.event_no,event_title,event_content,a.accept_source,business_type,
 		DATE_FORMAT(a.input_time,'%Y-%m-%d %H:%i:%s')AS input_time,
 		DATE_FORMAT(a.qianshou_time,'%Y-%m-%d %H:%i:%s')AS qianshou_time,
 		DATE_FORMAT(b.opt_time,'%Y-%m-%d %H:%i:%s')AS opt_time,
 		content_type,chengban_dept,event_status,satisfy_status,
-		opt_user,opt_type,opt_content
+		opt_user,opt_type,opt_content,
+		(select typename from wkrj_sys_data_dictionary where id=a.accept_source)AS source,
+		(select typename from wkrj_sys_data_dictionary where id=a.business_type)AS nature,
+		(select dept_name from wkrj_sys_department where dept_id=a.chengban_dept)AS chengban
 		FROM wkrj_reportevent_wf a,wkrj_procedurerecord b
 		WHERE 1=1 AND b.event_no = a.event_no
 		<if test="event_no != null and event_no != ''">

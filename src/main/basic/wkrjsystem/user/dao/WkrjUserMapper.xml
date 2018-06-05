@@ -80,6 +80,46 @@
 	</select>
 	
 	
+	<select id="getPrincipleList" resultType="WkrjUser" parameterType="Object">
+	
+		SELECT u.user_id,user_name,user_realname,school_name,
+			   telephone,user_tel,counties,email
+			   
+		FROM   wkrj_sys_user u
+		left join wkrj_sys_user_role ur on u.user_id=ur.user_id
+		where role_id = 'a1f646f6-7e71-4e1a-b544-f190785b044c'
+		
+		<if test="null!=userName and ''!=userName">
+			and user_realname like concat("%",#{userName},"%")
+		</if>
+		<if test="null!=counties and ''!=counties">
+			and counties like concat("%",#{counties},"%")
+		</if>
+		<if test="null!=school_name and ''!=school_name">
+			and school_name like concat("%",#{school_name},"%")
+		</if>
+		limit #{offset},#{page}	
+	</select>
+	<select id="countPrincipleList" resultType="Long" parameterType="Object">
+		SELECT count(*) 
+		FROM   wkrj_sys_user u
+		left join wkrj_sys_user_role ur on u.user_id=ur.user_id
+		where role_id = 'a1f646f6-7e71-4e1a-b544-f190785b044c'
+		<if test="null!=userName and ''!=userName">
+			and user_realname like concat("%",#{userName},"%")
+		</if>
+		<if test="null!=counties and ''!=counties">
+			and counties like concat("%",#{counties},"%")
+		</if>
+		<if test="null!=school_name and ''!=school_name">
+			and school_name like concat("%",#{school_name},"%")
+		</if>
+	</select>
+	
+	
+	
+	
+	
 	<resultMap type="WkrjUser" id="newWkrjUser">
 		
 		<id column="user_id" property="user_id"/>
@@ -133,10 +173,11 @@
 	<insert id="addUser" parameterType="WkrjUser" >
 		
 		insert wkrj_sys_user(user_id,station_id,dept_id,user_name,user_password,user_realname,
-			   user_card,user_is_enable,user_inputtime,user_last_ip,user_no,user_last_time,user_tel,inputuserdept)
+			   user_card,user_is_enable,user_inputtime,user_last_ip,user_no,user_last_time,user_tel,inputuserdept,
+			   school_name,counties,telephone,email)
 		values(#{user_id},#{station_id},#{dept_id},#{user_name},#{user_password},#{user_realname},
 			   #{user_card},#{user_is_enable},#{user_inputtime},#{user_last_ip},#{user_no},#{user_last_time}
-			   ,#{user_tel},#{inputuserdept});
+			   ,#{user_tel},#{inputuserdept},#{school_name},#{counties},#{telephone},#{email});
 	
 	</insert>
 	
@@ -149,8 +190,8 @@
 		
 		update wkrj_sys_user set station_id=#{station_id},dept_id=#{dept_id},user_name=#{user_name},
 			   user_realname=#{user_realname},user_card=#{user_card},
-			   user_is_enable=#{user_is_enable}, user_no=#{user_no},user_tel=#{user_tel}
-			   
+			   user_is_enable=#{user_is_enable}, user_no=#{user_no},user_tel=#{user_tel},
+			   school_name=#{school_name},counties=#{counties},email=#{email},telephone=#{telephone}
 		where user_id=#{user_id}
 		
 	</update>
