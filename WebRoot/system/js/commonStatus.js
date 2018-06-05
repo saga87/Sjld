@@ -86,7 +86,13 @@ function statusTrans(rowdata, rowindex, value) {
         return "处理中";
     } else if (rowdata.qianshou_status == 0) {
         return "新受理";
-    } else if (rowdata.qianshou_status == 2) {
+    } else if (rowdata.qianshou_status == 2 && rowdata.satisfy_status == null) {
         return "处理完毕待评价";
+    } else if (rowdata.satisfy_status == 1) {
+        return "已评价，满意";
+    } else if (rowdata.satisfy_status == 2) {
+        return "已评价，基本满意";
+    } else if (rowdata.satisfy_status == 3) {
+        return "已评价，不满意";
     }
 }

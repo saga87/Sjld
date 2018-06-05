@@ -14,8 +14,8 @@
         (select dept_name from wkrj_sys_department where dept_id=n.chengban_dept) dept_name,(select typename from wkrj_sys_data_dictionary where id=n.business_type) nature,
         DATE_FORMAT((select opt_time from wkrj_procedurerecord where event_id=n.event_id and opt_type=1 order by opt_time desc limit 1),'%Y-%m-%d %H:%i:%s') reply_time,
         (select opt_content from wkrj_procedurerecord where event_id=n.event_id and opt_type=1 order by opt_time desc limit 1) reply_content,
-        (select opt_content from wkrj_procedurerecord where event_id=n.event_id and opt_type=2 order by input_time desc limit 1) delay_reason,
-        DATE_FORMAT((select input_time from wkrj_procedurerecord where event_id=n.event_id and opt_type=2 order by opt_time desc limit 1),'%Y-%m-%d %H:%i:%s') delay_time,
+        (select opt_content from wkrj_procedurerecord where event_id=n.event_id and opt_type=2 order by opt_time desc limit 1) delay_reason,
+        DATE_FORMAT((select opt_time from wkrj_procedurerecord where event_id=n.event_id and opt_type=2 order by opt_time desc limit 1),'%Y-%m-%d %H:%i:%s') delay_time,
         DATE_FORMAT(n.input_time,'%Y-%m-%d %H:%i:%s') event_inputtime,DATE_FORMAT(n.qianshou_time,'%Y-%m-%d %H:%i:%s') qianshoutime
         FROM `wkrj_reportevent_wf` n
         where 1=1
@@ -62,7 +62,7 @@
                 order by daoqi_time asc
             </when>
             <when test="2==qianshou_status">
-                order by opt_time desc
+                order by reply_time desc
             </when>
             <otherwise>
                 order by event_inputtime desc
@@ -128,8 +128,8 @@
         (select dept_name from wkrj_sys_department where dept_id=n.chengban_dept) dept_name,(select typename from wkrj_sys_data_dictionary where id=n.business_type) nature,
         DATE_FORMAT((select opt_time from wkrj_procedurerecord where event_id=n.event_id and opt_type=1 order by opt_time desc limit 1),'%Y-%m-%d %H:%i:%s') reply_time,
         (select opt_content from wkrj_procedurerecord where event_id=n.event_id and opt_type=1 order by opt_time desc limit 1) reply_content,
-        (select opt_content from wkrj_procedurerecord where event_id=n.event_id and opt_type=2 order by input_time desc limit 1) delay_reason,
-        DATE_FORMAT((select input_time from wkrj_procedurerecord where event_id=n.event_id and opt_type=2 order by opt_time desc limit 1),'%Y-%m-%d %H:%i:%s') delay_time,
+        (select opt_content from wkrj_procedurerecord where event_id=n.event_id and opt_type=2 order by opt_time desc limit 1) delay_reason,
+        DATE_FORMAT((select opt_time from wkrj_procedurerecord where event_id=n.event_id and opt_type=2 order by opt_time desc limit 1),'%Y-%m-%d %H:%i:%s') delay_time,
         DATE_FORMAT(n.input_time,'%Y-%m-%d %H:%i:%s') event_inputtime,DATE_FORMAT(n.qianshou_time,'%Y-%m-%d %H:%i:%s') qianshoutime
         FROM `wkrj_reportevent_wf` n
         order by event_inputtime desc
@@ -154,8 +154,8 @@
         (select dept_name from wkrj_sys_department where dept_id=n.chengban_dept) dept_name,(select typename from wkrj_sys_data_dictionary where id=n.business_type) nature,
         DATE_FORMAT((select opt_time from wkrj_procedurerecord where event_id=n.event_id and opt_type=1 order by opt_time desc limit 1),'%Y-%m-%d %H:%i:%s') reply_time,
         (select opt_content from wkrj_procedurerecord where event_id=n.event_id and opt_type=1 order by opt_time desc limit 1) reply_content,
-        (select opt_content from wkrj_procedurerecord where event_id=n.event_id and opt_type=2 order by input_time desc limit 1) delay_reason,
-        DATE_FORMAT((select input_time from wkrj_procedurerecord where event_id=n.event_id and opt_type=2 order by opt_time desc limit 1),'%Y-%m-%d %H:%i:%s') delay_time,
+        (select opt_content from wkrj_procedurerecord where event_id=n.event_id and opt_type=2 order by opt_time desc limit 1) delay_reason,
+        DATE_FORMAT((select opt_time from wkrj_procedurerecord where event_id=n.event_id and opt_type=2 order by opt_time desc limit 1),'%Y-%m-%d %H:%i:%s') delay_time,
         DATE_FORMAT(n.input_time,'%Y-%m-%d %H:%i:%s') event_inputtime,DATE_FORMAT(n.qianshou_time,'%Y-%m-%d %H:%i:%s') qianshoutime
         FROM `wkrj_reportevent_wf` n
         where n.event_id=#{event_id}
@@ -172,8 +172,8 @@
         (select dept_name from wkrj_sys_department where dept_id=n.chengban_dept) dept_name,(select typename from wkrj_sys_data_dictionary where id=n.business_type) nature,
         DATE_FORMAT((select opt_time from wkrj_procedurerecord where event_id=n.event_id and opt_type=1 order by opt_time desc limit 1),'%Y-%m-%d %H:%i:%s') reply_time,
         (select opt_content from wkrj_procedurerecord where event_id=n.event_id and opt_type=1 order by opt_time desc limit 1) reply_content,
-        (select opt_content from wkrj_procedurerecord where event_id=n.event_id and opt_type=2 order by input_time desc limit 1) delay_reason,
-        DATE_FORMAT((select input_time from wkrj_procedurerecord where event_id=n.event_id and opt_type=2 order by opt_time desc limit 1),'%Y-%m-%d %H:%i:%s') delay_time,
+        (select opt_content from wkrj_procedurerecord where event_id=n.event_id and opt_type=2 order by opt_time desc limit 1) delay_reason,
+        DATE_FORMAT((select opt_time from wkrj_procedurerecord where event_id=n.event_id and opt_type=2 order by opt_time desc limit 1),'%Y-%m-%d %H:%i:%s') delay_time,
         DATE_FORMAT(n.input_time,'%Y-%m-%d %H:%i:%s') event_inputtime,DATE_FORMAT(n.qianshou_time,'%Y-%m-%d %H:%i:%s') qianshoutime
         FROM `wkrj_reportevent_wf` n
         where 1=1
@@ -258,12 +258,9 @@
         DATE_FORMAT(DATE_SUB(input_time,INTERVAL -deal_days DAY),'%Y-%m-%d %H:%i:%s') daoqi_time,
         round((UNIX_TIMESTAMP(NOW())-UNIX_TIMESTAMP(DATE_SUB(input_time,INTERVAL -deal_days DAY)))/3600) remain_hours,
         (select dept_name from wkrj_sys_department where dept_id=n.chengban_dept) dept_name,(select typename from wkrj_sys_data_dictionary where id=n.business_type) nature,
-        DATE_FORMAT((select opt_time from wkrj_procedurerecord where event_id=n.event_id order by opt_time desc limit 1),'%Y-%m-%d %H:%i:%s') opt_time,
-        (select leader_pishi from wkrj_procedurerecord where event_id=n.event_id order by opt_time desc limit 1) leader_pishi,
-        (select opt_content from wkrj_procedurerecord where event_id=n.event_id order by opt_time desc limit 1) opt_content,
-        (select delay_reason from wkrj_procedurerecord where event_id=n.event_id order by input_time desc limit 1) delay_reason,
-        DATE_FORMAT(n.opt_time,'%Y-%m-%d %H:%i:%s') opttime,IF((select count(1) from wkrj_eventjianfen_wf where event_id=n.event_id)>0,1,0) AS is_jianfen,
-        DATE_FORMAT(n.huifang_time,'%Y-%m-%d %H:%i:%s') huifangtime,DATE_FORMAT(n.cbd_time,'%Y-%m-%d %H:%i:%s') cbdtime,
+        DATE_FORMAT((select opt_time from wkrj_procedurerecord where event_id=n.event_id order by opt_time desc limit 1),'%Y-%m-%d %H:%i:%s') reply_time,
+        (select opt_content from wkrj_procedurerecord where event_id=n.event_id and opt_type=1 order by opt_time desc limit 1) reply_content,
+        (select opt_content from wkrj_procedurerecord where event_id=n.event_id and opt_type=2 order by opt_time desc limit 1) delay_reason,
         DATE_FORMAT(n.input_time,'%Y-%m-%d %H:%i:%s') event_inputtime,DATE_FORMAT(n.qianshou_time,'%Y-%m-%d %H:%i:%s') qianshoutime
         FROM `wkrj_reportevent_wf` n
         where 1=1 and (n.event_status = '回访完成' or (n.event_status = '完成' and n.caller_username = '隐藏')) 
@@ -501,7 +498,7 @@
     
     <update id="updateSatisfyDu" parameterType="WkrjEventWf" >
         
-        update wkrj_reportevent_wf set satisfy_status_dept=#{satisfy_status_dept} where event_no=#{event_no}
+        update wkrj_reportevent_wf set satisfy_status=#{satisfy_status} where event_id=#{event_id}
     
     </update>
     

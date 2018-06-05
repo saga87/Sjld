@@ -58,7 +58,7 @@ public class FileUtils {
 				String onlyfileName=fileName.substring(0,fileName.lastIndexOf("."));//只取名字，去掉扩展名
 				String extend = fileName.substring(fileName.lastIndexOf(".")+1);// 获取文件扩展名
 				SimpleDateFormat df=new SimpleDateFormat("yyyyMMdd");
-				String noextfilename=noextfilename=df.format(new Date())+(int)(Math.random()*1000000);			
+				String noextfilename=df.format(new Date())+(int)(Math.random()*1000000);			
 				String myfilename=noextfilename+"."+extend;//自定义文件名称
 				//文件全路径
 				String savePath = realPath + myfilename;// 文件保存全路径				

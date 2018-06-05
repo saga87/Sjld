@@ -36,52 +36,37 @@ $(function(){
 		}
 	});
 	
-	/*$.ajax({
-        url: "wkrjsystem/reportInfoCheck/getNotCheckedList",
-        //data: data,
-        dataType:'json',
-        type:'POST',
-        success: function(result){
-            //result = eval('('+result+')');
-        	if (result.success) {
-        		$.ligerDialog.alert('您有'+result.msg+'条信息未查看！');
-                //dialog.close();
-            } else {
-            	//$.ligerDialog.alert(result.msg);
-            }
-        }
-      });*/
 
-	$.post('wkrjsystem/statistic/getExpiredInfoList', {page:1,rows:20}, function(result) {
-	    var result = eval('(' + result + ')');
-        if (result.cnt > 0 || result.expired_count > 0 || 
-        		result.isExpiring_count > 0 || result.notChecked_count > 0) {
-            var title = "超期提醒";
-            //var plugin = "reportInfoCheck/reportInfoCheck";
-            //$.ligerDialog.tip(0, '<a onclick="open1(\''+plugin+'\',\''+title+'\',\'\',\'\');"  href="javascript:void(0);" style="text-decoration:none;color:red;font-size:14px;">您有['+result.total+']条待办事项已到期，点击可以打开待办事项</a>');
-            var html_content = '校园安全巡查未查看：<a style="text-decoration:none;color:red;font-size:14px;">'+
-            						'['+result.cnt+']</a>条<br>'+
-            					'校园安全巡查已到期：<a style="text-decoration:none;color:red;font-size:14px;">'+
-            						'['+result.expired_count+']</a>条<br>'+
-            					'校园安全巡查快到期：<a style="text-decoration:none;color:red;font-size:14px;">'+
-            						'['+result.isExpiring_count+']</a>条<br>'+
-            					'通知公告未查看：<a href="javascript:void(0);" onclick="newsNotChecked_click()" style="text-decoration:underline;color:red;font-size:14px;">'+
-            						'['+result.notChecked_count+']</a>条<br>'+
-            					'灭火器使用寿命到期：<a href="javascript:void(0);" onclick="mhqsm_click()" style="text-decoration:underline;color:red;font-size:14px;">'+
-            						'['+result.mhqExpiredCnt+']</a>个<br>'+
-            					'灭火器年检时间到期：<a href="javascript:void(0);" onclick="mhqnj_click()" style="text-decoration:underline;color:red;font-size:14px;">'+
-            						'['+result.mhqYearCheckExpiredCnt+']</a>个';
-            var ddd = $.ligerDialog.tip({
-            	width: 250,
-            	height: 200,
-            	title: '提示信息',
-            	content: html_content
-            });
-            /*setTimeout(function () {
-    			ddd.close(); //5秒延迟后关闭tip
-    		}, 5000);*/
-        }
-    });
+//	$.post('wkrjsystem/statistic/getExpiredInfoList', {page:1,rows:20}, function(result) {
+//	    var result = eval('(' + result + ')');
+//        if (result.cnt > 0 || result.expired_count > 0 || 
+//        		result.isExpiring_count > 0 || result.notChecked_count > 0) {
+//            var title = "超期提醒";
+//            //var plugin = "reportInfoCheck/reportInfoCheck";
+//            //$.ligerDialog.tip(0, '<a onclick="open1(\''+plugin+'\',\''+title+'\',\'\',\'\');"  href="javascript:void(0);" style="text-decoration:none;color:red;font-size:14px;">您有['+result.total+']条待办事项已到期，点击可以打开待办事项</a>');
+//            var html_content = '校园安全巡查未查看：<a style="text-decoration:none;color:red;font-size:14px;">'+
+//            						'['+result.cnt+']</a>条<br>'+
+//            					'校园安全巡查已到期：<a style="text-decoration:none;color:red;font-size:14px;">'+
+//            						'['+result.expired_count+']</a>条<br>'+
+//            					'校园安全巡查快到期：<a style="text-decoration:none;color:red;font-size:14px;">'+
+//            						'['+result.isExpiring_count+']</a>条<br>'+
+//            					'通知公告未查看：<a href="javascript:void(0);" onclick="newsNotChecked_click()" style="text-decoration:underline;color:red;font-size:14px;">'+
+//            						'['+result.notChecked_count+']</a>条<br>'+
+//            					'灭火器使用寿命到期：<a href="javascript:void(0);" onclick="mhqsm_click()" style="text-decoration:underline;color:red;font-size:14px;">'+
+//            						'['+result.mhqExpiredCnt+']</a>个<br>'+
+//            					'灭火器年检时间到期：<a href="javascript:void(0);" onclick="mhqnj_click()" style="text-decoration:underline;color:red;font-size:14px;">'+
+//            						'['+result.mhqYearCheckExpiredCnt+']</a>个';
+//            var ddd = $.ligerDialog.tip({
+//            	width: 250,
+//            	height: 200,
+//            	title: '提示信息',
+//            	content: html_content
+//            });
+//            /*setTimeout(function () {
+//    			ddd.close(); //5秒延迟后关闭tip
+//    		}, 5000);*/
+//        }
+//    });
 });
 
 function newsNotChecked_click(){

@@ -821,9 +821,9 @@ public class WkrjEventWfController {
 //        }
 //        return json;
 //    }
-    @RequestMapping("zhuanbanEvent_delay")
+    @RequestMapping("zhuanbanEvent")
     @ResponseBody
-    public AjaxJson zhuanbanEvent_delay(WkrjEventWf er, HttpServletRequest request){
+    public AjaxJson zhuanbanEvent(WkrjEventWf er, HttpServletRequest request){
         WkrjUser user = (WkrjUser) request.getSession().getAttribute("user");
         WkrjUserDev userDev = (WkrjUserDev) request.getSession().getAttribute("userDev");
         AjaxJson json = new AjaxJson();
@@ -833,14 +833,15 @@ public class WkrjEventWfController {
         String date = sdf.format(new Date());
         er.setInput_time(date);
         er.setZhuanbanornot("1");//设置已再次1
-        if (er.getEvent_no().contains("-")) {
-            String temp = er.getEvent_no().split("-")[1];
-            int tempno = Integer.parseInt(temp);
-            tempno++;
-            er.setEvent_no(er.getEvent_no().split("-")[0]+"-"+tempno);
-        } else {
-            er.setEvent_no(er.getEvent_no()+"-"+2);//再次转办从“-2”开始
-        }
+//        if (er.getEvent_no().contains("-")) {
+//            String temp = er.getEvent_no().split("-")[1];
+//            int tempno = Integer.parseInt(temp);
+//            tempno++;
+//            er.setEvent_no(er.getEvent_no().split("-")[0]+"-"+tempno);
+//        } else {
+//            er.setEvent_no(er.getEvent_no()+"-"+2);//再次转办从“-2”开始
+//        }
+        er.setEvent_no(er.getEvent_no());
         String user_id = "";
         if (user != null) {
             user_id = user.getUser_id();
@@ -876,74 +877,29 @@ public class WkrjEventWfController {
 //        }
 //        return json;
 //    }
-//    @RequestMapping("pingjiaEventWf")
-//    @ResponseBody
-//    public AjaxJson pingjiaEvent(WkrjEventWf er, HttpServletRequest request){
-//        AjaxJson json = new AjaxJson();
-//        WkrjUser user = (WkrjUser) request.getSession().getAttribute("user");
-//        WkrjUserDev userDev = (WkrjUserDev) request.getSession().getAttribute("userDev");
-//        String user_id = "";
-//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//        String date = sdf.format(new Date());
-//        er.setInput_time(date);
-//        if (user != null) {
-//            user_id = user.getUser_id();
-//        } else if (userDev != null) {
-//            user_id = userDev.getUser_id();
-//        }
-//        er.setReplied_dealno(user_id);
-//        er.setInput_time(date);
-//        
-//        if (er.getZxsh_opinion() != null && !"".equals(er.getZxsh_opinion())) {
-//            erService.updateZxshOpinion(er);//更新坐席审核意见
-//        }
-//        
-//        if ("完成".equals(er.getDeal_type())) {
-//            er.setEvent_status("完成");
-//            //er.setSatisfy_status_dept("2");//默认基本满意
-//            er.setOpt_time(date);//作为完成时间
-//            if (erService.finishEventWf(er)) {
-//                json.setSuccess(true);
-//                json.setMsg("事件完成");
-//            }
-//        }
-//        if ("转办".equals(er.getDeal_type())) {
-//            er.setEvent_status("1");
-//            er.setCurrent_loginno(user_id);
-//            er.setAccept_workno(user_id);//再次转办的事件受理工号为当前登录工号
-//            //er.setEvent_no(generateEventNo(er.getEvent_no()));
-//            boolean zhuanbanFlag = false;
-//            if (er.getChengban_dept().equals(er.getChengban_dept_old())) {
-//                if (er.getEvent_no().contains("-")) {
-//                    String temp = er.getEvent_no().split("-")[1];
-//                    int tempno = Integer.parseInt(temp);
-//                    tempno++;
-//                    er.setEvent_no(er.getEvent_no().split("-")[0]+"-"+tempno);
-//                } else {
-//                    er.setEvent_no(er.getEvent_no()+"-"+2);//再次转办从“-2”开始
-//                }
-//                zhuanbanFlag = true;
-//            }
-//            er.setZhuanbanornot("1");//设置已再次转办
-//            //if (erService.addEventWf(er) && erService.updateZhuanban(er)) {
-//            if (erService.addEventWf(er)) {
-//                if (zhuanbanFlag) {//如果是相同部门才设置再次转办状态，设置为再次转办
-//                    erService.updateZhuanban(er);
-//                }
-//                json.setSuccess(true);
-//                json.setMsg("转办成功");
-//            }
-//        }
-//        if ("回访完成".equals(er.getDeal_type())) {
-//            er.setEvent_status("回访完成");
-//            er.setHuifang_time(date);
-//            if (erService.huifangFinishEventWf(er)) {
-//                json.setSuccess(true);
-//                json.setMsg("回访完成");
-//            }
-//        }
-//        return json;
-//    }
+    @RequestMapping("pingjiaEventWf")
+    @ResponseBody
+    public AjaxJson pingjiaEvent(WkrjEventWf er, HttpServletRequest request){
+        AjaxJson json = new AjaxJson();
+        WkrjUser user = (WkrjUser) request.getSession().getAttribute("user");
+        WkrjUserDev userDev = (WkrjUserDev) request.getSession().getAttribute("userDev");
+        String user_id = "";
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String date = sdf.format(new Date());
+        er.setInput_time(date);
+        if (user != null) {
+            user_id = user.getUser_id();
+        } else if (userDev != null) {
+            user_id = userDev.getUser_id();
+        }
+        er.setInput_time(date);
+        er.setInput_user(user_id);
+        if (erService.updateSatisfyDu(er)) {
+            json.setSuccess(true);
+            json.setMsg("处理成功");
+        }
+        return json;
+    }
     
     @RequestMapping("signEventWf")
     @ResponseBody
@@ -1090,6 +1046,7 @@ public class WkrjEventWfController {
         pr.setOpt_time(date);
         pr.setOpt_user(input_user);
         pr.setOpt_content(opt_content);
+        pr.setOpt_type("1");//回复
         //String event_status = "2";
         String qianshou_status = "2";//2表示已回复
 //        String file_yname = request.getParameter("file_yname");
@@ -1119,7 +1076,7 @@ public class WkrjEventWfController {
     
     @RequestMapping("sendBackEventWf")
     @ResponseBody
-    public AjaxJson sendBackEventWf(HttpServletRequest request, String event_id, String event_no, String event_inputtime, String opt_content){
+    public AjaxJson sendBackEventWf(HttpServletRequest request, String qianshou_status, String event_id, String event_no, String event_inputtime, String opt_content){
         AjaxJson json = new AjaxJson();
         WkrjUser user = (WkrjUser) request.getSession().getAttribute("user");
         WkrjUserDev userDev = (WkrjUserDev) request.getSession().getAttribute("userDev");
@@ -1151,12 +1108,16 @@ public class WkrjEventWfController {
         }
         WkrjProcedureRecord pr = new WkrjProcedureRecord();
         pr.setEvent_id(event_id);
+        if ("2".equals(qianshou_status)) {//如果是回复之后的退回，则改变编号，为了后期方便统计办结率
+            //pr.setEvent_no(generateEventNo(event_no));
+        }
         pr.setEvent_no(event_no);
         pr.setPr_id(Guid.getGuid());
         pr.setOpt_time(date);
         pr.setOpt_user(input_user);
         pr.setOpt_content(opt_content);
-        String event_status = "3";
+        pr.setOpt_type("3");//退回
+        String event_status = "3";//退回
         WkrjEventWf er = new WkrjEventWf();
         er.setEvent_id(event_id);
         er.setEvent_status(event_status);
