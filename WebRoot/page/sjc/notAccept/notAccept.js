@@ -32,14 +32,14 @@ $(function(){
                 click : event_sign,
                 icon : 'modify',
                 id:'eventWf/WkrjEventWf/signEventWf'
-            }, {
+            }/*, {
                 line : true
             }, {
                 text : '退回',
                 click : event_sendBack,
                 icon : 'delete',
                 id:'eventWf/WkrjEventWf/sendBackEventWf'
-            } ]
+            }*/ ]
         },
         onDblClickRow: function (data, rowindex, rowobj) {
             var s = parent.$.ligerDialog.open({
