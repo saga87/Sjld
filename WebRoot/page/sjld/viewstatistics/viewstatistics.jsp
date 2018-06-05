@@ -9,12 +9,10 @@
 <body style="overflow:hidden;">
  <div id="tab" style="height:100%">
 
- <div title="案例评论排行"  tabid='tab1' >
+ <div title="评论案例排行"  tabid='tab1' >
    <div id="viewstatistics_layout" style="width:100%;">	
 	<div position="center">
-	<div style="height:20px; overflow:hidden;padding:5px 0">
-		<div style="margin-top:2px;margin-bottom:5px;">&nbsp;&nbsp;案例总数：<span id = "caseTotal"></span></div>
-    </div>
+	
 		<div id="viewstatistics_maingrid"></div>
 	</div>
    </div>
@@ -36,6 +34,19 @@
    </div>
 
 </div>
+
+<div title="案例统计"  tabid='tab4'>
+   <div id="case_layout" style="width:100%;">	
+	<div position="center">
+	<div style="height:20px; overflow:hidden;padding:5px 0">
+		<div style="margin-top:2px;margin-bottom:5px;">&nbsp;&nbsp;案例总数：<span id = "caseTotal"></span></div>
+    </div>
+		<div id="case_maingrid"></div>
+	</div>
+   </div>
+
+</div>
+
 
 </div>
 </body>

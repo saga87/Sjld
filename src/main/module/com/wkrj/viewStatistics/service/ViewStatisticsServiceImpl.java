@@ -38,4 +38,10 @@ public class ViewStatisticsServiceImpl implements ViewStatisticsService {
 		// TODO Auto-generated method stub
 		return dao.countByCounties(offset, pagesize);
 	}
+
+	@Override
+	public List<Map<String, Object>> countCase(int offset, int pagesize) {
+		// TODO Auto-generated method stub
+		return dao.countCase(offset, pagesize);
+	}
 }

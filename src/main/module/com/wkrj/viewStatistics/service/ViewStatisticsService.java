@@ -9,4 +9,6 @@ public interface ViewStatisticsService {
 	List<Map<String,Object>> countTitleNum(int offset,int pagesize);
 	List<Map<String,Object>> countXiaozhang(int offset,int pagesize);
 	List<Map<String,Object>> countByCounties(int offset,int pagesize);
+	
+	List<Map<String,Object>> countCase(int offset,int pagesize);
 }

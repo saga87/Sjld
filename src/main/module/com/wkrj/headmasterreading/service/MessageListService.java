@@ -15,4 +15,6 @@ public interface MessageListService {
 	boolean updateCaseRead(ReadCase readCase,ReadCaseFile file);
 	
 	boolean addMessage(MessageManage mm);
+	
+	boolean addPageviews(String must_read_id);//浏览量
 }

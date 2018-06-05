@@ -53,4 +53,13 @@ public class ViewStatisticsController {
 		list = service.countByCounties(offset,pagesize);//标题与其留言量
 		return UtilsHelper.returnMap(list, list.size());
 	}
+	
+	@RequestMapping("countCase")
+	@ResponseBody
+	public Object countCase(int pagesize, int page){
+		int offset = (page-1) * pagesize;
+		List<Map<String,Object>> list = new ArrayList<Map<String,Object>>();
+		list = service.countCase(offset,pagesize);
+		return UtilsHelper.returnMap(list, list.size());
+	}
 }

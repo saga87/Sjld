@@ -10,6 +10,7 @@ import java.util.Map;
 
 
 
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -109,6 +110,13 @@ public class MessageListController {
 			json.setMsg("评论成功");
 		}
 		return json;
+	}
+	
+	
+	@ResponseBody
+	@RequestMapping("addPageviews")
+	public Object addPageviews(String must_read_id){
+		return service.addPageviews(must_read_id);
 	}
 	
 	

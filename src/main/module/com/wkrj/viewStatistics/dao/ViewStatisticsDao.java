@@ -11,4 +11,6 @@ public interface ViewStatisticsDao {
 	List<Map<String,Object>> countTitleNum(@Param("offset")int offset,@Param("pagesize")int pagesize);
 	List<Map<String,Object>> countXiaozhang(@Param("offset")int offset,@Param("pagesize")int pagesize);
 	List<Map<String,Object>> countByCounties(@Param("offset")int offset,@Param("pagesize")int pagesize);
+	
+	List<Map<String,Object>> countCase(@Param("offset")int offset,@Param("pagesize")int pagesize);
 }
