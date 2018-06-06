@@ -3,6 +3,9 @@
 <html lang="en">
 <%@include file="/systemdev/myContext.jsp" %>
  <head>
+ 
+ 
+ 
 <script type="text/javascript" src="page/sjld/viewstatistics/js/viewstatistics.js"></script>
 
 </head>

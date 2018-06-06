@@ -14,8 +14,8 @@ $(function(){
         { display: '公告内容', name: 'na_content', id: 'na_content', width: '30%', align: 'center' },
         { display: '备注', name: 'na_other', id: 'na_other', width: '15%', align: 'center' },
         { display: '录入时间', name: 'na_inputtime', id: 'na_inputtime', width: '10%', align: 'center' },
-        { display: '录入人账号', name: 'na_inputuser', id: 'na_inputuser', width: '10%', align: 'center' },
-        { display: '录入人所在部门', name: 'na_inputuserdept', id: 'na_inputuserdept', width: '10%', align: 'center' },
+        { display: '录入人账号', name: 'user_realname', id: 'user_realname', width: '10%', align: 'center' },
+        { display: '录入人所在部门', name: 'dname', id: 'dname', width: '10%', align: 'center' },
         //{ display: '可视用户', name: 'accept_user', id: 'accept_user', width: '15%', align: 'center' },
         { display: '重要程度', width: '7%', align: 'center',name: 'importance', id: 'importance'}
         ], height: '100%',

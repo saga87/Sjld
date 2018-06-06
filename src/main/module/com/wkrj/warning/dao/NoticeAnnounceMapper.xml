@@ -6,7 +6,9 @@
 	<select id="getNoticeAnnounceList" resultType="map" parameterType="Object">
 		SELECT na_id,na_title,na_content,na_other,na_inputuser,na_inputuserdept,
 		DATE_FORMAT(na_inputtime,'%Y-%m-%d %H:%i:%s') AS na_inputtime,importance,
-		accept_user
+		accept_user,user_realname,
+		(select dept_name from wkrj_sys_department where dept_id = na_inputuserdept)
+		as dname
 		FROM wkrj_noticeannounce n,wkrj_sys_user u 
 		
 		WHERE u.user_id = n.na_inputuser

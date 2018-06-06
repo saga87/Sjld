@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.wkrj.homepage.dao.HotNewsDao">
+	<select id="getHotNews" resultType="map" parameterType="Object">
+		SELECT na_id,na_title,na_content,na_other,na_inputuser,na_inputuserdept,
+		DATE_FORMAT(na_inputtime,'%Y-%m-%d %H:%i:%s') AS na_inputtime,importance,
+		accept_user,user_realname,
+		(select dept_name from wkrj_sys_department where dept_id = na_inputuserdept)
+		as dname
+		FROM wkrj_noticeannounce n,wkrj_sys_user u 
+		WHERE u.user_id = n.na_inputuser AND na_inputuserdept = '03'
+		ORDER BY na_inputtime DESC 
+		LIMIT #{offset},#{rows}
+	</select>
+	
+	
+	<select id = "getNaById" parameterType="String" resultType="map">
+		SELECT na_id,na_title,na_content,na_other,na_inputuser,na_inputuserdept,
+		DATE_FORMAT(na_inputtime,'%Y-%m-%d %H:%i:%s') AS na_inputtime,importance,
+		accept_user,user_realname,
+		(select dept_name from wkrj_sys_department where dept_id = na_inputuserdept)
+		as dname
+		FROM wkrj_noticeannounce n,wkrj_sys_user u 
+		WHERE  na_id = #{na_id} AND u.user_id = n.na_inputuser 
+		ORDER BY na_inputtime DESC 
+	</select>
+	
+</mapper>
