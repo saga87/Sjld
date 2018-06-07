@@ -3,7 +3,7 @@
 <html lang="en">
 <%@include file="/systemdev/myContext.jsp" %>
  <head>
-<script type="text/javascript" src="page/sjc/sendBackEventWf/sendBackEventWf.js"></script>
+<script type="text/javascript" src="page/sjc/backEvent/backEvent.js"></script>
 <script type="text/javascript" src="system/js/commonStatus.js"></script>
 <script type="text/javascript">
  $(function (){

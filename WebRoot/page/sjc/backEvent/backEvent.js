@@ -8,16 +8,17 @@ $(function(){
     lay=$("#backedEventWf_layout").ligerLayout({rightWidth:560,isRightCollapse: true});
     
     manager = $("#backedEventWf_maingrid").ligerGrid({
-        url:'eventReportWf/WkrjEventReportWf/getBackedEventWfList',
+        url:'eventWf/WkrjEventWf/getBackedEventWfList',
         columns: [
         { display: '编号', name: 'event_no', id: 'event_no', width: '10%', align: 'center' },
-        { display: '内容', name: 'event_content', id: 'event_content', width: '30%', align: 'center' },
-        { display: '姓名', name: 'caller_username', id: 'caller_username', width: '10%', align: 'center' },
-        { display: '来电号码', name: 'caller_tel', id: 'caller_tel', width: '9%', align: 'center' },
+        { display: '投诉标题', name: 'event_title', id: 'event_title', width: '20%', align: 'center' },
+        { display: '受理类别', name: 'content_type', id: 'content_type', width: '10%', align: 'center' },
         { display: '处理时限', name: 'deal_days', id: 'deal_days', width: '10%', align: 'center' },
-        { display: '是否已审核', name: 'shenhe_status', id: 'shenhe_status', width: '10%', align: 'center', render: shenheTrans },
-        { display: '来电性质', name: 'nature', id: 'nature', width: '10%', align: 'center' },
-        { display: '发布时间', name: 'event_inputtime', id: 'event_inputtime', width: '10%', align: 'center' }
+        { display: '业务类型', name: 'nature', id: 'nature', width: '10%', align: 'center' },
+        { display: '受理时间', name: 'event_inputtime', id: 'event_inputtime', width: '10%', align: 'center' },
+        { display: '受理渠道', name: 'source', id: 'source', width: '10%', align: 'center' },
+        { display: '备注', name: 'event_other', id: 'event_other', width: '19%', align: 'center' }
+        //{ display: '状态', name: 'event_status', id: 'event_status', width: '10%', align: 'center', render: statusTrans }
 //        { display: '操作', isSort: false, width: '9%', render: function (rowdata, rowindex, value){
 //            var h = "<a style='text-decoration:none;' onclick='print(\""+rowindex+"\")' href='javascript:void(0)'>[打印]</a>";
 //            return h;
@@ -33,7 +34,7 @@ $(function(){
 //                text : '转办',
 //                click : event_zhuanban,
 //                icon : 'modify',
-//                id:'eventReportWf/WkrjEventReportWf/zhuanbanEvent_back'
+//                id:'eventWf/WkrjEventWf/zhuanbanEvent_back'
 //            } ]
 //        },
         onDblClickRow: function (data, rowindex, rowobj) {
@@ -43,7 +44,7 @@ $(function(){
             }
             var s = parent.$.ligerDialog.open({
                 //target: $("#eventReport_updateWindow_form"),
-                url : "page/sjc/sendBackEventWf/backDetailsWf.jsp",
+                url : "page/sjc/backEvent/back_details.jsp",
                 //data : JSON.stringify(r),
                 width : 900,
                 height :750,
@@ -51,47 +52,6 @@ $(function(){
                     content:data
                 },
                 buttons : [ {
-                    text : '确定',
-                    onclick : function(item, dialog) {
-                        var data = dialog.frame.liger.get("eventInfo_backedWfWindow_form").getData();
-                        if (data.shenhe_status == null || data.shenhe_status == "") {
-                        	top.$.ligerDialog.alert("请选择审核结果");
-                            return;
-                        }
-                        if (data.shenhe_status == 1) {//审核通过直接转办
-                        	data.chengban_dept_old = data.chengban_dept;
-                            data.chengban_dept = dialog.frame.liger.get("chengban_dept").getValue();
-                            if (data.chengban_dept == null || data.chengban_dept == "") {
-                                top.$.ligerDialog.alert("承办单位不能为空");
-                                return;
-                            }
-                            if (data.deal_days == null || data.deal_days == "") {
-                                top.$.ligerDialog.alert("时限不能为空");
-                                return;
-                            }
-                            data.deal_type = "转办";
-                        }
-                        $.ajax({
-                            url: "eventReportWf/WkrjEventReportWf/shenheBackReason",
-                            data: data,
-                            dataType : "json",  
-                            type : "POST",
-                            success: function(result){
-                                    try{
-                                        result = eval('('+result+')');
-                                    }catch(e){
-                                    }
-                                    if (result.success) {
-                                    	top.$.ligerDialog.alert(result.msg);
-                                        manager.loadData();
-                                        dialog.close();
-                                    } else {
-                                        top.$.ligerDialog.alert(result.msg);
-                                    }
-                                 }
-                           });
-                    }
-                }, {
                     text : '取消',
                     onclick : function(item, dialog) {
                         dialog.close();
@@ -116,7 +76,7 @@ function event_zhuanban(row){
     }
     var s = parent.$.ligerDialog.open({
         //target: $("#eventReport_updateWindow_form"),
-        url : "page/sjc/sendBackEventWf/backDetailsWf.jsp",
+        url : "page/sjc/backEvent/back_details.jsp",
         //data : JSON.stringify(r),
         width : 900,
         height :650,
@@ -135,7 +95,7 @@ function event_zhuanban(row){
                 }
                 data.deal_type = "转办";
                 $.ajax({
-                    url: "eventReportWf/WkrjEventReportWf/zhuanbanEvent_back",
+                    url: "eventWf/WkrjEventWf/zhuanbanEvent_back",
                     data: data,
                     dataType : "json",  
                     type : "POST",
