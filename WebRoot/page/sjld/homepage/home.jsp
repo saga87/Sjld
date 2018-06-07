@@ -33,19 +33,44 @@
 			
 		}
 	});
+	
+	
+	$.ajax({
+		url:'remind/getEventOrder',
+		type:'post',
+		data:{page:1,pagesize:5},
+		dataType:'json',
+		success:function (data) {
+		 var ret =  data.Rows;
+		 var sum = ret.length;
+		 if(sum>0){
+		 	for (var i = 0; i < sum; i++) {
+		 	$('#naul').append('<li style="margin-top:5px;" >'+(i+1)+'.'+ret[i].event_title+'&nbsp;<span style="color:red;">new!</span></li>');
+		 	}
+		 }
+			
+		}
+	});
+	
+	
 	});
 </script>
  </head>
  <body onload=initial();>
  
- <div style="margin-top: 30px;margin-left: 10px;border:1px solid #000;width:400px;padding:10px">
-      	<p style="font-size: 15px;color: red">最新消息:</p>
+ 	<div style="margin-top: 30px;margin-left: 10px;border:1px solid #000;width:400px;padding:10px">
+      	<p style="font-size: 15px;color: red">最新公告:</p>
       	<ul id="newsul" style="padding: 5px;">
       		
       	</ul>
       </div>
  
- 
+  	<div style="margin-top: 30px;margin-left: 450px;border:1px solid #000;width:400px;padding:10px">
+      	<p style="font-size: 15px;color: red">工单提醒:</p>
+      	<ul id="naul" style="padding: 5px;">
+      		
+      	</ul>
+      </div>
  
  	<iframe name="weather_inc" src="http://i.tianqi.com/index.php?c=code&id=57" width="650" height="427" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"
  	 style = "margin-left: 450px;margin-top: 10px"></iframe>

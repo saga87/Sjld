@@ -34,8 +34,8 @@ $(function(){
     manager = $("#select_user_maingrid").ligerGrid({
         url:'wkrjsystem/newsManage/getUserList',
         columns : [
-        { display: '真实姓名', name: 'user_realname', id:'user_realname',width: '47%', align: 'left' },
-        { display: '所属学校', name: 'school_name', id:'school_id',width: '47%', align: 'left' }
+        { display: '真实姓名', name: 'user_realname', id:'user_realname',width: '100%', align: 'left' }
+       
         ], height : '100%',
         width:'100%',
         checkbox: true,
@@ -52,7 +52,7 @@ $(function(){
 //左侧树，点击
 function onSelect(note){
 	var g = $("#select_user_maingrid").ligerGetGridManager();
-	g.set({url:'wkrjsystem/wkrjUser/getUserList?deptId='+note.data.id});
+	g.set({url:'wkrjsystem/wkrjUser/getUserLowerList?deptId='+note.data.id});
 	g.reload();
 }
 

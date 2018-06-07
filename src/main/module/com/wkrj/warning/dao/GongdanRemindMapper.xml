@@ -13,8 +13,8 @@
 		(select dept_name from wkrj_sys_department where dept_id=chengban_dept) chengban
 		FROM wkrj_reportevent_wf
 		WHERE 1=1
-		<if test="null!=user_id and ''!=user_id">
-            and input_user = #{user_id}
+		<if test="null != dept_id and '' != dept_id">
+            and chengban_dept = #{dept_id}
         </if>
 		ORDER BY event_inputtime desc
 		LIMIT #{offset},#{pagesize}

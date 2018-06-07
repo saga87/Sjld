@@ -15,8 +15,8 @@ public class GongdanRemindServiceImpl implements GongdanRemindService {
 	@Autowired
 	private GongdanRemindDao dao;
 	@Override
-	public List<Map<String, Object>> getEventOrder(int offset, int pagesize,String user_id) {
-		return dao.getEventOrder(offset, pagesize,user_id);
+	public List<Map<String, Object>> getEventOrder(int offset, int pagesize,String dept_id) {
+		return dao.getEventOrder(offset, pagesize,dept_id);
 	}
 
 }

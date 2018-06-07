@@ -80,6 +80,54 @@
 	</select>
 	
 	
+	<select id="getUserLowerList" resultMap="simpleWkrjUser" parameterType="Object">
+	
+		SELECT user_accounttype,user.user_id,user.dept_id,
+				station_id,user_name,user_password,user_realname,user_card,user_is_enable,
+			   DATE_FORMAT(user_inputtime,'%Y-%m-%d %H:%i:%s') user_inputtime,user_last_ip,user_no,d.dept_name,
+			   DATE_FORMAT(user_last_time,'%Y-%m-%d %H:%i:%s') user_last_time,user_tel
+		FROM   wkrj_sys_user user 
+		left join wkrj_sys_department d on user.dept_id=d.dept_id
+		where user_accounttype=0
+		
+		<if test="false==isGly">  
+            and user.inputuserdept LIKE CONCAT('%',#{user_dept},'%') or user.dept_id LIKE CONCAT('%',#{user_dept},'%')
+        </if>  
+		
+		<if test="null!=deptId and ''!=deptId">
+			and user.dept_id  like concat(#{deptId},"%")
+		</if>
+		
+		<if test="null!=userName and ''!=userName">
+			and user_realname like concat("%",#{userName},"%")
+		</if>
+		
+		limit #{offset},#{page}	
+	
+	</select>
+	
+	
+	<select id="getUserLowerListCount" resultType="Long" parameterType="Object">
+		
+		SELECT count(user_id) 
+		FROM `wkrj_sys_user` 
+		where user_accounttype =0 
+		<if test="false==isGly">  
+             and inputuserdept LIKE CONCAT('%',#{user_dept},'%') or dept_id LIKE CONCAT('%',#{user_dept},'%')
+        </if>  		
+		
+		<if test="null!=deptId and ''!=deptId">
+			and dept_id like concat(#{deptId},"%")
+		</if>
+		<if test="null!=userName and ''!=userName">
+			and user_realname like concat("%",#{userName},"%")
+		</if>
+		
+	</select>
+	
+	
+	
+	
 	<select id="getPrincipleList" resultType="WkrjUser" parameterType="Object">
 	
 		SELECT u.user_id,user_name,user_realname,school_name,

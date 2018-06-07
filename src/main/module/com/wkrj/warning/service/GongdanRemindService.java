@@ -4,5 +4,5 @@ import java.util.List;
 import java.util.Map;
 
 public interface GongdanRemindService {
-	 List<Map<String, Object>> getEventOrder(int offset,int pagesize,String user_id);
+	 List<Map<String, Object>> getEventOrder(int offset,int pagesize,String dept_id);
 }

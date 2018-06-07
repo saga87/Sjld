@@ -10,6 +10,9 @@ import wkrjsystem.user.bean.WkrjUser;
 public interface WkrjUserService {
 	public List<WkrjUser> getUserList(int offset, int page,String deptId,String userName,boolean isGly,String user_dept);
 	
+	public long getUserLowerList(String deptId,String userName,boolean isGly,String user_dept);
+	public List<WkrjUser> getUserLowerList(int offset, int page,String deptId,String userName,boolean isGly,String user_dept);
+	
 	public long getUserList(String deptId,String userName,boolean isGly,String user_dept);
 	
 	public List<WkrjUser> getPrincipleList(int offset, int page,String userName,String school_name,String counties);

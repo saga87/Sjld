@@ -37,18 +37,23 @@ public class GongdanRemindController {
 		List<Map<String, Object>> lists = new ArrayList<Map<String,Object>>();
 		WkrjUser user = (WkrjUser) request.getSession().getAttribute("user");
 		WkrjUserDev userDev = (WkrjUserDev) request.getSession().getAttribute("userDev");
-		String user_id = "";
+//		String user_id = "";
+		String dept_id = "";
 		if (user != null) {
-			user_id = user.getUser_id();
+			dept_id = user.getDept_id();
 		} else if (userDev != null) {
-			user_id = userDev.getUser_id();
+			dept_id = userDev.getDept_id();
 		}
 		
-		if(user_id!=null&&"1".equals(user_id)){
-			user_id = "";
+//		if("1".equals(user_id)||"58dfbf28-ed18-4d52-a051-ac407c182dcd".equals(user_id) ){
+//			user_id = "";
+//		}
+		
+		if("04".equals(dept_id)||"0101".equals(dept_id)){
+			dept_id = "";
 		}
 		
-		lists = service.getEventOrder(offset, pagesize,user_id);
+		lists = service.getEventOrder(offset, pagesize,dept_id);
 		return UtilsHelper.returnMap(lists, lists.size());
 	}
 	

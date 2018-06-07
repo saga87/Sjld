@@ -306,7 +306,7 @@ function f_selectContact(){
 		data:{
 			content:data
 		},
-		name:'winselector',width: 800, height: 600, 
+		name:'winselector',width: 300, height: 600, 
 		url: 'page/sjld/warning/selectperson.jsp', 
 		buttons: [{ text: '确定', onclick: f_selectContactOK },
 		          { text: '取消', onclick: f_selectContactCancel }

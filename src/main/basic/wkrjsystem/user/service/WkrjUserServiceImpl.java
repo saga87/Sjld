@@ -249,4 +249,18 @@ public class WkrjUserServiceImpl implements WkrjUserService {
 		return dao.countPrincipleList(userName, school_name, counties);
 	}
 
+	@Override
+	public List<WkrjUser> getUserLowerList(int offset, int page, String deptId,
+			String userName, boolean isGly, String user_dept) {
+		// TODO Auto-generated method stub
+		return dao.getUserLowerList(offset, page, deptId, userName, isGly, user_dept);
+	}
+
+	@Override
+	public long getUserLowerList(String deptId, String userName, boolean isGly,
+			String user_dept) {
+		// TODO Auto-generated method stub
+		return dao.getUserLowerListCount(deptId, userName, isGly, user_dept);
+	}
+
 }

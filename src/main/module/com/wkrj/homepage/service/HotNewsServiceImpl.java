@@ -16,9 +16,9 @@ public class HotNewsServiceImpl implements HotNewsService {
 	private HotNewsDao dao;
 
 	@Override
-	public List<Map<String, Object>> getHotNews(int offset, int rows) {
+	public List<Map<String, Object>> getHotNews(int offset, int rows,String user_id) {
 		// TODO Auto-generated method stub
-		return dao.getHotNews(offset, rows);
+		return dao.getHotNews(offset, rows,user_id);
 	}
 
 	@Override

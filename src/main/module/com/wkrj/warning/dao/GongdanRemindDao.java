@@ -7,5 +7,5 @@ import org.apache.ibatis.annotations.Param;
 
 public interface GongdanRemindDao {
 	List<Map<String, Object>> getEventOrder(@Param("offset")int offset,
-			@Param("pagesize")int pagesize,@Param("user_id")String user_id);
+			@Param("pagesize")int pagesize,@Param("dept_id")String dept_id);
 }

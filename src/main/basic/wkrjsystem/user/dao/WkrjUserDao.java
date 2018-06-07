@@ -19,6 +19,16 @@ public interface WkrjUserDao {
 	public List<WkrjUser> getUserList(@Param("offset")int offset,@Param("page") int page,
 			@Param("deptId")String deptId,@Param("userName")String userName
 			,@Param("isGly")boolean isGly,@Param("user_dept")String user_dept);
+	
+	public List<WkrjUser> getUserLowerList(@Param("offset")int offset,@Param("page") int page,
+			@Param("deptId")String deptId,@Param("userName")String userName
+			,@Param("isGly")boolean isGly,@Param("user_dept")String user_dept);
+	
+	
+	public long getUserLowerListCount(@Param("deptId")String deptId,@Param("userName")String userName,
+			@Param("isGly")boolean isGly,@Param("user_dept")String user_dept);
+	
+	
 	/**
 	 * 获取用户数量
 	 * @param offset

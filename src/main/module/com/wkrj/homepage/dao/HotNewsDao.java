@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Param;
 
 public interface HotNewsDao {
 	List<Map<String,Object>> getHotNews(@Param("offset")int offset
-			,@Param("rows")int rows);
+			,@Param("rows")int rows,@Param("user_id")String user_id);
 	
 	List<Map<String,Object>> getNaById(@Param("na_id")String na_id);
 }
