@@ -56,6 +56,9 @@ public class NoticeAnnounceController {
 			user_id = userDev.getUser_id();
 		}
 		
+		if(user_id!=null&&"1".equals(user_id)){
+			user_id = "";
+		}
 		
 		int offset = (page-1) * pagesize;
 		List<Map<String,Object>> list = new ArrayList<Map<String,Object>>();

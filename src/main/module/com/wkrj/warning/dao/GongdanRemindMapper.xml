@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.wkrj.warning.dao.GongdanRemindDao">
+	<select id="getEventOrder" resultType="map">
+		SELECT *,
+		DATEDIFF(NOW(),DATE_SUB(input_time,INTERVAL -deal_days DAY)) remain_days,
+		round((UNIX_TIMESTAMP(NOW())-UNIX_TIMESTAMP(DATE_SUB(input_time,INTERVAL -deal_days DAY)))/3600) remain_hours,
+		DATE_FORMAT(input_time,'%Y-%m-%d %H:%i:%s') event_inputtime,
+		(select typename from wkrj_sys_data_dictionary where id=accept_source) source,
+		(select typename from wkrj_sys_data_dictionary where id=business_type) nature,
+		(select dept_name from wkrj_sys_department where dept_id=chengban_dept) chengban
+		FROM wkrj_reportevent_wf
+		WHERE 1=1
+		<if test="null!=user_id and ''!=user_id">
+            and input_user = #{user_id}
+        </if>
+		ORDER BY event_inputtime desc
+		LIMIT #{offset},#{pagesize}
+	</select>
+</mapper>

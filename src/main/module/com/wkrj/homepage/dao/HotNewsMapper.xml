@@ -10,7 +10,7 @@
 		(select dept_name from wkrj_sys_department where dept_id = na_inputuserdept)
 		as dname
 		FROM wkrj_noticeannounce n,wkrj_sys_user u 
-		WHERE u.user_id = n.na_inputuser AND na_inputuserdept = '03'
+		WHERE u.user_id = n.na_inputuser AND na_inputuserdept = '04'
 		ORDER BY na_inputtime DESC 
 		LIMIT #{offset},#{rows}
 	</select>

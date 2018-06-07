@@ -14,7 +14,8 @@ public interface MessageManageDao {
 	
 	int countFromLike(@Param("user_id")String user_id,@Param("must_read_id")String must_read_id,
 			@Param("commenter")String commenter,@Param("comment_content")String comment_content);
-	boolean deleteFromLike(@Param("user_id")String user_id,@Param("must_read_id")String must_read_id);
+	boolean deleteFromLike(@Param("user_id")String user_id,@Param("must_read_id")String must_read_id,
+			@Param("commenter")String commenter,@Param("comment_content")String comment_content);
 	boolean insertToLike(@Param("user_id")String user_id,@Param("must_read_id")String must_read_id,
 			@Param("commenter")String commenter,@Param("comment_content")String comment_content);
 	

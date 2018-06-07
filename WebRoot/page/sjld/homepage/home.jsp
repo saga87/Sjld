@@ -17,7 +17,7 @@
 		$.ajax({
 		url:'homepage/news/getHotNews',
 		type:'post',
-		data:{page:1,pagesize:5},
+		data:{page:1,pagesize:10},
 		dataType:'json',
 		success:function (data) {
 		 var ret =  data.Rows;
@@ -27,7 +27,7 @@
 		 	var news = ret[i];
 		 	var valueStr = JSON.stringify(news);
 		 //	console.log(valueStr);
-		 	$('#newsul').append('<li style="margin-top:5px" onclick="f_click(\''+ret[i].na_id+'\')">'+(i+1)+'.'+ret[i].na_title+'&nbsp;<span style="color:red;">new!</span></li>');
+		 	$('#newsul').append('<li style="margin-top:5px;cursor:pointer" onclick="f_click(\''+ret[i].na_id+'\')">'+(i+1)+'.'+ret[i].na_title+'&nbsp;<span style="color:red;">new!</span></li>');
 		 	}
 		 }
 			
@@ -37,10 +37,23 @@
 </script>
  </head>
  <body onload=initial();>
+ 
+ <div style="margin-top: 30px;margin-left: 10px;border:1px solid #000;width:400px;padding:10px">
+      	<p style="font-size: 15px;color: red">最新消息:</p>
+      	<ul id="newsul" style="padding: 5px;">
+      		
+      	</ul>
+      </div>
+ 
+ 
+ 
  	<iframe name="weather_inc" src="http://i.tianqi.com/index.php?c=code&id=57" width="650" height="427" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"
  	 style = "margin-left: 450px;margin-top: 10px"></iframe>
  	
 	<div id="content">
+	
+	
+	
 <!-- 显示日期详情 -->
   <div id="detail">
        <div id="date_content"></div>
@@ -154,12 +167,7 @@
            </table>
       </form>
       
-      <div style="margin-top: 30px">
-      	<p style="font-size: 15px;color: red">最新消息:</p>
-      	<ul id="newsul" style="padding: 5px;">
-      		
-      	</ul>
-      </div>
+      
       
       
    </div>

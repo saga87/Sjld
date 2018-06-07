@@ -23,9 +23,9 @@
         <if test="null!=end_date and ''!=end_date">
             and na_inputtime &lt;= #{end_date}
         </if>
-		
+		<if test="null!=user_id and ''!=user_id">
 		and (FIND_IN_SET(#{user_id},accept_user) or n.na_inputuserdept LIKE CONCAT('%',#{user_dept},'%'))
-		
+		</if>
 		ORDER BY na_inputtime DESC 
 		LIMIT #{offset},#{rows}
 	</select>
