@@ -104,96 +104,60 @@ $(function (){
 <body>
 <form id="eventInfo_backedWfWindow_form" method="get" class="liger-form">
     <div style="overflow:hidden;">
-        <div class="Co">
-            <label>&nbsp;&nbsp;编号:</label>
-            <input type="text" name="event_no" disabled/>
-            <label>&nbsp;&nbsp;状态:</label>
-            <input type="text" name="event_status" disabled/>
-        </div>
-        <div class="Co">
-            <label>&nbsp;&nbsp;用户姓名:</label>
-            <input type="text" name="caller_username" disabled/>
-            <label>&nbsp;&nbsp;用户电话:</label>
-            <input type="text" name="caller_tel" disabled/>
-        </div>
-        <!-- <div class="Co">
-            <label>&nbsp;&nbsp;用户地址:</label>
-            <input type="text" name="address2" disabled/>
-            <input type="hidden" name="address1"/>
-        </div> -->
-        <div class="Co">
-            <label>&nbsp;&nbsp;受理工号:</label>
-            <input type="text" name="accept_workno" disabled/>
-            <label>&nbsp;&nbsp;受理时间:</label>
-            <input type="text" name="event_inputtime" disabled/>
-        </div>
-        <div class="Co">
-            <label>&nbsp;&nbsp;内容分类:</label>
-            <input type="text" name="content_type" disabled/>
-            <label>&nbsp;&nbsp;来电性质:</label>
-            <input type="text" name="nature" disabled/>
-            <input type="hidden" name="caller_nature"/>
-        </div>
-        <div class="Co">
-            <label>&nbsp;&nbsp;&nbsp;&nbsp;具体要求:</label>
-            <div class="r_div">
-                <textarea name="event_content" style="height:100px;width:700px;background:#D0D0D0" disabled></textarea>
-            </div>
-        </div>
-        <div class="Co">
-            <label>&nbsp;&nbsp;部门:</label>
-            <input type="text" name="dept_name" disabled/><input type="hidden" name="chengban_dept" id="chengban_dept_old" />
-            <label><span class="text_red" >*</span>&nbsp;&nbsp;退回时间:</label>
-            <input type="text" name="reply_time" disabled/>
-        </div>
-        <div class="Co">
-            <label>&nbsp;&nbsp;&nbsp;&nbsp;退回理由:</label>
-            <div class="r_div" id="reply_content_div" style="width:670px;">
-                <textarea name="reply_content" id="reply_content" style="height:100px;width:700px;" disabled></textarea>
-            </div>
-        </div>
-        <div class="Co">
-            <label><span class="text_red" >*</span>审核结果:</label>
-            <input type="radio" name="shenhe_status" value="1" /><span style="">通过</span>
-            <input type="radio" name="shenhe_status" value="2" checked="checked"/><span style="">未通过</span>
-        </div>
-        <div class="Co" style="display:none" id="zhuanban_div">
-            <label><span class="text_red" >*</span>&nbsp;&nbsp;承办单位:</label>
-            <input type="text" name="" id="chengban_dept" />
-            <label><span class="text_red" >*</span>处理时限:</label>
-            <input type="text" name="deal_days" id="deal_days" />
-            <label><span class="text_red" >*</span>内容分类:</label>
-            <input type="text" name="content_type" id="content_type" style="width:195px;"/>
-            <input type="hidden" id="content_type_hidden" name="content_type_hidden"/>
-        </div>
-        <div class="Co" style="display:none" id="zhuanban_instruction_div">
-            <label>&nbsp;&nbsp;&nbsp;&nbsp;转办说明:</label>
-            <div class="r_div">
-                <textarea name="zhuanban_instruction" id="zhuanban_instruction" style="height:100px;width:700px;"></textarea>
-            </div>
-        </div>
-        <!-- <div class="Co" style="display:none" id="center_opinion_div">
-            <label>&nbsp;&nbsp;&nbsp;&nbsp;中心意见:</label>
-            <div class="r_div">
-                <textarea name="center_opinion" id="center_opinion" style="height:100px;width:700px;"></textarea>
-            </div>
-        </div> -->
-        <input type="hidden" name="event_id" id="event_id">
-        <input type="hidden" name="event_no" id="event_no">
-        <input type="hidden" name="accept_workno" id="accept_workno">
-        <input type="hidden" name="event_content" id="event_content">
-        <input type="hidden" name="caller_username" id="caller_username">
-        <input type="hidden" name="caller_tel" id="caller_tel">
-        <input type="hidden" name="address2" id="address2">
-        <input type="hidden" name="event_other" id="event_other">
-        <input type="hidden" name="chengban_dept" id="chengban_dept_old">
-        <input type="hidden" name="cbd_fileurl" id="cbd_fileurl">
-        <input type="hidden" name="cbdtime" id="cbdtime">
-        <input type="hidden" name="cbd_leaderpishi" id="cbd_leaderpishi">
-        <input type="hidden" name="cbd_dealresult" id="cbd_dealresult">
-        <input type="hidden" name="cbd_zbzx" id="cbd_zbzx">
-        <input type="hidden" name="cbd_no" id="cbd_no">
-        <input type="hidden" name="zhuanbanornot" id="zhuanbanornot">
+                <div class="Co">
+                    <label><span class="text_red" >*</span>&nbsp;&nbsp;受理渠道:</label>
+                    <input type="text" name="source" id="source" disabled/>
+                    <input type="hidden" id="accept_source" name="accept_source">
+                    <label><span class="text_red" >*</span>&nbsp;&nbsp;处理时限:</label>
+                    <input type="text" id="deal_days" name="deal_days" disabled/>
+                </div>
+                <div class="Co">
+                    <label><span class="text_red" >*</span>&nbsp;&nbsp;受理类别:</label>
+                    <input type="text" name="content_type" id="content_type" data-options="method:'post'" disabled/>
+                    <input type="hidden" id="content_type_hidden">
+                    <label><span class="text_red" >*</span>&nbsp;&nbsp;业务类型:</label>
+                    <input type="text" id="nature" name="nature" disabled/>
+                    <input type="hidden" id="business_type" name="business_type">
+                </div>
+                <div class="Co">
+                    <label><span class="text_red" >*</span>&nbsp;&nbsp;投诉标题:</label>
+                    <input type="text" id="event_title" name="event_title" style="width:700px;" disabled/>
+                </div>
+                <div class="Co">
+                    <label>&nbsp;&nbsp;&nbsp;&nbsp;投诉内容:</label>
+                    <div class="r_div">
+                        <textarea id="event_content" name="event_content" style="height:100px;width:700px;" disabled></textarea>
+                    </div>
+                </div>
+                <div class="Co">
+                    <label>&nbsp;&nbsp;&nbsp;&nbsp;事件备注:</label>
+                    <div class="r_div">
+                        <textarea name="event_other" id="event_other" style="height:100px;width:700px;" disabled></textarea>
+                    </div>
+                </div>
+                <div class="Co" style="" id="zhuanban_div">
+                    <label><span class="text_red" >*</span>&nbsp;&nbsp;受理单位:</label>
+                    <input type="text" name="dept_name" id="chengban_dept" disabled/>
+                    <input type="hidden" name="chengban_dept_hidden" id="chengban_dept_hidden" />
+                </div>
+                <div class="Co" style="" id="">
+                    <label><span class="text_red" >*</span>回复内容:</label>
+                    <div class="r_div">
+                        <textarea name="reply_content" id="" style="height:100px;width:700px;" disabled></textarea>
+                    </div>
+                </div>
+                <div class="Co" style="display:none" id="back_div">
+                    <label>&nbsp;&nbsp;&nbsp;&nbsp;退回理由:</label>
+                    <div class="r_div">
+                        <textarea name="opt_content" id="back_reason" style="height:100px;width:700px;" ></textarea>
+                    </div>
+                </div>
+                <input type="hidden" name="event_id" id="event_id">
+                <input type="hidden" name="event_no" id="event_no">
+                <input type="hidden" name="zhuanbanornot" id="zhuanbanornot">
+                <input type="hidden" name="chengban_dept">
+                <input type="hidden" name="qianshou_status">
+                <input type="hidden" name="event_inputtime">
     </div>
 </form>
 </body>

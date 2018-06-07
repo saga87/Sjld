@@ -3,7 +3,7 @@
 <html lang="en">
 <%@include file="/systemdev/myContext.jsp" %>
  <head>
-<script type="text/javascript" src="page/sjc/backEvent/backEvent.js"></script>
+<script type="text/javascript" src="page/sjc/yanqiEvent/yanqiEvent.js"></script>
 <script type="text/javascript" src="system/js/commonStatus.js"></script>
 <script type="text/javascript">
  $(function (){
@@ -13,9 +13,9 @@
  </script>
 </head>
 <body style="overflow:hidden;">
-<div id="backedEventWf_layout" style="width:100%;">    
+<div id="delayedEventWf_layout" style="width:100%;">   
     <div position="center">
-        <div id="backedEventWf_maingrid"></div>
+        <div id="delayedEventWf_maingrid"></div>
     </div>
 </div>
 </body>
