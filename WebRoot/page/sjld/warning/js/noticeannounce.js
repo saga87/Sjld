@@ -94,7 +94,7 @@ function checkFileList(row){
 function delnewsManageFile(row){
 	var g = $("#newsManageFile_maingrid").ligerGetGridManager();
 	var r = g.getSelectedRow();
-	if (r.na_inputuser != user_id) {
+	if (r.na_inputuser != user_id && "1" != user_id) {
 		top.$.ligerDialog.alert("只能本人删除");
 		return;
 	}
@@ -262,7 +262,7 @@ function newsManage_check(row){
 function na_delRow(row){
 	var g = $("#newsManage_maingrid").ligerGetGridManager();
 	var r = g.getSelectedRow();
-	if (r.na_inputuser != user_id) {
+	if (r.na_inputuser != user_id && "1" != user_id) {
 		top.$.ligerDialog.alert("只能本人删除");
 		return;
 	}
@@ -447,7 +447,7 @@ function na_edit(){
 		$.ligerDialog.alert('请选择一条记录进行修改!');
 		return;
 	}
-	if (r.na_inputuser != user_id) {
+	if (r.na_inputuser != user_id&& "1" != user_id) {
 		top.$.ligerDialog.alert("只能本人修改");
 		return;
 	}
