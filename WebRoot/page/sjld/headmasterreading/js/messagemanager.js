@@ -21,8 +21,16 @@ $(function(){
         usePager :true,
 		rownumbers : true,
         alternatingRow: true,
+        fixedCellHeight:false,
 		toolbar : {
-			items : [ {
+			items : [ 
+//			          {
+//				text : '浏览',
+//				click : message_view,
+//				icon : 'search',
+//				id:'messageManage/getList'
+//			},
+			{
 				text : '删除',
 				click : message_delRow,
 				icon : 'delete',
@@ -38,6 +46,33 @@ $(function(){
     
 	
 });
+
+function message_view(){
+	var g = $("#messageManage_maingrid").ligerGetGridManager();
+	var r = g.getSelectedRow();
+	if (r == undefined)	{
+		$.ligerDialog.alert('请选择一条记录进行操作!');
+		return;
+	}
+	
+	parent.$.ligerDialog.open({
+		url : "page/sjld/headmasterreading/view_message.jsp",
+		width : 800,
+		height : 600,
+		data: {
+            content:r
+		},
+		buttons : [ {
+			text : '取消',
+			onclick : function(item, dialog) {
+				dialog.close();
+			}
+		} ]
+	});
+	
+}
+
+
 
 function message_likeRow(row){
 	var g = $("#messageManage_maingrid").ligerGetGridManager();
