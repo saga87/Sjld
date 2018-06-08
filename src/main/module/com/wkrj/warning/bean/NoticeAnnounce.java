@@ -14,13 +14,19 @@ public class NoticeAnnounce {
 	private String na_inputuser;//录入人
 	private String na_inputuserdept;//录入人部门
 	private String na_inputtime;//录入时间
-	private int importance;//重要程度
+	private String importance;//重要程度
 	private String accept_user;//可视用户
 	private String file_yname;
 	private String file_xname;
 	
 	
 	
+	public String getImportance() {
+		return importance;
+	}
+	public void setImportance(String importance) {
+		this.importance = importance;
+	}
 	public String getFile_yname() {
 		return file_yname;
 	}
@@ -74,12 +80,6 @@ public class NoticeAnnounce {
 	}
 	public void setNa_inputtime(String na_inputtime) {
 		this.na_inputtime = na_inputtime;
-	}
-	public int getImportance() {
-		return importance;
-	}
-	public void setImportance(int importance) {
-		this.importance = importance;
 	}
 	public String getAccept_user() {
 		return accept_user;

@@ -49,11 +49,20 @@ public class GongdanRemindController {
 //			user_id = "";
 //		}
 		
-		if("04".equals(dept_id)||"0101".equals(dept_id)){
-			dept_id = "";
-		}
+		boolean isGly = false;
 		
-		lists = service.getEventOrder(offset, pagesize,dept_id);
+		 String roleIds = request.getSession().getAttribute("userRoleId")+"";
+	        String[] role_ids = roleIds.split(",");
+	        for (int i = 0; i < role_ids.length; i++) {
+	            //如果是系统管理员
+	            if ("2".equals(role_ids[i]) || "7e3d28f7-2e18-4b71-82df-1fa3d15e0e9c".equals(role_ids[i])) {
+	                isGly = true;
+	                break;
+	            }
+	        }
+		
+		
+		lists = service.getEventOrder(offset, pagesize,dept_id,isGly);
 		return UtilsHelper.returnMap(lists, lists.size());
 	}
 	

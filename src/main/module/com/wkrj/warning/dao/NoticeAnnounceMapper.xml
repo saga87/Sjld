@@ -8,6 +8,7 @@
 		DATE_FORMAT(na_inputtime,'%Y-%m-%d %H:%i:%s') AS na_inputtime,importance,
 		accept_user,(select user_realname from wkrj_sys_user where user_id = na_inputuser) 
 		as user_realname,
+		(select typename from wkrj_sys_data_dictionary where id = n.importance) as im,
 		(select dept_name from wkrj_sys_department where dept_id = na_inputuserdept)
 		as dname
 		FROM wkrj_noticeannounce n 

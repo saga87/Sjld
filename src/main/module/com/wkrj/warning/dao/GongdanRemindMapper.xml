@@ -12,10 +12,13 @@
 		(select typename from wkrj_sys_data_dictionary where id=business_type) nature,
 		(select dept_name from wkrj_sys_department where dept_id=chengban_dept) chengban
 		FROM wkrj_reportevent_wf
-		WHERE 1=1
-		<if test="null != dept_id and '' != dept_id">
+		WHERE 1=1 
+		<if test="isGly==false">
+			and qianshou_status != 2
+			<if test="null != dept_id and '' != dept_id">
             and chengban_dept = #{dept_id}
-        </if>
+        	</if>
+		</if>
 		ORDER BY event_inputtime desc
 		LIMIT #{offset},#{pagesize}
 	</select>

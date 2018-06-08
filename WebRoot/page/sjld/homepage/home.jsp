@@ -8,7 +8,6 @@
 <script type="text/javascript">
 
 	function f_click(a){
-		
 		top.tab.addTabItem({text:"公告", url: 'page/sjld/homepage/news.jsp?na_id='+a});
 	}
 	
@@ -27,7 +26,7 @@
 		 	var news = ret[i];
 		 	var valueStr = JSON.stringify(news);
 		 //	console.log(valueStr);
-		 	$('#newsul').append('<li style="margin-top:5px;cursor:pointer" onclick="f_click(\''+ret[i].na_id+'\')">'+(i+1)+'.'+ret[i].na_title+'&nbsp;<span style="color:red;">new!</span></li>');
+		 	$('#newsul').append('<li style="margin-top:5px;cursor:pointer" onclick="f_click(\''+ret[i].na_id+'\')">'+(i+1)+'.'+ret[i].na_title+'&nbsp;<span style="color:red;" id="'+ret[i].na_id+'">new!</span></li>');
 		 	}
 		 }
 			

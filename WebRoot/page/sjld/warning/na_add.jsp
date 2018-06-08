@@ -11,12 +11,24 @@
  <link rel="stylesheet" type="text/css" href="plug-in/uploadify/uploadify.css">
  <script type="text/javascript" src="plug-in/uploadify/jquery.uploadify.js"></script>
 <script type="text/javascript">
-
+ var  im_combobox;
+ var parentID = '4500fa86-8766-4125-9b93-71a23c81e022';
        $(function (){
             $("#txtContactName").ligerComboBox({
                 width : 300, height : 30, selectBoxWidth : 300, selectBoxHeight : 100, 
                 onBeforeOpen: f_selectContact//,valueFieldID: 'hidCustomerID'
             });
+            
+            
+           im_combobox = $("#importance").ligerComboBox({
+                url: 'eventWf/WkrjEventWf/getDataDictionary?parentID='+parentID,
+                valueField: 'id',
+                textField: 'name',
+                width: 240,height: 30,selectBoxWidth: 240,selectBoxHeight: 100
+            });
+            
+            
+            
        });
        
 </script>
@@ -32,6 +44,14 @@
 				<input type="text" id="txtContactName" name="txtContactName" />
 			</div>
 		</div>
+		
+		
+		<div class="Co">
+            <label>&nbsp;&nbsp;重要程度:</label>
+            <input type="text" name="importance" id="importance" />
+        </div>
+		
+		
 		<div class="Co">
             <label>公告内容:</label>
             <div class="r_div">

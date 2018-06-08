@@ -7,14 +7,30 @@ $(function(){
     manager = $("#remind_maingrid").ligerGrid({
         url:'remind/getEventOrder',
         columns: [
-        { display: '投诉标题', name: 'event_title', id: 'event_title', width: '22%', align: 'center' },
+        { display: '投诉标题', name: 'event_title', id: 'event_title', width: '17%', align: 'center' },
         { display: '限制期限', name: 'remain_hours', id: 'remain_hours', width: '18%', align: 'center', render: showPic },
         { display: '承办单位', name: 'chengban', id: 'chengban', width: '10%', align: 'center' },
-        { display: '业务类型', name: 'nature', id: 'nature', width: '10%', align: 'center' },
+        { display: '业务类型', name: 'nature', id: 'nature', width: '6%', align: 'center' },
         { display: '受理渠道', name: 'source', id: 'source', width: '10%', align: 'center' },
         { display: '受理类别', name: 'content_type', id: 'content_type', width: '10%', align: 'center' },
         { display: '受理时间', name: 'event_inputtime', id: 'event_inputtime', width: '12%', align: 'center' },
         { display: '处理时限(天)', name: 'deal_days', id: 'deal_days', width: '8%', align: 'center' },
+        { display: '状态', name: 'event_status', id: 'event_status', width: '9%', align: 'center',
+        	render:function(rowdata, rowindex, value){
+            if(value=="1"){
+                return "新受理";
+            }else if(value=="2"){
+                return "已回复";
+            }else if(value=="3"){
+                return "<span style='color:red'>退回单<span>";
+            }else if(value=="4"){
+                return "<span style='color:red'>延时单<span>";
+            }else{
+            	return value;
+            } 
+          }
+        },
+ //       { display: '签收态', name: 'qianshou_status', id: 'qianshou_status', width: '3%', align: 'center' },
 //        { display: '操作', isSort: false, width: '9%', render: function (rowdata, rowindex, value){
 //            var h = "<a style='text-decoration:none;' onclick='print(\""+rowindex+"\")' href='javascript:void(0)'>[打印]</a>";
 //            return h;

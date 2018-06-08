@@ -13,11 +13,18 @@ $(function(){
         { display: '公告标题', name: 'na_title', id: 'na_title', width: '12%', align: 'center' },
         { display: '公告内容', name: 'na_content', id: 'na_content', width: '30%', align: 'center' },
         { display: '备注', name: 'na_other', id: 'na_other', width: '15%', align: 'center' },
-        { display: '录入时间', name: 'na_inputtime', id: 'na_inputtime', width: '10%', align: 'center' },
+        { display: '录入时间', name: 'na_inputtime', id: 'na_inputtime', width: '16%', align: 'center' },
         { display: '录入人账号', name: 'user_realname', id: 'user_realname', width: '10%', align: 'center' },
         { display: '录入人所在部门', name: 'dname', id: 'dname', width: '10%', align: 'center' },
         //{ display: '可视用户', name: 'accept_user', id: 'accept_user', width: '15%', align: 'center' },
-        { display: '重要程度', width: '7%', align: 'center',name: 'importance', id: 'importance'}
+        { display: '重要程度', width: '7%', align: 'center',name: 'im', id: 'im',
+        	render:function(rowdata, rowindex, value){
+                if(value=="非常重要"){
+                    return "<span style='color:red'>非常重要</span>";
+                }else{
+                	return value;
+                } 
+              }}
         ], height: '100%',
         width:'99.9%',
         usePager :true,
@@ -306,7 +313,7 @@ function f_selectContact(){
 		data:{
 			content:data
 		},
-		name:'winselector',width: 300, height: 600, 
+		name:'winselector',width: 700, height: 600, 
 		url: 'page/sjld/warning/selectperson.jsp', 
 		buttons: [{ text: '确定', onclick: f_selectContactOK },
 		          { text: '取消', onclick: f_selectContactCancel }
@@ -378,6 +385,10 @@ function na_add(){
 //				if(dialog.frame.liger.get("txtContactName")){
 //					users = dialog.frame.liger.get("txtContactName").getValue();
 //				}
+				
+				
+				data.importance = dialog.frame.liger.get("importance").getValue();
+				
 				var _user = "";
 				var _users = users.split(";");
 				for (var i = 0; i < _users.length; i++) {
@@ -475,7 +486,7 @@ function na_edit(){
 		            }
 				}
 				data.accept_user = _user;
-				
+				data.importance = dialog.frame.liger.get("importance").getValue();
 				$.ajax({
 		            url: "noticeAnnounce/updateNoticeAnnounce",
 		            data: data,

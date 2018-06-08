@@ -91,8 +91,8 @@
 			<div id="leftMenuTree"></div>
 		</div>
 		<div position="center" id="mainTabs">
-			<div tabid="home" title="首页" style="height:200px" >
-				<img src="system/imgs/welcome.png"  />
+			<div tabid="home" title="首页" style="height:200px;background:url(system/imgs/welcome.png) no-repeat" >
+				<iframe name="weather_inc" src="http://i.tianqi.com/index.php?c=code&id=7" style="margin-left:80%"   width="225" height="90" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
             </div> 
 		</div>
 	</div>

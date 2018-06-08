@@ -16,7 +16,7 @@ function getCheckedUser_realname(){
 
 $(function(){
 	
-    lay=$("#select_user_layout").ligerLayout({leftWidth:200,isRightCollapse: true});
+    lay=$("#select_user_layout").ligerLayout({leftWidth:180,isRightCollapse: true});
     
 	var data = frameElement.dialog.get('data').content;//获取data参数
 	try {
