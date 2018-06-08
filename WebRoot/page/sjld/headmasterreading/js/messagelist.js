@@ -41,12 +41,14 @@ $(function(){
 				click : cr_delRow,
 				icon : 'delete',
 				id:'messageList/deleteCaseRead'
-			}, {
-				text : '浏览',
-				click : viewFile,
-				icon : 'search',
-				id:'messageList/getCaseReadFile'
-			}, {
+			}, 
+//			{
+//				text : '浏览',
+//				click : viewFile,
+//				icon : 'search',
+//				id:'messageList/getCaseReadFile'
+//			}, 
+			{
 				text : '评论',
 				click : cr_comment,
 				icon : 'search',

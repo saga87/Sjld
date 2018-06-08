@@ -34,12 +34,12 @@
             <label>标题:</label>
 			<input type="text" name="must_read_title" id="must_read_title" />
             <label>案例类型:</label>
-			<input type="text" id="event_type" name="event_type" />
+			<input type="text" id="event_type" name="event_type" disabled="disabled"/>
         </div>
         <div class="Co">
            <label>内容:</label>
             <div class="r_div">
-                <textarea id="case_content" name="case_content"  style="height:280px;width:700px;left:-50px;border:0px;"></textarea>
+                <textarea id="case_content" name="case_content"  style="height:380px;width:700px;left:-50px;border:0px;"></textarea>
             </div>
         </div>
         

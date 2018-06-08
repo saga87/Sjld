@@ -51,7 +51,7 @@ $(function(){
 				icon : 'delete',
 				id:'noticeAnnounce/deleteNoticeAnnounce'
 			}, {
-				text : '查看附件',
+				text : '浏览',
 				click : checkFileList,
 				icon : 'search',
 				id:'noticeAnnounce/getNoticeAnnounceFileList'
@@ -63,7 +63,7 @@ $(function(){
 });
 
 /*
- * 查看附件列表
+ * 浏览
  */
 function checkFileList(row){
 	var g = $("#newsManage_maingrid").ligerGetGridManager();
@@ -75,8 +75,8 @@ function checkFileList(row){
 	
 	parent.$.ligerDialog.open({
 		url : "page/sjld/warning/na_File.jsp",
-		width : 600,
-		height : 460,
+		width : 800,
+		height : 600,
 		data: {
             content:r
 		},

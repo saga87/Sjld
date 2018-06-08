@@ -14,14 +14,24 @@ $(function(){
 		url:'informExtract/getFinishedEvent',
         columns: [
         { display: '编号', name: 'event_no', id: 'event_no', width: '10%', align: 'center' },
-        { display: '标题', name: 'event_title', id: 'event_title', width: '20%', align: 'center' },
+        { display: '标题', name: 'event_title', id: 'event_title', width: '10%', align: 'center' },
+        { display: '内容', name: 'event_content', id: 'event_content', width: '27%', align: 'center' },
         { display: '受理渠道', name: 'source', id: 'source', width: '10%', align: 'center' },
         { display: '业务类型', name: 'nature', id: 'nature', width: '5%', align: 'center' },
         { display: '受理时间', name: 'qianshou_time', id: 'qianshou_time', width: '10%', align: 'center' },
         { display: '受理类别', name: 'content_type', id: 'content_type', width: '10%', align: 'center' },
-        { display: '受理单位', name: 'chengban', id: 'chengban', width: '15%', align: 'center' },
-        { display: '状态', name: 'event_status', id: 'event_status', width: '10%', align: 'center' },
-        { display: '满意度', name: 'satisfy_status', id: 'satisfy_status', width: '10%', align: 'center' },
+        { display: '受理单位', name: 'chengban', id: 'chengban', width: '10%', align: 'center' },
+        { display: '满意度', name: 'satisfy_status', id: 'satisfy_status', width: '8%', align: 'center',
+        	render:function(rowdata, rowindex, value){
+        		if(value=="1"){
+        			return "满意"
+        		}else if(value=="2"){
+        			return "基本满意"
+        		}else if(value=="3"){
+        			return "不满意"
+        		}
+        	}
+        },
         ], height: '100%',
         width:'99.9%',
         usePager :true,

@@ -48,7 +48,9 @@
 	
 	
 	<select id="getNoticeAnnounceFileList" resultType="map" parameterType="Object">
-        SELECT * FROM wkrj_noticeannouncefile
+        SELECT *,
+        (select user_realname from wkrj_sys_user where user_id = file_inputuser) as uname 
+        FROM wkrj_noticeannouncefile
         <if test="file_id != null and file_id != ''">
              WHERE file_id=#{file_id}
         </if>

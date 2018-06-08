@@ -9,12 +9,13 @@
 		DATE_FORMAT(a.qianshou_time,'%Y-%m-%d %H:%i:%s')AS qianshou_time,
 		DATE_FORMAT(b.opt_time,'%Y-%m-%d %H:%i:%s')AS opt_time,
 		content_type,chengban_dept,event_status,satisfy_status,
-		opt_user,opt_type,opt_content,
+		opt_user,opt_type,opt_content,qianshou_status,
 		(select typename from wkrj_sys_data_dictionary where id=a.accept_source)AS source,
 		(select typename from wkrj_sys_data_dictionary where id=a.business_type)AS nature,
 		(select dept_name from wkrj_sys_department where dept_id=a.chengban_dept)AS chengban
 		FROM wkrj_reportevent_wf a,wkrj_procedurerecord b
 		WHERE 1=1 AND b.event_no = a.event_no
+		AND qianshou_status = 2
 		<if test="event_no != null and event_no != ''">
 			AND a.event_no = #{event_no}
 		</if>
