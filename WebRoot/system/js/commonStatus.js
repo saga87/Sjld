@@ -27,7 +27,7 @@ function displayOrNot(rowdata, rowindex, value) {
     return temp;
 }
 
-function secretTrans(rowdata, rowindex, value) {
+function comTrans(rowdata, rowindex, value) {
     var temp = "";
     if (value == "1") {
         temp = '是';
