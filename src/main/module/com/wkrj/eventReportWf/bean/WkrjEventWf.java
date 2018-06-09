@@ -35,7 +35,14 @@ public class WkrjEventWf {
     private String duban_systime;
     private String event_id;
     private String zhuanbanornot;
+    private String cuiban_status;
     
+    public String getCuiban_status() {
+        return cuiban_status;
+    }
+    public void setCuiban_status(String cuiban_status) {
+        this.cuiban_status = cuiban_status;
+    }
     public String getEvent_title() {
         return event_title;
     }
