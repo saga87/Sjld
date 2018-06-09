@@ -17,7 +17,8 @@ $(function(){
 		        { display: '业务类型', name: 'nature', id: 'nature', width: '10%', align: 'center' },
 		        { display: '受理时间', name: 'event_inputtime', id: 'event_inputtime', width: '10%', align: 'center' },
 		        { display: '受理渠道', name: 'source', id: 'source', width: '10%', align: 'center' },
-		        { display: '备注', name: 'event_other', id: 'event_other', width: '9%', align: 'center' },
+		        //{ display: '备注', name: 'event_other', id: 'event_other', width: '9%', align: 'center' },
+		        { display: '是否催办', name: 'cuiban_status', id: 'cuiban_status', width: '9%', align: 'center', render: comTrans },
 		        { display: '状态', name: 'event_status', id: 'event_status', width: '10%', align: 'center', render: statusTrans }
 //        { display: '操作', isSort: false, width: '9%', render: function (rowdata, rowindex, value){
 //            var h = "<a style='text-decoration:none;' onclick='print(\""+rowindex+"\")' href='javascript:void(0)'>[打印]</a>";
@@ -39,14 +40,15 @@ $(function(){
                 data: {
                     content:data
                 },
-                buttons : [ /*{
-                    text : '撤销',
+                buttons : [ {
+                    text : '催办',
                     onclick : function(item, dialog) {
-                    	top.$.ligerDialog.confirm("确定要撤销吗？",function(flag){
+                    	top.$.ligerDialog.confirm("确定要催办吗？",function(flag){
                             if (flag) {
 		                        $.ajax({
-		                            url: "eventWf/WkrjEventWf/chexiaoEventWf",
-		                            data: { event_id: data.event_id },
+		                            url: "eventWf/WkrjEventWf/cuibanEvent",
+		                            //data: { event_id: data.event_id },
+		                            data: data,
 		                            dataType : "json",
 		                            type : "POST",
 		                            success: function(result){
@@ -66,7 +68,7 @@ $(function(){
                             }
                         });
                     }
-                },*/ {
+                }, {
                     text : '取消',
                     onclick : function(item, dialog) {
                         dialog.close();

@@ -44,7 +44,7 @@
 // 			}
 // 		});
         //根据radio值设置可见不可见
-        $(":radio").click(function() {
+        $("input[type=radio][name=deal_type]").click(function() {
             if ($(this).val() == 1) {
                 $("#satisfy_div").show();
                 $("#back_div").hide();
@@ -199,6 +199,7 @@
 		        <input type="hidden" name="zhuanbanornot" id="zhuanbanornot">
 		        <input type="hidden" name="chengban_dept">
 		        <input type="hidden" name="qianshou_status">
+		        <input type="hidden" name="event_inputtime">
             </div>
         </form>
     </div>

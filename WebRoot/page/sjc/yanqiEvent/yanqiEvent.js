@@ -26,10 +26,10 @@ $(function(){
         alternatingRow: true,
         toolbar : {
             items : [ {
-                text : '转办',
+                text : '延期',
                 click : event_zhuanban,
                 icon : 'modify',
-                id:'eventWf/WkrjEventWf/zhuanbanEvent_delay'
+                id:'eventWf/WkrjEventWf/yanqiEvent'
             } ]
         },
         onDblClickRow: function (data, rowindex, rowobj) {

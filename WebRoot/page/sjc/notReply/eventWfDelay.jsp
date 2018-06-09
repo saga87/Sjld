@@ -70,7 +70,7 @@ function preview(){
         <div class="Co">
             <label>&nbsp;&nbsp;&nbsp;&nbsp;延时理由:</label>
             <div class="r_div">
-                <textarea name="delay_reason" style="height:100px;width:700px;" ></textarea>
+                <textarea name="opt_content" id="delay_reason" style="height:100px;width:700px;" ></textarea>
             </div>
         </div>
         <input type="hidden" name="event_id" id="event_id">

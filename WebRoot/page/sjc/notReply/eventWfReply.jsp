@@ -194,6 +194,7 @@
         </div> -->
         <input type="hidden" name="event_id" id="event_id">
         <input type="hidden" name="event_no" id="event_no">
+        <input type="hidden" name="event_inputtime" id="event_inputtime">
     </div>
 </form>
 </body>
