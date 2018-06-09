@@ -26,6 +26,20 @@ public interface WkrjEventWfService {
     public long getEventReportWfList(String user_id, String user_dept, String caller_username, String caller_tel, boolean isGly, String event_status, String qianshou_status, String cuiban_status,
             String overtime_status, String dateF, String shenhe_status, String event_no, String event_content);
     /**
+     * 获取事件信息
+     * @param 
+     * @return
+     */
+    public List<Map<String, Object>> getJjdqEventWfList(int offset, int page, String user_id, String user_dept, String start_date, String end_date, boolean isGly, String event_status,
+            String qianshou_status, String cuiban_status, String overtime_status, String dateF, String shenhe_status, String event_no, String event_content);
+    /**
+     * 获取事件信息数量
+     * @param user_id
+     * @return
+     */
+    public long getJjdqEventWfList(String user_id, String user_dept, String start_date, String end_date, boolean isGly, String event_status, String qianshou_status, String cuiban_status,
+            String overtime_status, String dateF, String shenhe_status, String event_no, String event_content);
+    /**
      * 添加事件信息
      * @param er
      * @return
@@ -131,5 +145,11 @@ public interface WkrjEventWfService {
     public boolean updateEventWf(WkrjEventWf ev);
     
     public boolean delEventWf(String event_id);
+    
+    public boolean yanqiEvent(WkrjEventWf event);
+    
+    public List<Map<String, Object>> getCuibanList(String event_id);
+    
+    public boolean cuibanEvent(WkrjEventWf event);
 
 }

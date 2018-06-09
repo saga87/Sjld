@@ -59,26 +59,32 @@ public class WkrjEventWfController {
     public Object getEventReportWfList(String parentId, HttpServletRequest request){
 
         String dateF = "";
-        boolean isGly = false;
-        String roleIds = request.getSession().getAttribute("userRoleId")+"";
-        String[] role_ids = roleIds.split(",");
-        for (int i = 0; i < role_ids.length; i++) {
-            //如果是系统管理员
-            if ("2".equals(role_ids[i]) || "ee228c85-d868-4228-90b9-41f3377806c0".equals(role_ids[i])) {
-                isGly = true;
-                break;
-            }
-        }
+        boolean isGly = checkIsGly(request);
 
         String caller_username = request.getParameter("caller_username");
         String caller_tel = request.getParameter("caller_tel");
         int page=Integer.parseInt(request.getParameter("page"));
         int pagesize=Integer.parseInt(request.getParameter("pagesize"));
         int offset = (page-1)*pagesize;
-        
         List<Map<String, Object>> list = this.erService.getEventReportWfList(offset, pagesize, "", "", caller_username, caller_tel, isGly, "", "", "", "", dateF, "", "", "");
         long count = this.erService.getEventReportWfList("", "", caller_username, caller_tel, isGly, "", "", "", "", dateF, "", "", "");
-        
+        return UtilsHelper.returnMap(list,count);
+    }
+    
+    @RequestMapping("getJjdqEventWfList")
+    @ResponseBody
+    public Object getJjdqEventWfList(String parentId, HttpServletRequest request){
+
+        String dateF = "";
+        boolean isGly = checkIsGly(request);
+
+        String start_date = request.getParameter("start_date");
+        String end_date = request.getParameter("end_date");
+        int page=Integer.parseInt(request.getParameter("page"));
+        int pagesize=Integer.parseInt(request.getParameter("pagesize"));
+        int offset = (page-1)*pagesize;
+        List<Map<String, Object>> list = this.erService.getJjdqEventWfList(offset, pagesize, "", "", start_date, end_date, isGly, "", "", "", "", dateF, "", "", "");
+        long count = this.erService.getJjdqEventWfList("", "", start_date, end_date, isGly, "", "", "", "", dateF, "", "", "");
         return UtilsHelper.returnMap(list,count);
     }
     
@@ -178,19 +184,10 @@ public class WkrjEventWfController {
 //        WkrjUser user = (WkrjUser) request.getSession().getAttribute("user");
 //        WkrjUserDev userDev = (WkrjUserDev) request.getSession().getAttribute("userDev");
 //        String user_id = "";
-        boolean isGly = false;
         String event_status = "1";
         String qianshou_status = "1";//处理中的（已签收）
         String dateF = "";
-        String roleIds = request.getSession().getAttribute("userRoleId")+"";
-        String[] role_ids = roleIds.split(",");
-        for (int i = 0; i < role_ids.length; i++) {
-            //如果是系统管理员
-            if ("2".equals(role_ids[i]) || "ee228c85-d868-4228-90b9-41f3377806c0".equals(role_ids[i])) {
-                isGly = true;
-                break;
-            }
-        }
+        boolean isGly = checkIsGly(request);
 //        if (user != null) {
 //            user_id = user.getUser_id();
 //        } else if (userDev != null) {
@@ -217,18 +214,10 @@ public class WkrjEventWfController {
     @RequestMapping("getRepliedEventWfList")
     @ResponseBody
     public Object getRepliedEventWfList(String parentId, HttpServletRequest request){
-        boolean isGly = false;
         String qianshou_status = "2";//已回复
+        String event_status = "1";//
         String dateF = "";
-        String roleIds = request.getSession().getAttribute("userRoleId")+"";
-        String[] role_ids = roleIds.split(",");
-        for (int i = 0; i < role_ids.length; i++) {
-            //如果是系统管理员
-            if ("2".equals(role_ids[i]) || "ee228c85-d868-4228-90b9-41f3377806c0".equals(role_ids[i])) {
-                isGly = true;
-                break;
-            }
-        }
+        boolean isGly = checkIsGly(request);
         String caller_username = request.getParameter("caller_username");
         String caller_tel = request.getParameter("caller_tel");
         int page=Integer.parseInt(request.getParameter("page"));
@@ -236,9 +225,9 @@ public class WkrjEventWfController {
         int offset = (page-1)*pagesize;
         String event_no = request.getParameter("event_no");
         String event_content = request.getParameter("event_content");
-        List<Map<String, Object>> list = this.erService.getEventReportWfList(offset, pagesize, "", "", caller_username, caller_tel, isGly, "", qianshou_status, "", "", dateF, "", event_no,
+        List<Map<String, Object>> list = this.erService.getEventReportWfList(offset, pagesize, "", "", caller_username, caller_tel, isGly, event_status, qianshou_status, "", "", dateF, "", event_no,
                 event_content);
-        long count = this.erService.getEventReportWfList("", "", caller_username, caller_tel, isGly, "", qianshou_status,  "", "", dateF, "", event_no, event_content);
+        long count = this.erService.getEventReportWfList("", "", caller_username, caller_tel, isGly, event_status, qianshou_status,  "", "", dateF, "", event_no, event_content);
         return UtilsHelper.returnMap(list,count);
     }
     
@@ -252,20 +241,11 @@ public class WkrjEventWfController {
     public Object getWfRepliedEventList_dept(String parentId, HttpServletRequest request){
         WkrjUser user = (WkrjUser) request.getSession().getAttribute("user");
         WkrjUserDev userDev = (WkrjUserDev) request.getSession().getAttribute("userDev");
-        boolean isGly = false;
         String user_dept = "";
         //String event_status = "1";
         String qianshou_status = "2";//已回复
         String dateF = "";
-        String roleIds = request.getSession().getAttribute("userRoleId")+"";
-        String[] role_ids = roleIds.split(",");
-        for (int i = 0; i < role_ids.length; i++) {
-            //如果是系统管理员
-            if ("2".equals(role_ids[i]) || "ee228c85-d868-4228-90b9-41f3377806c0".equals(role_ids[i])) {
-                isGly = true;
-                break;
-            }
-        }
+        boolean isGly = checkIsGly(request);
         if (user != null) {
             user_dept = user.getDept_id();
         } else if (userDev != null) {
@@ -294,18 +274,9 @@ public class WkrjEventWfController {
 //        WkrjUser user = (WkrjUser) request.getSession().getAttribute("user");
 //        WkrjUserDev userDev = (WkrjUserDev) request.getSession().getAttribute("userDev");
 //        String user_id = "";
-        boolean isGly = false;
         String event_status = "撤销";
         //String qianshou_status = "2";//已回复
-        String roleIds = request.getSession().getAttribute("userRoleId")+"";
-        String[] role_ids = roleIds.split(",");
-        for (int i = 0; i < role_ids.length; i++) {
-            //如果是系统管理员
-            if ("2".equals(role_ids[i]) || "ee228c85-d868-4228-90b9-41f3377806c0".equals(role_ids[i])) {
-                isGly = true;
-                break;
-            }
-        }
+        boolean isGly = checkIsGly(request);
 //        if (user != null) {
 //            user_id = user.getUser_id();
 //        } else if (userDev != null) {
@@ -334,20 +305,11 @@ public class WkrjEventWfController {
     public Object getWfChexiaoEventList_dept(String parentId, HttpServletRequest request){
         WkrjUser user = (WkrjUser) request.getSession().getAttribute("user");
         WkrjUserDev userDev = (WkrjUserDev) request.getSession().getAttribute("userDev");
-        boolean isGly = false;
         //String user_id = "";
         String user_dept = "";
         String event_status = "撤销";
         String dateF = "";
-        String roleIds = request.getSession().getAttribute("userRoleId")+"";
-        String[] role_ids = roleIds.split(",");
-        for (int i = 0; i < role_ids.length; i++) {
-            //如果是系统管理员
-            if ("2".equals(role_ids[i]) || "ee228c85-d868-4228-90b9-41f3377806c0".equals(role_ids[i])) {
-                isGly = true;
-                break;
-            }
-        }
+        boolean isGly = checkIsGly(request);
         if (user != null) {
             user_dept = user.getDept_id();
             //user_id = user.getUser_id();
@@ -374,26 +336,35 @@ public class WkrjEventWfController {
     @RequestMapping("getBackedEventWfList")
     @ResponseBody
     public Object getBackedEventWfList(String parentId, HttpServletRequest request){
-        boolean isGly = false;
-        String event_status = "退回";
-        String roleIds = request.getSession().getAttribute("userRoleId")+"";
-        String[] role_ids = roleIds.split(",");
-        for (int i = 0; i < role_ids.length; i++) {
-            //如果是系统管理员
-            if ("2".equals(role_ids[i]) || "ee228c85-d868-4228-90b9-41f3377806c0".equals(role_ids[i])) {
-                isGly = true;
-                break;
-            }
-        }
+        String event_status = "3";//退回
+        boolean isGly = checkIsGly(request);
         String caller_username = request.getParameter("caller_username");
         String caller_tel = request.getParameter("caller_tel");
         int page=Integer.parseInt(request.getParameter("page"));
         int pagesize=Integer.parseInt(request.getParameter("pagesize"));
         int offset = (page-1)*pagesize;
-        
         List<Map<String, Object>> list = this.erService.getEventReportWfList(offset, pagesize, "", "", caller_username, caller_tel, isGly, event_status, "", "", "", "", "", "", "");
         long count = this.erService.getEventReportWfList("", "", caller_username, caller_tel, isGly, event_status, "", "", "", "", "", "", "");
-        
+        return UtilsHelper.returnMap(list,count);
+    }
+    /**
+     * 获取已处理回退办理单
+     * @param request
+     * @return
+     */
+    @RequestMapping("getRepliedBackEventWfList")
+    @ResponseBody
+    public Object getRepliedBackEventWfList(String parentId, HttpServletRequest request){
+        String event_status = "3";//退回
+        String shenhe_status = "0";//审核未通过，区分开直接退回单
+        boolean isGly = checkIsGly(request);
+        String caller_username = request.getParameter("caller_username");
+        String caller_tel = request.getParameter("caller_tel");
+        int page=Integer.parseInt(request.getParameter("page"));
+        int pagesize=Integer.parseInt(request.getParameter("pagesize"));
+        int offset = (page-1)*pagesize;
+        List<Map<String, Object>> list = this.erService.getEventReportWfList(offset, pagesize, "", "", caller_username, caller_tel, isGly, event_status, "", "", "", "", shenhe_status, "", "");
+        long count = this.erService.getEventReportWfList("", "", caller_username, caller_tel, isGly, event_status, "", "", "", "", shenhe_status, "", "");
         return UtilsHelper.returnMap(list,count);
     }
     /**
@@ -403,21 +374,12 @@ public class WkrjEventWfController {
      */
     @RequestMapping("getYicuibanEventWfList")
     @ResponseBody
-    public Object getYicuibanEventList(String parentId, HttpServletRequest request){
+    public Object getYicuibanEventWfList(String parentId, HttpServletRequest request){
         WkrjUser user = (WkrjUser) request.getSession().getAttribute("user");
         WkrjUserDev userDev = (WkrjUserDev) request.getSession().getAttribute("userDev");
-        boolean isGly = false;
         String user_id = "";
         String cuiban_status = "1";//
-        String roleIds = request.getSession().getAttribute("userRoleId")+"";
-        String[] role_ids = roleIds.split(",");
-        for (int i = 0; i < role_ids.length; i++) {
-            //如果是系统管理员
-            if ("2".equals(role_ids[i]) || "ee228c85-d868-4228-90b9-41f3377806c0".equals(role_ids[i])) {
-                isGly = true;
-                break;
-            }
-        }
+        boolean isGly = checkIsGly(request);
         if (user != null) {
             //user_id = user.getUser_id();
             user_id = user.getUser_id();
@@ -430,10 +392,8 @@ public class WkrjEventWfController {
         int page=Integer.parseInt(request.getParameter("page"));
         int pagesize=Integer.parseInt(request.getParameter("pagesize"));
         int offset = (page-1)*pagesize;
-        
         List<Map<String, Object>> list = this.erService.getEventReportWfList(offset, pagesize, user_id, "", caller_username, caller_tel, isGly, "", "", cuiban_status, "", "", "", "", "");
         long count = this.erService.getEventReportWfList(user_id, "", caller_username, caller_tel, isGly, "", "", cuiban_status, "", "", "", "", "");
-        
         return UtilsHelper.returnMap(list,count);
     }
     /**
@@ -443,21 +403,12 @@ public class WkrjEventWfController {
      */
     @RequestMapping("getOvertimeEventWfList")
     @ResponseBody
-    public Object getOvertimeEventList(String parentId, HttpServletRequest request){
+    public Object getOvertimeEventWfList(String parentId, HttpServletRequest request){
         WkrjUser user = (WkrjUser) request.getSession().getAttribute("user");
         WkrjUserDev userDev = (WkrjUserDev) request.getSession().getAttribute("userDev");
-        boolean isGly = false;
         String user_id = "";
         String overtime_status = "1";//超时
-        String roleIds = request.getSession().getAttribute("userRoleId")+"";
-        String[] role_ids = roleIds.split(",");
-        for (int i = 0; i < role_ids.length; i++) {
-            //如果是系统管理员
-            if ("2".equals(role_ids[i]) || "ee228c85-d868-4228-90b9-41f3377806c0".equals(role_ids[i])) {
-                isGly = true;
-                break;
-            }
-        }
+        boolean isGly = checkIsGly(request);
         if (user != null) {
             //user_id = user.getUser_id();
             user_id = user.getUser_id();
@@ -470,10 +421,8 @@ public class WkrjEventWfController {
         int page=Integer.parseInt(request.getParameter("page"));
         int pagesize=Integer.parseInt(request.getParameter("pagesize"));
         int offset = (page-1)*pagesize;
-        
         List<Map<String, Object>> list = this.erService.getEventReportWfList(offset, pagesize, user_id, "", caller_username, caller_tel, isGly, "", "", "", overtime_status, "", "", "", "");
         long count = this.erService.getEventReportWfList(user_id, "", caller_username, caller_tel, isGly, "", "", "", overtime_status, "", "", "", "");
-        
         return UtilsHelper.returnMap(list,count);
     }
     /**
@@ -487,17 +436,8 @@ public class WkrjEventWfController {
 //        WkrjUser user = (WkrjUser) request.getSession().getAttribute("user");
 //        WkrjUserDev userDev = (WkrjUserDev) request.getSession().getAttribute("userDev");
 //        String user_id = "";
-        boolean isGly = false;
         //String event_status = "办结";
-        String roleIds = request.getSession().getAttribute("userRoleId")+"";
-        String[] role_ids = roleIds.split(",");
-        for (int i = 0; i < role_ids.length; i++) {
-            //如果是系统管理员
-            if ("2".equals(role_ids[i]) || "ee228c85-d868-4228-90b9-41f3377806c0".equals(role_ids[i])) {
-                isGly = true;
-                break;
-            }
-        }
+        boolean isGly = checkIsGly(request);
 //        if (user != null) {
 //            user_id = user.getUser_id();
 //        } else if (userDev != null) {
@@ -508,10 +448,8 @@ public class WkrjEventWfController {
         int page=Integer.parseInt(request.getParameter("page"));
         int pagesize=Integer.parseInt(request.getParameter("pagesize"));
         int offset = (page-1)*pagesize;
-        
         List<Map<String, Object>> list = this.erService.getDelayedEventWfList(offset, pagesize, "", caller_username, caller_tel, isGly);
         long count = this.erService.getDelayedEventWfList("", caller_username, caller_tel, isGly);
-        
         return UtilsHelper.returnMap(list,count);
     }
     /**
@@ -525,19 +463,10 @@ public class WkrjEventWfController {
 //        WkrjUser user = (WkrjUser) request.getSession().getAttribute("user");
 //        WkrjUserDev userDev = (WkrjUserDev) request.getSession().getAttribute("userDev");
 //        String user_id = "";
-        boolean isGly = false;
         String qianshou_status = "0";//未签收
         String event_status = "1";
         String dateF = "";
-        String roleIds = request.getSession().getAttribute("userRoleId")+"";
-        String[] role_ids = roleIds.split(",");
-        for (int i = 0; i < role_ids.length; i++) {
-            //如果是系统管理员
-            if ("2".equals(role_ids[i]) || "ee228c85-d868-4228-90b9-41f3377806c0".equals(role_ids[i])) {
-                isGly = true;
-                break;
-            }
-        }
+        boolean isGly = checkIsGly(request);
 //        if (user != null) {
 //            user_id = user.getUser_id();
 //        } else if (userDev != null) {
@@ -566,21 +495,12 @@ public class WkrjEventWfController {
     public Object getWfNotAcceptList_dept(String parentId, HttpServletRequest request){
         WkrjUser user = (WkrjUser) request.getSession().getAttribute("user");
         WkrjUserDev userDev = (WkrjUserDev) request.getSession().getAttribute("userDev");
-        boolean isGly = false;
         String user_dept = "";
         //String shenhe_status = "2";
         String qianshou_status = "0";//未签收
         String event_status = "1";
         String dateF = "";
-        String roleIds = request.getSession().getAttribute("userRoleId")+"";
-        String[] role_ids = roleIds.split(",");
-        for (int i = 0; i < role_ids.length; i++) {
-            //如果是系统管理员
-            if ("2".equals(role_ids[i]) || "ee228c85-d868-4228-90b9-41f3377806c0".equals(role_ids[i])) {
-                isGly = true;
-                break;
-            }
-        }
+        boolean isGly = checkIsGly(request);
         if (user != null) {
             //user_id = user.getUser_id();
             user_dept = user.getDept_id();
@@ -607,22 +527,13 @@ public class WkrjEventWfController {
     public Object getWfNotReplyList(String parentId, HttpServletRequest request){
         WkrjUser user = (WkrjUser) request.getSession().getAttribute("user");
         WkrjUserDev userDev = (WkrjUserDev) request.getSession().getAttribute("userDev");
-        boolean isGly = false;
         //String user_id = "";
         String user_dept = "";
         String event_status = "1";
         //String shenhe_status = "2";//已审核已转发
         String qianshou_status = "1";//已签收
         String dateF = "";
-        String roleIds = request.getSession().getAttribute("userRoleId")+"";
-        String[] role_ids = roleIds.split(",");
-        for (int i = 0; i < role_ids.length; i++) {
-            //如果是系统管理员
-            if ("2".equals(role_ids[i]) || "ee228c85-d868-4228-90b9-41f3377806c0".equals(role_ids[i])) {
-                isGly = true;
-                break;
-            }
-        }
+        boolean isGly = checkIsGly(request);
         if (user != null) {
             //user_id = user.getUser_id();
             user_dept = user.getDept_id();
@@ -671,14 +582,14 @@ public class WkrjEventWfController {
     
     @RequestMapping("addEventWf")
     @ResponseBody
-    public AjaxJson addEventReport(HttpServletRequest request, WkrjEventWf er){
+    public AjaxJson addEventWf(HttpServletRequest request, WkrjEventWf er){
         WkrjUser user = (WkrjUser) request.getSession().getAttribute("user");
         WkrjUserDev userDev = (WkrjUserDev) request.getSession().getAttribute("userDev");
         AjaxJson json = new AjaxJson();
         //String user_name = "";
         String user_id = "";
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String date = sdf.format(new Date());
+        //SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String date = UtilsHelper.getDateFormatTime();
         er.setInput_time(date);
         if (user != null) {
             //user_name = user.getUser_name();
@@ -724,7 +635,7 @@ public class WkrjEventWfController {
                 tempno++;
                 event_no = event_no.split("-")[0]+"-"+tempno;
             } else {
-                event_no = event_no+"-"+1;
+                event_no = event_no+"-"+2;
             }
         } else {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
@@ -745,6 +656,22 @@ public class WkrjEventWfController {
             }
         }
         return event_no;
+    }
+    /*
+     * 判断是否是管理员
+     */
+    private boolean checkIsGly(HttpServletRequest request) {
+        boolean isGly = false;
+        String roleIds = request.getSession().getAttribute("userRoleId")+"";
+        String[] role_ids = roleIds.split(",");
+        for (int i = 0; i < role_ids.length; i++) {
+            //如果是系统管理员
+            if ("2".equals(role_ids[i]) || "7e3d28f7-2e18-4b71-82df-1fa3d15e0e9c".equals(role_ids[i])) {
+                isGly = true;
+                break;
+            }
+        }
+        return isGly;
     }
 //    @RequestMapping("zhuanbanEvent_back")
 //    @ResponseBody
@@ -767,8 +694,6 @@ public class WkrjEventWfController {
 //                zhuanbanFlag = true;
 //            }
 //            //er.setEvent_no(generateEventNo(er.getEvent_no()));
-//            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//            String date = sdf.format(new Date());
 //            er.setInput_time(date);
 //            er.setZhuanbanornot("1");//设置已再次转办
 //            String user_id = "";
@@ -829,8 +754,8 @@ public class WkrjEventWfController {
         AjaxJson json = new AjaxJson();
         er.setEvent_status("1");
         //er.setDeal_type("1");
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String date = sdf.format(new Date());
+        //SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String date = UtilsHelper.getDateFormatTime();
         er.setInput_time(date);
         er.setZhuanbanornot("1");//设置已再次1
 //        if (er.getEvent_no().contains("-")) {
@@ -884,8 +809,8 @@ public class WkrjEventWfController {
         WkrjUser user = (WkrjUser) request.getSession().getAttribute("user");
         WkrjUserDev userDev = (WkrjUserDev) request.getSession().getAttribute("userDev");
         String user_id = "";
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String date = sdf.format(new Date());
+        //SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String date = UtilsHelper.getDateFormatTime();
         er.setInput_time(date);
         if (user != null) {
             user_id = user.getUser_id();
@@ -914,8 +839,8 @@ public class WkrjEventWfController {
         } else if (userDev != null) {
             accept_dept = userDev.getDept_id();
         }
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String date = sdf.format(new Date());
+        //SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String date = UtilsHelper.getDateFormatTime();
         WkrjEventWf er = new WkrjEventWf();
         er.setEvent_id(event_id);
         er.setQianshou_status("1");
@@ -981,7 +906,7 @@ public class WkrjEventWfController {
     
     @RequestMapping("delayEventWf")
     @ResponseBody
-    public AjaxJson delayEvent(HttpServletRequest request, String event_id, String event_no, String opt_content){
+    public AjaxJson delayEventWf(HttpServletRequest request, String event_id, String event_no, String opt_content){
         AjaxJson json = new AjaxJson();
         WkrjUser user = (WkrjUser) request.getSession().getAttribute("user");
         WkrjUserDev userDev = (WkrjUserDev) request.getSession().getAttribute("userDev");
@@ -991,8 +916,8 @@ public class WkrjEventWfController {
         } else if (userDev != null) {
             input_user = userDev.getUser_id();
         }
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String date = sdf.format(new Date());
+        //SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String date = UtilsHelper.getDateFormatTime();
         WkrjProcedureRecord pr = new WkrjProcedureRecord();
         pr.setEvent_id(event_id);
         pr.setEvent_no(event_no);
@@ -1000,6 +925,7 @@ public class WkrjEventWfController {
         pr.setOpt_time(date);
         pr.setOpt_user(input_user);
         pr.setOpt_content(opt_content);
+        pr.setOpt_type("2");//延时
         WkrjEventWf wf = new WkrjEventWf();
         wf.setEvent_id(event_id);
         wf.setEvent_status("4");//设置状态，未回复事件中就查询不到了
@@ -1011,6 +937,27 @@ public class WkrjEventWfController {
         }catch(Exception e){
             if(e.getStackTrace()[0].getClassName().indexOf("SQLErrorCodeSQLExceptionTranslator")>=0){
                 json.setMsg("延时失败");
+                e.printStackTrace();
+            }else{
+                e.printStackTrace();
+            }
+        }
+        return json;
+    }
+    
+    @RequestMapping("yanqiEvent")
+    @ResponseBody
+    public AjaxJson yanqiEvent(HttpServletRequest request, WkrjEventWf event){
+        AjaxJson json = new AjaxJson();
+        event.setEvent_status("1");//新受理
+        try{
+            if (erService.yanqiEvent(event)) {
+                json.setSuccess(true);
+                json.setMsg("已延期");
+            }
+        }catch(Exception e){
+            if(e.getStackTrace()[0].getClassName().indexOf("SQLErrorCodeSQLExceptionTranslator")>=0){
+                json.setMsg("失败");
                 e.printStackTrace();
             }else{
                 e.printStackTrace();
@@ -1037,8 +984,8 @@ public class WkrjEventWfController {
         } else if (userDev != null) {
             input_user = userDev.getUser_id();
         }
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String date = sdf.format(new Date());
+        //SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String date = UtilsHelper.getDateFormatTime();
         WkrjProcedureRecord pr = new WkrjProcedureRecord();
         pr.setEvent_id(event_id);
         pr.setEvent_no(event_no);
@@ -1076,7 +1023,7 @@ public class WkrjEventWfController {
     
     @RequestMapping("sendBackEventWf")
     @ResponseBody
-    public AjaxJson sendBackEventWf(HttpServletRequest request, String qianshou_status, String event_id, String event_no, String event_inputtime, String opt_content){
+    public AjaxJson sendBackEventWf(HttpServletRequest request, WkrjEventWf event, String event_inputtime, String opt_content){
         AjaxJson json = new AjaxJson();
         WkrjUser user = (WkrjUser) request.getSession().getAttribute("user");
         WkrjUserDev userDev = (WkrjUserDev) request.getSession().getAttribute("userDev");
@@ -1087,8 +1034,7 @@ public class WkrjEventWfController {
             input_user = userDev.getUser_id();
         }
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String date = sdf.format(new Date());
-        
+        String date = UtilsHelper.getDateFormatTime();
         Calendar calen = Calendar.getInstance();
         //日历对象默认的日期为当前日期，调用setTime设置该日历对象的日期为程序中指定的日期
         try {
@@ -1106,12 +1052,16 @@ public class WkrjEventWfController {
             json.setMsg("已超过24小时不能退回");
             return json;
         }
-        WkrjProcedureRecord pr = new WkrjProcedureRecord();
-        pr.setEvent_id(event_id);
-        if ("2".equals(qianshou_status)) {//如果是回复之后的退回，则改变编号，为了后期方便统计办结率
-            //pr.setEvent_no(generateEventNo(event_no));
+        if ("2".equals(event.getQianshou_status())) {//如果是回复之后的退回，则改变编号，为了后期方便统计办结率
+            event.setEvent_no(generateEventNo(event.getEvent_no()));
+            event.setEvent_status("1");//新受理
+            event.setInput_time(date);
+            event.setInput_user(input_user);
+            erService.addEventWf(event);
         }
-        pr.setEvent_no(event_no);
+        WkrjProcedureRecord pr = new WkrjProcedureRecord();
+        pr.setEvent_id(event.getEvent_id());
+        pr.setEvent_no(event.getEvent_no());
         pr.setPr_id(Guid.getGuid());
         pr.setOpt_time(date);
         pr.setOpt_user(input_user);
@@ -1119,10 +1069,12 @@ public class WkrjEventWfController {
         pr.setOpt_type("3");//退回
         String event_status = "3";//退回
         WkrjEventWf er = new WkrjEventWf();
-        er.setEvent_id(event_id);
+        er.setEvent_id(event.getEvent_id());
         er.setEvent_status(event_status);
         try{
             if (erService.replyEventWf(pr) && erService.updateEventStatus(er)) {
+                er.setShenhe_status("0");//退回即审核未通过
+                erService.updateShenheStatus(er);
                 json.setSuccess(true);
                 json.setMsg("退回成功");
             }
@@ -1137,27 +1089,98 @@ public class WkrjEventWfController {
         return json;
     }
     
-//    @RequestMapping("cuibanEvent")
-//    @ResponseBody
-//    public AjaxJson cuibanEvent(HttpServletRequest request, String event_id){
-//        AjaxJson json = new AjaxJson();
-//        WkrjEventWf er = new WkrjEventWf();
-//        er.setEvent_id(event_id);
-//        er.setCuiban_status("1");
-//        try{
-//                if (erService.cuibanEventWf(er)) {
-//                    json.setSuccess(true);
-//                    json.setMsg("催办成功");
-//                }
-//        }catch(Exception e){
-//            if(e.getStackTrace()[0].getClassName().indexOf("SQLErrorCodeSQLExceptionTranslator")>=0){
-//                json.setMsg("催办失败");
-//            }else{
-//                e.printStackTrace();
-//            }
-//        }
-//        return json;
-//    }
+    @RequestMapping("cuibanEvent")
+    @ResponseBody
+    public AjaxJson cuibanEvent(HttpServletRequest request, String event_id, WkrjEventWf event){
+        AjaxJson json = new AjaxJson();
+        List<Map<String,Object>> cb_list = erService.getCuibanList(event_id);
+        if (cb_list.size() == 3) {
+            json.setSuccess(false);
+            json.setMsg("已催办三次，不能再催办");
+            return json;
+        }
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Calendar calen = Calendar.getInstance();
+        if (cb_list.size() == 2) {
+            //日历对象默认的日期为当前日期，调用setTime设置该日历对象的日期为程序中指定的日期
+            try {
+                calen.setTime(sdf.parse(cb_list.get(0).get("opttime")+""));
+            } catch (ParseException e1) {
+                e1.printStackTrace();
+            }
+            int temp = 12;
+            calen.add(Calendar.HOUR_OF_DAY,temp);
+            Date c = calen.getTime();
+            if (c.after(new Date())) {
+                json.setSuccess(false);
+                json.setMsg("距离上次催办未到12小时，不能进行第三次催办");
+                return json;
+            }
+        }
+        if (cb_list.size() == 1) {
+            //日历对象默认的日期为当前日期，调用setTime设置该日历对象的日期为程序中指定的日期
+            try {
+                calen.setTime(sdf.parse(cb_list.get(0).get("opttime")+""));
+            } catch (ParseException e1) {
+                e1.printStackTrace();
+            }
+            int temp = 24;
+            //将日历的"天"增加1
+            calen.add(Calendar.HOUR_OF_DAY,temp);
+            Date c = calen.getTime();
+            if (c.after(new Date())) {
+                json.setSuccess(false);
+                json.setMsg("距离上次催办未到24小时，不能进行第二次催办");
+                return json;
+            }
+        }
+        if (cb_list.size() == 0) {
+            try {
+                calen.setTime(sdf.parse(event.getEvent_inputtime()));
+            } catch (ParseException e1) {
+                e1.printStackTrace();
+            }
+            int temp = 36;
+            calen.add(Calendar.HOUR_OF_DAY,temp);
+            Date c = calen.getTime();
+            if (c.after(new Date())) {
+                json.setSuccess(false);
+                json.setMsg("距离新受理未到36小时，不能进行催办");
+                return json;
+            }
+        }
+        WkrjProcedureRecord pr = new WkrjProcedureRecord();
+        pr.setEvent_id(event.getEvent_id());
+        pr.setEvent_no(event.getEvent_no());
+        pr.setPr_id(Guid.getGuid());
+        pr.setOpt_time(UtilsHelper.getDateFormatTime());
+        WkrjUser user = (WkrjUser) request.getSession().getAttribute("user");
+        WkrjUserDev userDev = (WkrjUserDev) request.getSession().getAttribute("userDev");
+        String input_user = "";
+        if (user != null) {
+            input_user = user.getUser_id();
+        } else if (userDev != null) {
+            input_user = userDev.getUser_id();
+        }
+        pr.setOpt_user(input_user);
+        //pr.setOpt_content(opt_content);
+        pr.setOpt_type("4");//催办
+        String cuiban_status = "1";
+        event.setCuiban_status(cuiban_status);
+        try{
+                if (erService.replyEventWf(pr) && erService.cuibanEvent(event)) {
+                    json.setSuccess(true);
+                    json.setMsg("催办成功");
+                }
+        }catch(Exception e){
+            if(e.getStackTrace()[0].getClassName().indexOf("SQLErrorCodeSQLExceptionTranslator")>=0){
+                json.setMsg("催办失败");
+            }else{
+                e.printStackTrace();
+            }
+        }
+        return json;
+    }
     
     /**
      * 
@@ -1179,21 +1202,11 @@ public class WkrjEventWfController {
         String userName = request.getParameter("userName");
         //String schoolId = request.getParameter("schoolId");
         int pagesize=Integer.parseInt(request.getParameter("pagesize"));
-        
         WkrjUser sessionUser = (WkrjUser) request.getSession().getAttribute("user");
         WkrjUserDev userDev = (WkrjUserDev) request.getSession().getAttribute("userDev");
-        boolean isGly = false;
         //String user_id = "";
         String user_dept = "";
-        String roleIds = request.getSession().getAttribute("userRoleId")+"";
-        String[] role_ids = roleIds.split(",");
-        for (int i = 0; i < role_ids.length; i++) {
-            //如果是系统管理员
-            if ("2".equals(role_ids[i]) || "ee228c85-d868-4228-90b9-41f3377806c0".equals(role_ids[i])) {
-                isGly = true;
-                break;
-            }
-        }
+        boolean isGly = checkIsGly(request);
         if (sessionUser != null) {
             //user_id = sessionUser.getUser_id();
             user_dept = sessionUser.getDept_id();
@@ -1201,7 +1214,6 @@ public class WkrjEventWfController {
             //user_id = userDev.getUser_id();
             user_dept = userDev.getDept_id();
         }
-        
         int offset = (page-1)*pagesize;
         List<WkrjUser> list = this.userService.getUserList(offset, pagesize, deptId, userName, isGly, user_dept);
         for(WkrjUser user:list){
@@ -1209,7 +1221,6 @@ public class WkrjEventWfController {
             user.setUser_role(this.userService.getRoleListByUserId(user.getUser_id()));
         }
         long count = this.userService.getUserList(deptId, userName, isGly, user_dept);
-        
         return UtilsHelper.returnMap(list,count);
     }
     
@@ -1234,26 +1245,15 @@ public class WkrjEventWfController {
     @ResponseBody
     public Object getDeptTree(HttpServletRequest request){
         deptService = (WkrjDeptService) SpringContextUtil.getBean("wkrjDeptService");
-        
         WkrjUser user = (WkrjUser) request.getSession().getAttribute("user");
         WkrjUserDev userDev = (WkrjUserDev) request.getSession().getAttribute("userDev");
-        boolean isGly = false;
         String user_dept = "";
-        String roleIds = request.getSession().getAttribute("userRoleId")+"";
-        String[] role_ids = roleIds.split(",");
-        for (int i = 0; i < role_ids.length; i++) {
-            //如果是系统管理员
-            if ("2".equals(role_ids[i]) || "ee228c85-d868-4228-90b9-41f3377806c0".equals(role_ids[i])) {
-                isGly = true;
-                break;
-            }
-        }
+        boolean isGly = checkIsGly(request);
         if (user != null) {
             user_dept = user.getDept_id();
         } else if (userDev != null) {
             user_dept = userDev.getDept_id();
         }
-        
         return deptService.getRoleList("-1",isGly,user_dept);
     }
     /**

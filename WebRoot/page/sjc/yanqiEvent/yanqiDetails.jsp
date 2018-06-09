@@ -88,7 +88,7 @@
                 <div class="Co" style="" id="">
                     <label>&nbsp;&nbsp;&nbsp;&nbsp;延时理由:</label>
                     <div class="r_div">
-                        <textarea name="delay_reason" id="delay_reason" style="height:100px;width:700px;" disabled></textarea>
+                        <textarea name="opt_content" id="delay_reason" style="height:100px;width:700px;" disabled></textarea>
                     </div>
                 </div>
                 <div class="Co">

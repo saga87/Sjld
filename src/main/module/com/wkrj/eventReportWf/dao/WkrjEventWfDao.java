@@ -43,6 +43,25 @@ public interface WkrjEventWfDao {
             @Param("qianshou_status")String qianshou_status, @Param("cuiban_status")String cuiban_status, @Param("overtime_status")String overtime_status, @Param("dateF")String dateF,
             @Param("shenhe_status")String shenhe_status, @Param("event_no")String event_no, @Param("event_content")String event_content);
     /**
+     * 获取事件信息（即将到期）
+     * @param offset
+     * @param page
+     * @return
+     */
+    public List<Map<String, Object>> getJjdqEventWfList(@Param("offset")int offset, @Param("page")int page, @Param("user_id")String user_id, @Param("user_dept")String user_dept, 
+            @Param("start_date")String start_date, @Param("end_date")String end_date, @Param("isGly")boolean isGly, @Param("event_status")String event_status,
+            @Param("qianshou_status")String qianshou_status, @Param("cuiban_status")String cuiban_status, @Param("overtime_status")String overtime_status, @Param("dateF")String dateF,
+            @Param("shenhe_status")String shenhe_status, @Param("event_no")String event_no, @Param("event_content")String event_content);
+    /**
+     * 获取事件信息数量（即将到期）
+     * @param user_id
+     * @return
+     */
+    public long getJjdqEventWfListCount(@Param("user_id")String user_id, @Param("user_dept")String user_dept, @Param("start_date")String start_date, 
+            @Param("end_date")String end_date, @Param("isGly")boolean isGly, @Param("event_status")String event_status,
+            @Param("qianshou_status")String qianshou_status, @Param("cuiban_status")String cuiban_status, @Param("overtime_status")String overtime_status, @Param("dateF")String dateF,
+            @Param("shenhe_status")String shenhe_status, @Param("event_no")String event_no, @Param("event_content")String event_content);
+    /**
      * 删除事件附件
      * @param id
      * @return
@@ -153,4 +172,10 @@ public interface WkrjEventWfDao {
     public boolean updateEventWf(WkrjEventWf ev);
     
     public boolean delEventWf(String event_id);
+    
+    public boolean yanqiEvent(WkrjEventWf event);
+    
+    public List<Map<String, Object>> getCuibanList(String event_id);
+    
+    public boolean cuibanEvent(WkrjEventWf event);
 }

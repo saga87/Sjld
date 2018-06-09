@@ -122,7 +122,7 @@ $(function(){
                                });
                         }
                         if (data.deal_result == 3) {
-                        	data.opt_content = dialog.frame.dialog.frame.$("#back_reason").val();
+                        	data.opt_content = dialog.frame.$("#back_reason").val();
                         	$.ajax({
                                 url: "eventWf/WkrjEventWf/sendBackEventWf",
                                 data: data,
@@ -180,7 +180,8 @@ function eventReport_delay(row){
             text : '确定',
             onclick : function(item, dialog) {
                 var data = dialog.frame.liger.get("wfNotReply_delayWindow_form").getData();
-                if (data.delay_reason == null || data.delay_reason == "") {
+                data.opt_content = dialog.frame.$("#delay_reason").val();
+                if (data.opt_content == null || data.opt_content == "") {
                     top.$.ligerDialog.alert("延时理由不能为空");
                     return;
                 }
@@ -235,48 +236,6 @@ function eventReport_reply(row){
             text : '确定',
             onclick : function(item, dialog) {
                 var data = dialog.frame.liger.get("wfNotReply_replyWindow_form").getData();
-//                data.reply_content = reply_ue.getContent();
-//                data.reply_content_text = reply_ue.getPlainTxt();
-                var item1 = dialog.frame.$("#item1").html();
-                var item2 = dialog.frame.$("#item2").html();
-                //var item3 = dialog.frame.$("#item3").html();
-                var item4 = dialog.frame.$("#item4").html();
-                var item5 = dialog.frame.$("#item5").html();
-                var item6 = dialog.frame.$("#item6").html();
-                var item7 = dialog.frame.$("#item7").html();
-                var item8 = dialog.frame.$("#item8").html();
-                var item9 = dialog.frame.$("#item9").html();
-                var item10 = dialog.frame.$("#item10").html();
-                var item11 = dialog.frame.$("#item11").html();
-                var item12 = dialog.frame.$("#item12").html();
-                var item13 = dialog.frame.$("#item13").html();
-                var item14 = dialog.frame.$("#item14").html();
-                var item15 = dialog.frame.$("#item15").html();
-//                var item16 = dialog.frame.$("#item16").html();
-//                var item17 = dialog.frame.$("#item17").html();
-//                var item18 = dialog.frame.$("#item18").html();
-                var item19 = dialog.frame.$("#item19").html();
-                var item20 = dialog.frame.$("#item20").html();
-                if (data.caller_username == "隐藏") {
-                    if (item1 == "" || item2 == "" || item4 == "" || item5 == "" ||
-                            item12 == "" || item13 == "" || item14 == "" || item15 == "") {
-                        top.$.ligerDialog.alert("回复格式中不能有空项");
-                        return;
-                    }
-                    data.reply_content = dialog.frame.$("#reply_content_divHidden").html();
-                } else {
-                    var satisfyDu = dialog.frame.$("input[name='satisfyDu']:checked").val();
-                    if (item1 == "" || item2 == "" || item4 == "" || item5 == "" || item6 == "" || item7 == "" || item8 == "" || item9 == "" || item10 == "" || (satisfyDu == "2" && item11 == "") ||
-                            item12 == "" || item13 == "" || item14 == "" || item15 == "" || satisfyDu == undefined || item19 == "" || item20 == "") {
-                        top.$.ligerDialog.alert("回复格式中不能有空项");
-                        return;
-                    }
-                    data.reply_content = dialog.frame.$("#reply_content_divPublic").html();
-                }
-                //data.reply_content = dialog.frame.$("#reply_content_div").html();
-                //data.importance = dialog.frame.liger.get("importance").getValue();
-                data.file_yname = dialog.frame.$("#file_yname").val();
-                data.file_xname = dialog.frame.$("#file_xname").val();
                 $.ajax({
                     url: "eventWf/WkrjEventWf/replyEventWf",
                     data: data,

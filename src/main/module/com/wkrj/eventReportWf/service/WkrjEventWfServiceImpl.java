@@ -159,6 +159,19 @@ public class WkrjEventWfServiceImpl implements WkrjEventWfService {
                 event_no, event_content);
     }
 
+    @Override
+    public List<Map<String, Object>> getJjdqEventWfList(int offset, int page, String user_id, String user_dept, String start_date, String end_date, boolean isGly, String event_status,
+            String qianshou_status, String cuiban_status, String overtime_status, String dateF, String shenhe_status, String event_no, String event_content) {
+        return this.dao.getJjdqEventWfList(offset, page, user_id, user_dept, start_date, end_date, isGly, event_status, qianshou_status, cuiban_status, overtime_status, dateF, 
+                shenhe_status, event_no, event_content);
+    }
+
+    @Override
+    public long getJjdqEventWfList(String user_id, String user_dept, String start_date, String end_date, boolean isGly, String event_status, String qianshou_status, String cuiban_status,
+            String overtime_status, String dateF, String shenhe_status, String event_no, String event_content) {
+        return this.dao.getJjdqEventWfListCount(user_id, user_dept, start_date, end_date, isGly, event_status, qianshou_status, cuiban_status, overtime_status, dateF, shenhe_status,
+                event_no, event_content);
+    }
 
     @Override
     public List<Map<String, Object>> getUserList() {
@@ -712,6 +725,21 @@ public class WkrjEventWfServiceImpl implements WkrjEventWfService {
     @Override
     public boolean delEventWf(String event_id) {
         return this.dao.delEventWf(event_id);
+    }
+
+    @Override
+    public boolean yanqiEvent(WkrjEventWf event) {
+        return this.dao.yanqiEvent(event);
+    }
+
+    @Override
+    public List<Map<String, Object>> getCuibanList(String event_id) {
+        return this.dao.getCuibanList(event_id);
+    }
+
+    @Override
+    public boolean cuibanEvent(WkrjEventWf event) {
+        return this.dao.cuibanEvent(event);
     }
 
 }

@@ -19,13 +19,6 @@
 	 * 预览
 	 */
 	function preview() {
-		//     var openwin = document.getElementById("sjcpopwindow");
-		//     if (cbd_fileurl != null && cbd_fileurl != "") {
-		//         openwin.href = cbd_fileurl.replace(".doc",".pdf");
-		//         openwin.click();
-		//     } else {
-		//         top.$.ligerDialog.alert("此事件无承办单");
-		//     }
 		var event_id = $("#event_id").val();
 		print(event_id);
 	}
@@ -35,7 +28,6 @@
 </head>
 <body>
 <form id="eventInfo_notReplyWindow_form" method="get" class="liger-form">
-    <!-- <div id="accept_user"></div> -->
     <div style="overflow:hidden;">
         <div class="Co">
             <label>&nbsp;&nbsp;内容分类:</label>
