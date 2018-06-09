@@ -11,7 +11,13 @@ $(function(){
 		url:'noticeAnnounce/getNoticeAnnounceList',
         columns: [
         { display: '公告标题', name: 'na_title', id: 'na_title', width: '12%', align: 'center' },
-        { display: '公告内容', name: 'na_content', id: 'na_content', width: '30%', align: 'center' },
+        { display: '公告内容', name: 'na_content', id: 'na_content', width: '30%', align: 'center'
+//		,render:function(rowdata, rowindex, value){
+//			
+//			return "<span style:'white-space:nowrap;overflow:hidden;text-overflow:ellipsis;'>"+value+"</span>"
+//			
+//          }
+        },
         { display: '备注', name: 'na_other', id: 'na_other', width: '15%', align: 'center' },
         { display: '录入时间', name: 'na_inputtime', id: 'na_inputtime', width: '16%', align: 'center' },
         { display: '录入人账号', name: 'user_realname', id: 'user_realname', width: '10%', align: 'center' },
@@ -30,6 +36,7 @@ $(function(){
         usePager :true,
 		rownumbers : true,
         alternatingRow: true,
+ //       fixedCellHeight:false,
 		toolbar : {
 			items : [ {
 				text : '增加',

@@ -28,6 +28,7 @@ $(function(){
         usePager :true,
 		rownumbers : true,
         alternatingRow: true,
+        fixedCellHeight:false,
 		toolbar : {
 			items : [  {
 				text : '编辑',
