@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.wkrj.statisticanalysis.dao.AnalysisDao">
+	<select id="getTypeAnalysis" resultType="AnalysisType">
+		SELECT content_type,COUNT(*) as nums
+		FROM `wkrj_reportevent_wf` 
+		WHERE 1=1 
+		<if test="chengban_dept != null and chengban_dept != ''">
+             AND chengban_dept LIKE CONCAT(#{chengban_dept},'%')
+        </if>
+        <if test="business_type != null and business_type != ''">
+             AND business_type = #{business_type}
+        </if>
+        <if test="accept_source != null and accept_source != ''">
+             AND accept_source = #{accept_source}
+        </if>
+		<if test="null!= startTime and ''!= startTime">
+            AND input_time >= #{startTime}
+        </if>
+        <if test="null!= endTime and ''!= endTime">
+            AND input_time &lt;= #{endTime}
+        </if>
+		GROUP BY content_type;
+	</select>
+	
+	
+	<select id="getCounties" parameterType="String" resultType="map">
+		SELECT * FROM `wkrj_sys_department`
+		WHERE 1=1 
+		<if test="null!= parent_id and ''!= parent_id">
+            AND dept_parent_id = #{parent_id}
+        </if>
+	</select>
+	
+</mapper>
