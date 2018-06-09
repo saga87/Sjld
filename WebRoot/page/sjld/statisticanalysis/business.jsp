@@ -35,5 +35,7 @@
                         onclick="statistic()">&nbsp;&nbsp;查看统计图</a>
 		</div>
         </div>
+        
+        <div id="caseTypeBT" style="margin-left:360px; margin-top:-100px; width:400px;height:400px;"></div>
     </body>
 </html>
