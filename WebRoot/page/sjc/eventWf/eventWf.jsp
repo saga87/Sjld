@@ -10,7 +10,7 @@
 //      $("#start_date").ligerDateEditor({ showTime: false, label: '', labelWidth: 100, labelAlign: 'left' });
 //      $("#end_date").ligerDateEditor({ showTime: false, label: '', labelWidth: 100, labelAlign: 'left' });
             var parentID = "02";
-            cn_combobox = $("#caller_nature").ligerComboBox({
+            cn_combobox = $("#business_type").ligerComboBox({
                 url: 'eventReport/WkrjEventReport/getDataDictionary?parentID='+parentID,
                 valueField: 'id',
                 textField: 'name',

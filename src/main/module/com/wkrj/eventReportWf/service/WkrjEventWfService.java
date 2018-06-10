@@ -105,19 +105,19 @@ public interface WkrjEventWfService {
 //    public boolean huifangFinishEventWf(WkrjEventWf er);
     
     public List<Map<String, Object>> searchEventWfList(int offset, int pagesize,
-            String event_status, String qianshou_status, String event_no, String caller_nature, String content_type, String start_date, String end_date, String event_content, String caller_tel);
+            String event_status, String qianshou_status, String event_no, String business_type, String content_type, String start_date, String end_date, String event_content, String caller_tel);
     
-    public long searchEventWfList(String event_status, String qianshou_status, String event_no, String caller_nature, String content_type, String start_date, String end_date, 
+    public long searchEventWfList(String event_status, String qianshou_status, String event_no, String business_type, String content_type, String start_date, String end_date, 
             String event_content, String caller_tel);
 
     public List<Map<String, Object>> getReplyInfoWfList(int offset, int pagesize, String event_id, String dept_name, String accept_workno, String input_time, String event_no, 
             String qianshou_status, String qianshou_time, String event_status, String huifang_time, String replied_dealno, String delay_time, String current_loginno, String opt_time);
     
-    public long getReplyInfoWfList(String event_id);
+    public long getReplyInfoWfList(String event_id, String event_no);
     
-    public List<Map<String, Object>> getDelayedEventWfList_S(int offset, int pagesize, String event_no, String caller_nature, String content_type, String start_date, String end_date, String caller_tel);
+    public List<Map<String, Object>> getDelayedEventWfList_S(int offset, int pagesize, String event_no, String business_type, String content_type, String start_date, String end_date, String caller_tel);
     
-    public long getDelayedEventWfList_S(String event_no, String caller_nature, String content_type, String start_date, String end_date, String caller_tel);
+    public long getDelayedEventWfList_S(String event_no, String business_type, String content_type, String start_date, String end_date, String caller_tel);
     
     public boolean updateZhuanban(WkrjEventWf er);
     

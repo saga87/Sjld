@@ -93,7 +93,7 @@ public class WkrjEventWfController {
     public Object searchEventWfList(String parentId, HttpServletRequest request){
         String qianshou_status = "";
         String event_status = "";
-        String caller_nature = request.getParameter("caller_nature");
+        String business_type = request.getParameter("business_type");
         String deal_status = request.getParameter("deal_status");
         if ("未回复".equals(deal_status)) {
             qianshou_status = "1";
@@ -123,13 +123,12 @@ public class WkrjEventWfController {
         List<Map<String, Object>> list = new ArrayList<Map<String,Object>>();
         long count = 0;
         if ("延时".equals(deal_status)) {
-            list = this.erService.getDelayedEventWfList_S(offset, pagesize, event_no, caller_nature, content_type, start_date, end_date, caller_tel);
-            count = this.erService.getDelayedEventWfList_S(event_no, caller_nature, content_type, start_date, end_date, caller_tel);
+            list = this.erService.getDelayedEventWfList_S(offset, pagesize, event_no, business_type, content_type, start_date, end_date, caller_tel);
+            count = this.erService.getDelayedEventWfList_S(event_no, business_type, content_type, start_date, end_date, caller_tel);
         } else {
-            list = this.erService.searchEventWfList(offset, pagesize, event_status, qianshou_status, event_no, caller_nature, content_type, start_date, end_date, event_content, caller_tel);
-            count = this.erService.searchEventWfList(event_status, qianshou_status, event_no, caller_nature, content_type, start_date, end_date, event_content, caller_tel);
+            list = this.erService.searchEventWfList(offset, pagesize, event_status, qianshou_status, event_no, business_type, content_type, start_date, end_date, event_content, caller_tel);
+            count = this.erService.searchEventWfList(event_status, qianshou_status, event_no, business_type, content_type, start_date, end_date, event_content, caller_tel);
         }
-        
         return UtilsHelper.returnMap(list,count);
     }
     @RequestMapping("getReplyInfoWfList")
@@ -153,10 +152,8 @@ public class WkrjEventWfController {
         String shenhe_status = request.getParameter("shenhe_status");
         shenhe_status = "0";//未审核的
         int offset = (page-1)*pagesize;
-        
         List<Map<String, Object>> list = this.erService.getEventReportWfList(offset, pagesize, "", "", "", "", true, "", "", "", "", "", shenhe_status, "", "");
         long count = this.erService.getEventReportWfList("", "", "", "", true, "", "", "", "", "", shenhe_status, "", "");
-        
         return UtilsHelper.returnMap(list,count);
     }
     @RequestMapping("getZhuanfaEventList")
@@ -166,10 +163,8 @@ public class WkrjEventWfController {
         int pagesize=Integer.parseInt(request.getParameter("pagesize"));
         String shenhe_status = "1";//已审核未转发
         int offset = (page-1)*pagesize;
-        
         List<Map<String, Object>> list = this.erService.getEventReportWfList(offset, pagesize, "", "", "", "", true, "", "", "", "", "", shenhe_status, "", "");
         long count = this.erService.getEventReportWfList("", "", "", "", true, "", "", "", "", "", shenhe_status, "", "");
-        
         return UtilsHelper.returnMap(list,count);
     }
     
@@ -203,7 +198,6 @@ public class WkrjEventWfController {
         List<Map<String, Object>> list = this.erService.getEventReportWfList(offset, pagesize, "", "", caller_username, caller_tel, isGly, event_status, qianshou_status, "", "", dateF, "",
                 event_no, event_content);
         long count = this.erService.getEventReportWfList("", "", caller_username, caller_tel, isGly, event_status, qianshou_status, "", "", dateF, "", event_no, event_content);
-        
         return UtilsHelper.returnMap(list,count);
     }
     /**
@@ -260,7 +254,6 @@ public class WkrjEventWfController {
         String event_content = request.getParameter("event_content");
         List<Map<String, Object>> list = this.erService.getEventReportWfList(offset, pagesize, "", user_dept, caller_username, caller_tel, isGly, "", qianshou_status, "", "", dateF, "", event_no, event_content);
         long count = this.erService.getEventReportWfList("", user_dept, caller_username, caller_tel, isGly, "", qianshou_status, "", "", dateF, "", event_no, event_content);
-        
         return UtilsHelper.returnMap(list,count);
     }
     /**
@@ -292,7 +285,6 @@ public class WkrjEventWfController {
         List<Map<String, Object>> list = this.erService.getEventReportWfList(offset, pagesize, "", "", caller_username, caller_tel, isGly, event_status, "", "", "", "", "", event_no,
                 event_content);
         long count = this.erService.getEventReportWfList("", "", caller_username, caller_tel, isGly, event_status, "", "", "", "", "", event_no, event_content);
-        
         return UtilsHelper.returnMap(list,count);
     }
     /**
@@ -322,10 +314,8 @@ public class WkrjEventWfController {
         int page=Integer.parseInt(request.getParameter("page"));
         int pagesize=Integer.parseInt(request.getParameter("pagesize"));
         int offset = (page-1)*pagesize;
-        
         List<Map<String, Object>> list = this.erService.getEventReportWfList(offset, pagesize, "", user_dept, caller_username, caller_tel, isGly, event_status, "", "", "", dateF, "", "", "");
         long count = this.erService.getEventReportWfList("", user_dept, caller_username, caller_tel, isGly, event_status, "", "", "", dateF, "", "", "");
-        
         return UtilsHelper.returnMap(list,count);
     }
     /**

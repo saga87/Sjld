@@ -1,0 +1,132 @@
+@charset "utf-8";
+body{font-size:12px ;font-family: "微软雅黑"; }
+body,ul,li,ol,li,dl,dt,dd,p,a,tr,td{margin:0;padding:0;}
+ul,li{list-style:none;}
+img {border:0 none;vertical-align:top;}
+a,a:hover{color:#333;text-decoration:none;}
+a,input,img,select,textarea{outline:none;}
+
+/**CommonStyle**/
+.clearfix:before,.clearfix:after{content:"";display:table;}
+.clearfix:after{ clear:both;}
+.clearfix{*zoom:1;}
+.clear{clear:both;}
+.fl{float:left;}
+.fr{float:right;}
+
+.text{
+	margin: 2px 0 2px 0;
+	border: solid #A3C0E8;
+	font-size: 14px !important;
+}
+.text a.ts{
+	width:90px;
+	height:30px;
+	line-height: 30px;
+	border:1px solid #6b9ff5;
+	display: block;
+	text-align: center;
+	background: #dbe8fd;
+	margin-bottom: 10px;
+}
+.text_title{
+	width:100%;
+	background: #e7effe;
+	text-align: left;
+}
+.text_title p{
+/* 	height:25px;
+ */	line-height: 25px;
+}
+.text_title p span.span_left{
+/* 	width:110px;
+ */	text-align-last:justify;
+	text-align: right;
+	display: block;
+	float: left;
+	font-size: 14px !important;
+	
+}
+.text_title p span.span_right{
+	float: left;
+/* 	width:122px;
+ */	margin-right: 25px;
+ 	font-size: 14px !important;
+ 
+}
+.red{
+	color: red;
+}
+.text_title p span.ly{
+	float: left;
+}
+.text_title p span.reply{
+	float: left;
+}
+.peopleSay{
+	padding-top: 8px;
+	text-align: left;
+}
+.Reply{
+	line-height: 25px;
+	width:100%;
+	background: #fff9df;
+	text-align: left;
+}
+
+.picDiv{
+	text-align: left;
+	margin-bottom: 10px;
+}
+.picDiv img{
+	height:80px;
+	margin-left:10px;
+}
+
+
+.title{
+	font-weight: bold;
+}
+
+/****ligeui grid 去掉水平滚动条*****/
+.l-frozen .l-grid2 .l-grid-body {
+    overflow-x: hidden;
+}
+.l-selected .l-grid-row-cell, .l-selected {
+    background: #7f9acc !important;
+}
+
+/****************条件搜索*******************/
+.search_div{
+min-height:30px;line-height: 28px;padding: 5px 0px;background-color: #e7effe;
+overflow: hidden;	
+}
+  #search_form{
+	line-height: 35px;
+    font-size: 12px;
+ }
+ #search_form select{
+ 	width: 85px;
+ }
+ .button_c{
+ 	width: 73px;
+ 	height:27px;
+ 	margin-left:10px;
+ 	border-radius: 5px; background:#EFEFEF; border: 1px  #D8D8D8 solid; color: #333;cursor: pointer;
+ }
+ .inputtext{
+	height: 20px;
+ }
+ .search_name{
+    width: 85px;
+    display: block;
+    float: left;
+    text-align:right;
+    font-weight: bold;
+}
+
+
+
+
+
+

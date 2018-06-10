@@ -63,6 +63,9 @@
 <script type="text/javascript" charset="utf-8" src="plug-in/ueditor/ueditor.config.js"></script>
 <script type="text/javascript" charset="utf-8" src="plug-in/ueditor/ueditor.all.min.js"> </script>
 <script type="text/javascript" charset="utf-8" src="plug-in/ueditor/lang/zh-cn/zh-cn.js"> </script>
+<link href="css/myStyle.css" type="text/css" rel="stylesheet">
+
+<script type="text/javascript" src="plug-in/DatePicker/WdatePicker.js"></script>
 
 <script type="text/javascript">
 	$(function(){

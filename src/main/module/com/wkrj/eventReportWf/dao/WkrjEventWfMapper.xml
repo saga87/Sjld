@@ -196,8 +196,8 @@
         DATE_FORMAT(DATE_SUB(input_time,INTERVAL -deal_days DAY),'%Y-%m-%d %H:%i:%s') daoqi_time,
         round((UNIX_TIMESTAMP(NOW())-UNIX_TIMESTAMP(DATE_SUB(input_time,INTERVAL -deal_days DAY)))/3600) remain_hours,
         (select dept_name from wkrj_sys_department where dept_id=n.chengban_dept) dept_name,(select typename from wkrj_sys_data_dictionary where id=n.business_type) nature,
-        DATE_FORMAT((select opt_time from wkrj_procedurerecord where event_id=n.event_id and opt_type=1 order by opt_time desc limit 1),'%Y-%m-%d %H:%i:%s') reply_time,
         (select opt_content from wkrj_procedurerecord where event_id=n.event_id and opt_type=1 order by opt_time desc limit 1) reply_content,
+        DATE_FORMAT((select opt_time from wkrj_procedurerecord where event_id=n.event_id and opt_type=1 order by opt_time desc limit 1),'%Y-%m-%d %H:%i:%s') reply_time,
         (select opt_content from wkrj_procedurerecord where event_id=n.event_id and opt_type=2 order by opt_time desc limit 1) delay_reason,
         DATE_FORMAT((select opt_time from wkrj_procedurerecord where event_id=n.event_id and opt_type=2 order by opt_time desc limit 1),'%Y-%m-%d %H:%i:%s') delay_time,
         DATE_FORMAT(n.input_time,'%Y-%m-%d %H:%i:%s') event_inputtime,DATE_FORMAT(n.qianshou_time,'%Y-%m-%d %H:%i:%s') qianshoutime
@@ -205,9 +205,6 @@
         where 1=1
         <if test="null!=event_status and ''!=event_status">
             and n.event_status like concat("%", #{event_status},"%")
-            <if test="'完成'==event_status">
-                and n.event_status != '未完成'
-            </if>
         </if>
         <if test="null!=qianshou_status and ''!=qianshou_status">
             and n.qianshou_status = #{qianshou_status}
@@ -229,9 +226,6 @@
         </if>
         <if test="null!=event_content and ''!=event_content">
             and n.event_content like concat("%", #{event_content},"%")
-        </if>
-        <if test="null!=caller_tel and ''!=caller_tel">
-            and n.caller_tel like concat("%", #{caller_tel},"%")
         </if>
         order by event_inputtime desc
          limit #{offset},#{page}
@@ -245,9 +239,6 @@
         where 1=1
         <if test="null!=event_status and ''!=event_status">
             and n.event_status like concat("%", #{event_status},"%")
-            <if test="'完成'==event_status">
-                and n.event_status != '未完成'
-            </if>
         </if>
         <if test="null!=qianshou_status and ''!=qianshou_status">
             and n.qianshou_status = #{qianshou_status}
@@ -269,9 +260,6 @@
         </if>
         <if test="null!=event_content and ''!=event_content">
             and n.event_content like concat("%", #{event_content},"%")
-        </if>
-        <if test="null!=caller_tel and ''!=caller_tel">
-            and n.caller_tel like concat("%", #{caller_tel},"%")
         </if>
 
     </select>
@@ -341,13 +329,13 @@
     
     <select id="getJjdqEventWfList" resultType="hashmap">
         
-        SELECT n.*,(select typename from wkrj_sys_data_dictionary where id=n.deal_level) level,(select typename from wkrj_sys_data_dictionary where id=n.address1) jiedao,
+        SELECT n.*,
         (select typename from wkrj_sys_data_dictionary where id=n.accept_source) source,(select typename from wkrj_sys_data_dictionary where id=n.content_type) type,
         (select user_realname from wkrj_sys_user where user_id=n.input_user) user_realname,DATEDIFF(NOW(),DATE_SUB(input_time,INTERVAL -deal_days DAY)) remain_days,
         DATE_FORMAT(DATE_SUB(input_time,INTERVAL -deal_days DAY),'%Y-%m-%d %H:%i:%s') daoqi_time,
         round((UNIX_TIMESTAMP(NOW())-UNIX_TIMESTAMP(DATE_SUB(input_time,INTERVAL -deal_days DAY)))/3600) remain_hours,
         (select dept_name from wkrj_sys_department where dept_id=n.chengban_dept) dept_name,(select typename from wkrj_sys_data_dictionary where id=n.business_type) nature,
-        DATE_FORMAT((select opt_time from wkrj_procedurerecord where event_id=n.event_id order by opt_time desc limit 1),'%Y-%m-%d %H:%i:%s') reply_time,
+        DATE_FORMAT((select opt_time from wkrj_procedurerecord where event_id=n.event_id and opt_type=1 order by opt_time desc limit 1),'%Y-%m-%d %H:%i:%s') reply_time,
         (select opt_content from wkrj_procedurerecord where event_id=n.event_id and opt_type=1 order by opt_time desc limit 1) reply_content,
         (select opt_content from wkrj_procedurerecord where event_id=n.event_id and opt_type=2 order by opt_time desc limit 1) delay_reason,
         DATE_FORMAT(n.input_time,'%Y-%m-%d %H:%i:%s') event_inputtime,DATE_FORMAT(n.qianshou_time,'%Y-%m-%d %H:%i:%s') qianshoutime
@@ -483,7 +471,7 @@
         SELECT n.*,(select user_realname from wkrj_sys_user where user_id=n.opt_user) user_realname,r.event_no,
         DATE_FORMAT(n.opt_time,'%Y-%m-%d %H:%i:%s') opttime
         FROM `wkrj_procedurerecord` n left join wkrj_reportevent_wf r on n.event_id=r.event_id
-        where 1=1 and n.event_id=#{event_id}
+        where 1=1 and n.event_no=#{event_no}
         order by opt_time desc
          limit #{offset},#{page}
          
@@ -493,7 +481,7 @@
         
         SELECT count(1) 
         FROM `wkrj_procedurerecord` n 
-        where 1=1 and n.event_id=#{event_id}
+        where 1=1 and n.event_no=#{event_no}
 
     </select>
     

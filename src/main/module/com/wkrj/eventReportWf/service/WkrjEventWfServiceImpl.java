@@ -335,107 +335,107 @@ public class WkrjEventWfServiceImpl implements WkrjEventWfService {
 
     @Override
     public List<Map<String, Object>> searchEventWfList(int offset, int pagesize,
-            String event_status, String qianshou_status, String event_no, String caller_nature, String content_type, String start_date, String end_date, String event_content, String caller_tel) {
-        return this.dao.searchEventWfList(offset, pagesize, event_status, qianshou_status, event_no, caller_nature, content_type, start_date, end_date, event_content, caller_tel);
+            String event_status, String qianshou_status, String event_no, String business_type, String content_type, String start_date, String end_date, String event_content, String caller_tel) {
+        return this.dao.searchEventWfList(offset, pagesize, event_status, qianshou_status, event_no, business_type, content_type, start_date, end_date, event_content, caller_tel);
     }
 
     @Override
-    public long searchEventWfList(String event_status, String qianshou_status, String event_no, String caller_nature, String content_type, String start_date, String end_date, 
+    public long searchEventWfList(String event_status, String qianshou_status, String event_no, String business_type, String content_type, String start_date, String end_date, 
             String event_content, String caller_tel) {
-        return this.dao.searchEventWfListCount(event_status, qianshou_status, event_no, caller_nature, content_type, start_date, end_date, event_content, caller_tel);
+        return this.dao.searchEventWfListCount(event_status, qianshou_status, event_no, business_type, content_type, start_date, end_date, event_content, caller_tel);
     }
 
     @Override
     public List<Map<String, Object>> getReplyInfoWfList(int offset, int pagesize, String event_id, String dept_name, String accept_workno, String input_time, String event_no, 
             String qianshou_status, String qianshou_time, String event_status, String huifang_time, String replied_dealno, String delay_time, String current_loginno, String opt_time) {
-        List<Map<String, Object>> newList = new ArrayList<Map<String,Object>>();
-        Map<String, Object> temMap = new HashMap<String, Object>();
-        temMap.put("opt_result", "部门未接收");
-        temMap.put("accept_workno", "呼叫中心("+accept_workno+")");
-        temMap.put("dept_name", dept_name);
-        temMap.put("opt_time", input_time);
-        temMap.put("event_no", event_no);
-        newList.add(temMap);
-        
-        if ("undefined".equals(opt_time)) {//针对以前的数据（没加该字段之前）
-            opt_time = "";
-        }
-        
-        if (!"0".equals(qianshou_status)) {
-            temMap = new HashMap<String, Object>();
-            temMap.put("opt_result", "部门接收");
-            temMap.put("accept_workno", "呼叫中心("+accept_workno+")");
-            temMap.put("dept_name", dept_name);
-            temMap.put("opt_time", qianshou_time);
-            temMap.put("event_no", event_no);
-            newList.add(temMap);
-            List<Map<String, Object>> replyList = this.dao.getReplyInfoWfList(offset, pagesize, event_id);
-            if (replyList.size() > 0) {
-                temMap = new HashMap<String, Object>();
-                temMap.put("opt_result", "已回复");
-                temMap.put("accept_workno", "呼叫中心("+accept_workno+")");
-                temMap.put("dept_name", dept_name);
-                temMap.put("opt_time", replyList.get(0).get("replytime"));
-                temMap.put("event_no", event_no);
-                newList.add(temMap);
-            }
-            if ("回访完成".equals(event_status)) {
-                temMap = new HashMap<String, Object>();
-                temMap.put("opt_result", "已回访");
-                temMap.put("accept_workno", "呼叫中心("+replied_dealno+")");
-                temMap.put("dept_name", dept_name);
-                temMap.put("opt_time", huifang_time);
-                temMap.put("event_no", event_no);
-                newList.add(temMap);
-            }
-            if ("延时".equals(event_status)) {
-                temMap = new HashMap<String, Object>();
-                temMap.put("opt_result", "已延时");
-                temMap.put("accept_workno", "呼叫中心("+accept_workno+")");
-                temMap.put("dept_name", dept_name);
-                temMap.put("opt_time", delay_time);
-                temMap.put("event_no", event_no);
-                newList.add(temMap);
-            }
-            if ("完成".equals(event_status)) {
-                temMap = new HashMap<String, Object>();
-                temMap.put("opt_result", "已完成");
-                temMap.put("accept_workno", "呼叫中心("+replied_dealno+")");
-                temMap.put("dept_name", dept_name);
-                temMap.put("opt_time", opt_time);
-                temMap.put("event_no", event_no);
-                newList.add(temMap);
-            }
-        }
-        if ("撤销".equals(event_status)) {
-            temMap = new HashMap<String, Object>();
-            temMap.put("opt_result", "已撤销");
-            temMap.put("accept_workno", "呼叫中心("+current_loginno+")");
-            temMap.put("dept_name", dept_name);
-            temMap.put("opt_time", opt_time);
-            temMap.put("event_no", event_no);
-            newList.add(temMap);
-        }
-        return newList;
-        //return this.dao.getReplyInfoWfList(offset, pagesize, event_id);
+//        List<Map<String, Object>> newList = new ArrayList<Map<String,Object>>();
+//        Map<String, Object> temMap = new HashMap<String, Object>();
+//        temMap.put("opt_result", "部门未接收");
+//        temMap.put("accept_workno", "呼叫中心("+accept_workno+")");
+//        temMap.put("dept_name", dept_name);
+//        temMap.put("opt_time", input_time);
+//        temMap.put("event_no", event_no);
+//        newList.add(temMap);
+//        
+//        if ("undefined".equals(opt_time)) {//针对以前的数据（没加该字段之前）
+//            opt_time = "";
+//        }
+//        
+//        if (!"0".equals(qianshou_status)) {
+//            temMap = new HashMap<String, Object>();
+//            temMap.put("opt_result", "部门接收");
+//            temMap.put("accept_workno", "呼叫中心("+accept_workno+")");
+//            temMap.put("dept_name", dept_name);
+//            temMap.put("opt_time", qianshou_time);
+//            temMap.put("event_no", event_no);
+//            newList.add(temMap);
+//            List<Map<String, Object>> replyList = this.dao.getReplyInfoWfList(offset, pagesize, event_id);
+//            if (replyList.size() > 0) {
+//                temMap = new HashMap<String, Object>();
+//                temMap.put("opt_result", "已回复");
+//                temMap.put("accept_workno", "呼叫中心("+accept_workno+")");
+//                temMap.put("dept_name", dept_name);
+//                temMap.put("opt_time", replyList.get(0).get("replytime"));
+//                temMap.put("event_no", event_no);
+//                newList.add(temMap);
+//            }
+//            if ("回访完成".equals(event_status)) {
+//                temMap = new HashMap<String, Object>();
+//                temMap.put("opt_result", "已回访");
+//                temMap.put("accept_workno", "呼叫中心("+replied_dealno+")");
+//                temMap.put("dept_name", dept_name);
+//                temMap.put("opt_time", huifang_time);
+//                temMap.put("event_no", event_no);
+//                newList.add(temMap);
+//            }
+//            if ("延时".equals(event_status)) {
+//                temMap = new HashMap<String, Object>();
+//                temMap.put("opt_result", "已延时");
+//                temMap.put("accept_workno", "呼叫中心("+accept_workno+")");
+//                temMap.put("dept_name", dept_name);
+//                temMap.put("opt_time", delay_time);
+//                temMap.put("event_no", event_no);
+//                newList.add(temMap);
+//            }
+//            if ("完成".equals(event_status)) {
+//                temMap = new HashMap<String, Object>();
+//                temMap.put("opt_result", "已完成");
+//                temMap.put("accept_workno", "呼叫中心("+replied_dealno+")");
+//                temMap.put("dept_name", dept_name);
+//                temMap.put("opt_time", opt_time);
+//                temMap.put("event_no", event_no);
+//                newList.add(temMap);
+//            }
+//        }
+//        if ("撤销".equals(event_status)) {
+//            temMap = new HashMap<String, Object>();
+//            temMap.put("opt_result", "已撤销");
+//            temMap.put("accept_workno", "呼叫中心("+current_loginno+")");
+//            temMap.put("dept_name", dept_name);
+//            temMap.put("opt_time", opt_time);
+//            temMap.put("event_no", event_no);
+//            newList.add(temMap);
+//        }
+//        return newList;
+        return this.dao.getReplyInfoWfList(offset, pagesize, event_id, event_no);
     }
 
     @Override
-    public long getReplyInfoWfList(String event_id) {
-        return this.dao.getReplyInfoWfListCount(event_id);
+    public long getReplyInfoWfList(String event_id, String event_no) {
+        return this.dao.getReplyInfoWfListCount(event_id, event_no);
     }
 
     @Override
     public List<Map<String, Object>> getDelayedEventWfList_S(int offset,
-            int pagesize, String event_no, String caller_nature,
+            int pagesize, String event_no, String business_type,
             String content_type, String start_date, String end_date, String caller_tel) {
-        return this.dao.getDelayedEventWfList_S(offset, pagesize, event_no, caller_nature, content_type, start_date, end_date, caller_tel);
+        return this.dao.getDelayedEventWfList_S(offset, pagesize, event_no, business_type, content_type, start_date, end_date, caller_tel);
     }
 
     @Override
-    public long getDelayedEventWfList_S(String event_no, String caller_nature,
+    public long getDelayedEventWfList_S(String event_no, String business_type,
             String content_type, String start_date, String end_date, String caller_tel) {
-        return this.dao.getDelayedEventWfListCount_S(event_no, caller_nature, content_type, start_date, end_date, caller_tel);
+        return this.dao.getDelayedEventWfListCount_S(event_no, business_type, content_type, start_date, end_date, caller_tel);
     }
     
     public String exportDubanWf(String start_date, String end_date, HttpServletResponse response, boolean isGly, String user_dept) {
@@ -546,15 +546,15 @@ public class WkrjEventWfServiceImpl implements WkrjEventWfService {
                         }
                     } else if (j == 6) {
                         cell = row.createCell(j, HSSFCell.CELL_TYPE_STRING);
-                        if (!"".equals(infoList.get(i).get("caller_nature"))
-                                && infoList.get(i).get("caller_nature") != null) {
+                        if (!"".equals(infoList.get(i).get("business_type"))
+                                && infoList.get(i).get("business_type") != null) {
 //                            String temp = "";
 //                            if ("1".equals(infoList.get(i).get("is_expire"))) {
 //                                temp = "是";
 //                            } else {
 //                                temp = "否";
 //                            }
-                            cell.setCellValue(infoList.get(i).get("caller_nature").toString()); // 设置单元格的值
+                            cell.setCellValue(infoList.get(i).get("business_type").toString()); // 设置单元格的值
                         } else {
                             cell.setCellValue("");
                         }
@@ -681,14 +681,14 @@ public class WkrjEventWfServiceImpl implements WkrjEventWfService {
 //    @Override
 //    public List<Map<String, Object>> getWfFinishedEventList(int offset,
 //            int pagesize, String user_dept, String event_status,
-//            String event_no, String caller_nature, String content_type) {
-//        return this.dao.getWfFinishedEventList(offset, pagesize, user_dept, event_status, event_no, caller_nature, content_type);
+//            String event_no, String business_type, String content_type) {
+//        return this.dao.getWfFinishedEventList(offset, pagesize, user_dept, event_status, event_no, business_type, content_type);
 //    }
 //
 //    @Override
 //    public long getWfFinishedEventList(String user_dept, String event_status,
-//            String event_no, String caller_nature, String content_type) {
-//        return this.dao.getWfFinishedEventListCount(user_dept, event_status, event_no, caller_nature, content_type);
+//            String event_no, String business_type, String content_type) {
+//        return this.dao.getWfFinishedEventListCount(user_dept, event_status, event_no, business_type, content_type);
 //    }
 
     @Override

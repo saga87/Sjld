@@ -184,12 +184,12 @@ function goSearch(){
     var caller_username=$("#caller_username").val();
     var caller_tel=$("#caller_tel").val();
     var content_type=$("#content_type").val();
-    var caller_nature=$("#caller_nature").ligerComboBox('getValue');
+    var business_type=$("#business_type").ligerComboBox('getValue');
     //var content_type=$("#content_type").ligerComboBox('getValue');
 
     manager.set({
         url:'eventWf/WkrjEventWf/searchEventWfList?start_date='+start_date+'&end_date='+end_date+'&event_status='+event_status+'&event_no='+event_no+'&event_content='+event_content
-        +'&qianshou_status='+qianshou_status+'&caller_username='+caller_username+'&caller_tel='+caller_tel+'&caller_nature='+caller_nature+'&content_type='+content_type,
+        +'&qianshou_status='+qianshou_status+'&caller_username='+caller_username+'&caller_tel='+caller_tel+'&business_type='+business_type+'&content_type='+content_type,
         //pageSize:10,
         page:1
     });
@@ -204,8 +204,8 @@ function goReset(){
     $("#qianshou_status").val("");
     $("#caller_username").val("");
     $("#caller_tel").val("");
-    $("#caller_nature").ligerComboBox('setText','');
-    $("#caller_nature_val").val('');
+    $("#business_type").ligerComboBox('setText','');
+    $("#business_type_val").val('');
     $("#cotent_type").ligerComboBox('setText','');
     $("#cotent_type_val").val('');    
 }

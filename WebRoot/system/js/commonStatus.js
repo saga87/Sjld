@@ -42,13 +42,13 @@ function comTrans(rowdata, rowindex, value) {
 function typeTrans(rowdata, rowindex, value) {
     var temp = "";
     if (value == "1") {
-        temp = '完成';
+        temp = '回复';
     } else if (value == "2") {
-        temp = "交办";
+        temp = "延时";
     } else if (value == "3") {
-        temp = "转办";
+        temp = "退回";
     } else if (value == "4") {
-        temp = "未完成";
+        temp = "催办";
     }
     return temp;
 }

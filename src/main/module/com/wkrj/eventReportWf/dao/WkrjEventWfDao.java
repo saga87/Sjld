@@ -137,20 +137,20 @@ public interface WkrjEventWfDao {
     public long getDelayedEventWfListCount(@Param("user_id")String user_id);
     
     public List<Map<String, Object>> searchEventWfList(@Param("offset")int offset, @Param("page")int page,
-            @Param("event_status")String event_status, @Param("qianshou_status")String qianshou_status, @Param("event_no")String event_no, @Param("caller_nature")String caller_nature, 
+            @Param("event_status")String event_status, @Param("qianshou_status")String qianshou_status, @Param("event_no")String event_no, @Param("business_type")String business_type, 
             @Param("content_type")String content_type, @Param("start_date")String start_date, @Param("end_date")String end_date, @Param("event_content")String event_content, @Param("caller_tel")String caller_tel);
     
-    public long searchEventWfListCount(@Param("event_status")String event_status, @Param("qianshou_status")String qianshou_status, @Param("event_no")String event_no, @Param("caller_nature")String caller_nature, 
+    public long searchEventWfListCount(@Param("event_status")String event_status, @Param("qianshou_status")String qianshou_status, @Param("event_no")String event_no, @Param("business_type")String business_type, 
             @Param("content_type")String content_type, @Param("start_date")String start_date, @Param("end_date")String end_date, @Param("event_content")String event_content, @Param("caller_tel")String caller_tel);
     
-    public List<Map<String, Object>> getReplyInfoWfList(@Param("offset")int offset, @Param("page")int page, @Param("event_id")String event_id);
+    public List<Map<String, Object>> getReplyInfoWfList(@Param("offset")int offset, @Param("page")int page, @Param("event_id")String event_id, @Param("event_no")String event_no);
     
-    public long getReplyInfoWfListCount(@Param("event_id")String event_id);
+    public long getReplyInfoWfListCount(@Param("event_id")String event_id, @Param("event_no")String event_no);
     
-    public List<Map<String, Object>> getDelayedEventWfList_S(@Param("offset")int offset, @Param("page")int page, @Param("event_no")String event_no, @Param("caller_nature")String caller_nature, 
+    public List<Map<String, Object>> getDelayedEventWfList_S(@Param("offset")int offset, @Param("page")int page, @Param("event_no")String event_no, @Param("business_type")String business_type, 
             @Param("content_type")String content_type, @Param("start_date")String start_date, @Param("end_date")String end_date, @Param("caller_tel")String caller_tel);
     
-    public long getDelayedEventWfListCount_S(@Param("event_no")String event_no, @Param("caller_nature")String caller_nature, 
+    public long getDelayedEventWfListCount_S(@Param("event_no")String event_no, @Param("business_type")String business_type, 
             @Param("content_type")String content_type, @Param("start_date")String start_date, @Param("end_date")String end_date, @Param("caller_tel")String caller_tel);
     
     public List<Map<String, Object>> exportDubanWfList(@Param("start_date")String start_date, @Param("end_date")String end_date, @Param("isGly")boolean isGly, @Param("user_dept")String user_dept);

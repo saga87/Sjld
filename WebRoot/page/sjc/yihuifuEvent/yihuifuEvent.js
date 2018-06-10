@@ -117,7 +117,7 @@ function goSearch(){
     var event_no=$("#event_no").val();
     var event_content=encodeURIComponent($("#event_content").val());
     //var qianshou_status=$("#qianshou_status").val();
-    //var caller_nature=$("#caller_nature").ligerComboBox('getValue');
+    //var business_type=$("#business_type").ligerComboBox('getValue');
     //var content_type=$("#content_type").ligerComboBox('getValue');
 
     manager.set({
@@ -134,8 +134,8 @@ function goReset(){
 //    $("#deal_status").val("");
     $("#event_no").val("");
     $("#event_content").val("");
-//    $("#caller_nature").ligerComboBox('setText','');
-//    $("#caller_nature_val").val('');
+//    $("#business_type").ligerComboBox('setText','');
+//    $("#business_type_val").val('');
 //    $("#content_type").ligerComboBox('setText','');
 //    $("#content_type_val").val('');    
 }
