@@ -16,8 +16,10 @@
     	<div id="caseTypeZz" style="width:800px;height:400px;"></div>
     	<div style="height:20px; margin:10px 0 0 20px;padding:5px 0">
 		<div>
+			<div id = "counties">
 			<label>&nbsp;&nbsp;县市区:</label>
             <input type="text" name="chengban_dept" id="chengban_dept"/>
+            </div>
             <label >&nbsp;&nbsp;类型:</label>
             <input type="text" name="business_type" id="business_type"/>
            
