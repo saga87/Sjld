@@ -135,7 +135,7 @@ var dt_combobox;
 //                                 url: 'eventWf/WkrjEventWf/getDeptTree',
 //                                 valueField: 'dept_id',isMultiSelect : true,isShowCheckBox : true,
 //                                 textField: 'dept_name',
-                                width: 240,height: 30,selectBoxWidth: 240,selectBoxHeight: 100, treeLeafOnly: false, isMultiSelect: false,
+                                width: 240,height: 30,selectBoxWidth: 240,selectBoxHeight: 200, treeLeafOnly: false, isMultiSelect: false,
                                 tree: { checkbox: false, url: 'eventWf/WkrjEventWf/getDeptTree', ajaxType: 'post', idField: 'id', idFieldName: 'text' }
                              });
             
