@@ -6,6 +6,8 @@ import java.util.Map;
 
 
 
+
+
 import com.wkrj.statisticanalysis.bean.AnalysisType;
 
 
@@ -25,5 +27,8 @@ public interface AnalysisService {
 	List<Map<String,Object>> dealRankingOpt(String content_type,String opt);
 	
 	List<Map<String,Object>> getSatisfaction(String dept_id);
+	
+	List<Map<String,Object>> getRatio(String content_type,
+			String startTime,String endTime);
 	
 }

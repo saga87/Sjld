@@ -118,4 +118,23 @@
 	</select>
 	
 	
+	<select id = "getRatio" resultType="map">
+		SELECT count(*) as nums
+		FROM wkrj_reportevent_wf
+		WHERE 1=1
+		<if test="content_type != null and content_type != ''">
+             AND content_type = #{content_type}
+        </if>
+        
+        <if test="null!= startTime and ''!= startTime">
+            AND input_time >= #{startTime}
+        </if>
+        <if test="null!= endTime and ''!= endTime">
+            AND input_time &lt;= #{endTime}
+        </if>
+        
+        
+	</select>
+	
+	
 </mapper>

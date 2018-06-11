@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 
+
 import com.wkrj.statisticanalysis.bean.AnalysisType;
 import com.wkrj.statisticanalysis.dao.AnalysisDao;
 
@@ -71,5 +72,12 @@ public class AnalysisServiceImpl implements AnalysisService {
 	public List<Map<String, Object>> getSatisfaction(String dept_id) {
 		// TODO Auto-generated method stub
 		return dao.getSatisfaction(dept_id);
+	}
+
+	@Override
+	public List<Map<String, Object>> getRatio(String content_type,
+			String startTime, String endTime) {
+		// TODO Auto-generated method stub
+		return dao.getRatio(content_type, startTime, endTime);
 	}
 }

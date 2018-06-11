@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 
 
+
 import wkrjsystem.utils.UtilsHelper;
 
 import com.wkrj.statisticanalysis.bean.AnalysisType;
@@ -77,6 +78,13 @@ public class AnalysisController {
 	@ResponseBody
 	public Object getSatisfaction(String dept_id){
 		List<Map<String,Object>> list = service.getSatisfaction(dept_id);
+		return UtilsHelper.returnMap(list, list.size());
+	}
+	
+	@RequestMapping("getRatio")
+	@ResponseBody
+	public Object getRatio(String content_type,String startTime, String endTime){
+		List<Map<String,Object>> list = service.getRatio(content_type, startTime, endTime);
 		return UtilsHelper.returnMap(list, list.size());
 	}
 	

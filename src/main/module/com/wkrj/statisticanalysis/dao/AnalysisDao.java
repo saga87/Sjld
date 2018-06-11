@@ -31,4 +31,7 @@ public interface AnalysisDao {
 	List<Map<String,Object>> dealRankingOpt(@Param("content_type")String content_type,@Param("opt") String opt);
 	
 	List<Map<String,Object>> getSatisfaction(@Param("dept_id")String dept_id);
+	
+	List<Map<String,Object>> getRatio(@Param("content_type")String content_type,
+			@Param("startTime")String startTime,@Param("endTime")String endTime);
 }
