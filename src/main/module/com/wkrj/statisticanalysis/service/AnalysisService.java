@@ -14,4 +14,6 @@ public interface AnalysisService {
 
 	List<Map<String, Object>> getCounties(String parent_id);
 
+	List<AnalysisType> getBusinessTypeAnalysis(String startTime,String endTime,String chengban_dept
+			,String accept_source);
 }

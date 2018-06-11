@@ -1,16 +1,11 @@
-
-var xs_combobox;
-var type_combobox;
-
 var gly = user_id;
 var counties = dept_id;
-
 var chengban_dept;
 
-var type_name = new Array();
-var type_nums = new Array();
+var xs_combobox;
 
-
+var type_name_business = new Array();
+var type_nums_business = new Array();
 
 $(function(){
 	if(gly=="1"||gly=="58dfbf28-ed18-4d52-a051-ac407c182dcd"||counties=="04"){
@@ -25,60 +20,50 @@ $(function(){
 		$("#counties").hide();
 		chengban_dept = counties;
 	}
-	
 	$.ajax({
-        url: "analysis/getTypeAnalysis",
+        url: "analysis/getBusinessTypeAnalysis",
         dataType : "json",  
         data: {chengban_dept: chengban_dept},
         type : "GET",
         success: function(ctt){        
               for (var i = 0; i < ctt.length; i++) {
-            	  type_name.push(ctt[i].content_type);
-            	  type_nums.push(ctt[i].nums);
+            	  type_name_business.push(ctt[i].business_type);
+            	  type_nums_business.push(ctt[i].nums);
               } 
               caseTypeZz();
               caseTypeBT();
          	}
         }); 
-	
-	 $("#startTime").ligerDateEditor({ showTime: false, label: '', labelWidth: 100, labelAlign: 'left' });
+	$("#startTime").ligerDateEditor({ showTime: false, label: '', labelWidth: 100, labelAlign: 'left' });
 	 $("#endTime").ligerDateEditor({ showTime: false, label: '', labelWidth: 100, labelAlign: 'left' });
-	 
-	 
-	 type_combobox = $("#business_type").ligerComboBox({
-         url: 'eventWf/WkrjEventWf/getDataDictionary?parentID=02',
-         valueField: 'id',
-         textField: 'name',
-         width: 240,height: 30,selectBoxWidth: 240,selectBoxHeight: 100
-     });
 });
 
+
 function statistic(){
-	 type_name = new Array();
-	 type_nums = new Array();
+	type_name_business = new Array();
+	type_nums_business = new Array();
 	 chengban_dept = $("#chengban_dept_val").val();
 	 if($("#counties").is(":hidden")||chengban_dept == undefined){
 		 chengban_dept = counties;
 	 }
-	 var business_type = $("#business_type_val").val();
 	 var startTime = $("#startTime").val();
 	 var endTime = $("#endTime").val();
 	 
 	$.ajax({
-        url: "analysis/getTypeAnalysis",
-        data: {business_type: business_type,chengban_dept: chengban_dept,
-        	startTime: startTime,endTime: endTime},
-        dataType : "json",  
-        type : "GET",
-        success: function(ctt){        
-              for (var i = 0; i < ctt.length; i++) {
-            	  type_name.push(ctt[i].content_type);
-            	  type_nums.push(ctt[i].nums);
-              } 
-              caseTypeZz();
-              caseTypeBT()
-         	}
-        }); 
+       url: "analysis/getBusinessTypeAnalysis",
+       data: {chengban_dept: chengban_dept,
+       	startTime: startTime,endTime: endTime},
+       dataType : "json",  
+       type : "GET",
+       success: function(ctt){        
+             for (var i = 0; i < ctt.length; i++) {
+            	 type_name_business.push(ctt[i].business_type);
+            	 type_nums_business.push(ctt[i].nums);
+             } 
+             caseTypeZz();
+             caseTypeBT()
+        	}
+       }); 
 }
 
 function caseTypeBT() {
@@ -86,8 +71,8 @@ function caseTypeBT() {
 	
 	var arrNum = [];
 	
-	 for (var i = 0; i < type_nums.length; i++) {
-         arrNum.push({"value": type_nums[i],"name":type_name[i]});
+	 for (var i = 0; i < type_nums_business.length; i++) {
+         arrNum.push({"value": type_nums_business[i],"name":type_name_business[i]});
      }
 	
 	btChart.setOption({
@@ -102,8 +87,6 @@ function caseTypeBT() {
 		    ]
 		});
 }
-
-
 
 function caseTypeZz() {
     var myChart = echarts.init(document.getElementById('caseTypeZz'));
@@ -186,8 +169,8 @@ function caseTypeZz() {
         }]
     });
     myChart.showLoading(); //数据加载完之前先显示一段简单的loading动画
-    var names = type_name; //类别数组（实际用来盛放X轴坐标值）    
-    var series1 = type_nums;
+    var names = type_name_business; //类别数组（实际用来盛放X轴坐标值）    
+    var series1 = type_nums_business;
             myChart.hideLoading(); //隐藏加载动画
             myChart.setOption({ //加载数据图表
                xAxis: {

@@ -7,34 +7,28 @@ var counties = dept_id;
 
 var chengban_dept;
 
-var type_name = new Array();
-var type_nums = new Array();
 
+var type_name_business = new Array();
+var type_nums_business = new Array();
 
 
 $(function(){
 	if(gly=="1"||gly=="58dfbf28-ed18-4d52-a051-ac407c182dcd"||counties=="04"){
 		$("#counties").show();
-		xs_combobox = $("#chengban_dept").ligerComboBox({
-	         url: 'analysis/getCounties?parent_id=04',
-	         valueField: 'id',
-	         textField: 'name',
-	         width: 240,height: 30,selectBoxWidth: 240,selectBoxHeight: 100
-	     });
 	}else{
 		$("#counties").hide();
 		chengban_dept = counties;
 	}
 	
 	$.ajax({
-        url: "analysis/getTypeAnalysis",
+        url: "analysis/getBusinessTypeAnalysis",
         dataType : "json",  
         data: {chengban_dept: chengban_dept},
         type : "GET",
         success: function(ctt){        
               for (var i = 0; i < ctt.length; i++) {
-            	  type_name.push(ctt[i].content_type);
-            	  type_nums.push(ctt[i].nums);
+            	  type_name_business.push(ctt[i].business_type);
+            	  type_nums_business.push(ctt[i].nums);
               } 
               caseTypeZz();
               caseTypeBT();
@@ -43,7 +37,12 @@ $(function(){
 	
 	 $("#startTime").ligerDateEditor({ showTime: false, label: '', labelWidth: 100, labelAlign: 'left' });
 	 $("#endTime").ligerDateEditor({ showTime: false, label: '', labelWidth: 100, labelAlign: 'left' });
-	 
+	 xs_combobox = $("#chengban_dept").ligerComboBox({
+         url: 'analysis/getCounties?parent_id=04',
+         valueField: 'id',
+         textField: 'name',
+         width: 240,height: 30,selectBoxWidth: 240,selectBoxHeight: 100
+     });
 	 
 	 type_combobox = $("#business_type").ligerComboBox({
          url: 'eventWf/WkrjEventWf/getDataDictionary?parentID=02',
@@ -57,9 +56,11 @@ function statistic(){
 	 type_name = new Array();
 	 type_nums = new Array();
 	 chengban_dept = $("#chengban_dept_val").val();
+//	 console.log($("#counties").is(":hidden")+"===="+chengban_dept);
 	 if($("#counties").is(":hidden")||chengban_dept == undefined){
 		 chengban_dept = counties;
 	 }
+//	 console.log(chengban_dept);
 	 var business_type = $("#business_type_val").val();
 	 var startTime = $("#startTime").val();
 	 var endTime = $("#endTime").val();
@@ -81,6 +82,39 @@ function statistic(){
         }); 
 }
 
+function statisticBusiness(){
+	type_name_business = new Array();
+	type_nums_business = new Array();
+	 chengban_dept = $("#chengban_dept_val").val();
+	 if($("#counties").is(":hidden")||chengban_dept == undefined){
+		 chengban_dept = counties;
+	 }
+	 var startTime = $("#startTime").val();
+	 var endTime = $("#endTime").val();
+	 
+	$.ajax({
+       url: "analysis/getBusinessTypeAnalysis",
+       data: {chengban_dept: chengban_dept,
+       	startTime: startTime,endTime: endTime},
+       dataType : "json",  
+       type : "GET",
+       success: function(ctt){        
+             for (var i = 0; i < ctt.length; i++) {
+           	  type_name_business.push(ctt[i].business_type);
+           	  type_nums_business.push(ctt[i].nums);
+             } 
+             caseTypeZz();
+             caseTypeBT()
+        	}
+       }); 
+}
+
+
+
+
+
+
+
 function caseTypeBT() {
 	var btChart = echarts.init(document.getElementById('caseTypeBT'));
 	
@@ -91,9 +125,46 @@ function caseTypeBT() {
      }
 	
 	btChart.setOption({
+//		    title : {
+//		        text: '某站点用户访问来源',
+//		        subtext: '纯属虚构',
+//		        x:'center'
+//		    },
+//		    tooltip : {
+//		        trigger: 'item',
+//		        formatter: "{a} <br/>{b} : {c} ({d}%)"
+//		    },
+//		    legend: {
+//		        orient : 'vertical',
+//		        x : 'left',
+//		        data:['直接访问','邮件营销','联盟广告','视频广告','搜索引擎']
+//		    },
+//		    toolbox: {
+//		        show : true,
+//		        feature : {
+//		            mark : {show: true},
+//		            dataView : {show: true, readOnly: false},
+//		            magicType : {
+//		                show: true, 
+//		                type: ['pie', 'funnel'],
+//		                option: {
+//		                    funnel: {
+//		                        x: '25%',
+//		                        width: '50%',
+//		                        funnelAlign: 'left',
+//		                        max: 1548
+//		                    }
+//		                }
+//		            },
+//		            restore : {show: true},
+//		            saveAsImage : {show: true}
+//		        }
+//		    },
 		    calculable : true,
+		   
 		    series : [
 		        {
+//		            name:'访问来源',
 		            type:'pie',
 		            radius : '55%',
 		            center: ['50%', '60%'],

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
+
 import com.wkrj.statisticanalysis.bean.AnalysisType;
 import com.wkrj.statisticanalysis.dao.AnalysisDao;
 
@@ -39,5 +40,12 @@ public class AnalysisServiceImpl implements AnalysisService {
         }
 		
 		return all;
+	}
+
+	@Override
+	public List<AnalysisType> getBusinessTypeAnalysis(String startTime,
+			String endTime, String chengban_dept, String accept_source) {
+		// TODO Auto-generated method stub
+		return dao.getBusinessTypeAnalysis(startTime, endTime, chengban_dept, accept_source);
 	}
 }

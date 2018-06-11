@@ -34,4 +34,44 @@
         </if>
 	</select>
 	
+	
+	<select id="getBusinessTypeAnalysis" resultType="AnalysisType">
+		SELECT 
+		(select typename from wkrj_sys_data_dictionary where id = business_type)
+		as business_type,COUNT(*) as nums
+		FROM `wkrj_reportevent_wf` 
+		WHERE  business_type is NOT NULL
+		<if test="chengban_dept != null and chengban_dept != ''">
+             AND chengban_dept LIKE CONCAT(#{chengban_dept},'%')
+        </if>
+        <if test="accept_source != null and accept_source != ''">
+             AND accept_source = #{accept_source}
+        </if>
+		<if test="null!= startTime and ''!= startTime">
+            AND input_time >= #{startTime}
+        </if>
+        <if test="null!= endTime and ''!= endTime">
+            AND input_time &lt;= #{endTime}
+        </if>
+		GROUP BY business_type;
+	</select>
+	
+	
+	<select id="getDealAnalysis" >
+		SELECT 
+		(select dept_name from wkrj_sys_department where dept_id = chengban_dept)
+		as chengban_dept
+		,COUNT(*) as nums
+		FROM `wkrj_reportevent_wf` 
+		WHERE  1=1
+		<if test="null!= startTime and ''!= startTime">
+            AND input_time >= #{startTime}
+        </if>
+        <if test="null!= endTime and ''!= endTime">
+            AND input_time &lt;= #{endTime}
+        </if>
+		GROUP BY chengban_dept;
+	</select>
+	
+	
 </mapper>

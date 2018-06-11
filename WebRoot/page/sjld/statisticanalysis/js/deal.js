@@ -1,31 +1,17 @@
-
-var xs_combobox;
-var type_combobox;
-
 var gly = user_id;
 var counties = dept_id;
-
 var chengban_dept;
 
-var type_name = new Array();
-var type_nums = new Array();
-
-
+var type_name_content = new Array();
+var type_nums_content = new Array();
 
 $(function(){
 	if(gly=="1"||gly=="58dfbf28-ed18-4d52-a051-ac407c182dcd"||counties=="04"){
 		$("#counties").show();
-		xs_combobox = $("#chengban_dept").ligerComboBox({
-	         url: 'analysis/getCounties?parent_id=04',
-	         valueField: 'id',
-	         textField: 'name',
-	         width: 240,height: 30,selectBoxWidth: 240,selectBoxHeight: 100
-	     });
 	}else{
 		$("#counties").hide();
 		chengban_dept = counties;
 	}
-	
 	$.ajax({
         url: "analysis/getTypeAnalysis",
         dataType : "json",  
@@ -33,80 +19,16 @@ $(function(){
         type : "GET",
         success: function(ctt){        
               for (var i = 0; i < ctt.length; i++) {
-            	  type_name.push(ctt[i].content_type);
-            	  type_nums.push(ctt[i].nums);
+            	  type_name_content.push(ctt[i].content_type);
+            	  type_nums_content.push(ctt[i].nums);
               } 
               caseTypeZz();
-              caseTypeBT();
          	}
         }); 
-	
-	 $("#startTime").ligerDateEditor({ showTime: false, label: '', labelWidth: 100, labelAlign: 'left' });
-	 $("#endTime").ligerDateEditor({ showTime: false, label: '', labelWidth: 100, labelAlign: 'left' });
-	 
-	 
-	 type_combobox = $("#business_type").ligerComboBox({
-         url: 'eventWf/WkrjEventWf/getDataDictionary?parentID=02',
-         valueField: 'id',
-         textField: 'name',
-         width: 240,height: 30,selectBoxWidth: 240,selectBoxHeight: 100
-     });
 });
 
-function statistic(){
-	 type_name = new Array();
-	 type_nums = new Array();
-	 chengban_dept = $("#chengban_dept_val").val();
-	 if($("#counties").is(":hidden")||chengban_dept == undefined){
-		 chengban_dept = counties;
-	 }
-	 var business_type = $("#business_type_val").val();
-	 var startTime = $("#startTime").val();
-	 var endTime = $("#endTime").val();
-	 
-	$.ajax({
-        url: "analysis/getTypeAnalysis",
-        data: {business_type: business_type,chengban_dept: chengban_dept,
-        	startTime: startTime,endTime: endTime},
-        dataType : "json",  
-        type : "GET",
-        success: function(ctt){        
-              for (var i = 0; i < ctt.length; i++) {
-            	  type_name.push(ctt[i].content_type);
-            	  type_nums.push(ctt[i].nums);
-              } 
-              caseTypeZz();
-              caseTypeBT()
-         	}
-        }); 
-}
-
-function caseTypeBT() {
-	var btChart = echarts.init(document.getElementById('caseTypeBT'));
-	
-	var arrNum = [];
-	
-	 for (var i = 0; i < type_nums.length; i++) {
-         arrNum.push({"value": type_nums[i],"name":type_name[i]});
-     }
-	
-	btChart.setOption({
-		    calculable : true,
-		    series : [
-		        {
-		            type:'pie',
-		            radius : '55%',
-		            center: ['50%', '60%'],
-		            data:arrNum
-		        }
-		    ]
-		});
-}
-
-
-
 function caseTypeZz() {
-    var myChart = echarts.init(document.getElementById('caseTypeZz'));
+    var myChart = echarts.init(document.getElementById('caseSXTypeZz'));
     // 显示标题，图例和空的坐标轴
     myChart.setOption({
         title: {
@@ -186,8 +108,8 @@ function caseTypeZz() {
         }]
     });
     myChart.showLoading(); //数据加载完之前先显示一段简单的loading动画
-    var names = type_name; //类别数组（实际用来盛放X轴坐标值）    
-    var series1 = type_nums;
+    var names = type_name_content; //类别数组（实际用来盛放X轴坐标值）    
+    var series1 = type_nums_content;
             myChart.hideLoading(); //隐藏加载动画
             myChart.setOption({ //加载数据图表
                xAxis: {

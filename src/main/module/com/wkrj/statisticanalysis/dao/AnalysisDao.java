@@ -15,4 +15,9 @@ public interface AnalysisDao {
 			,@Param("accept_source")String accept_source);
 	
 	List<Map<String,Object>> getCounties(@Param("parent_id")String parent_id);
+	
+	
+	List<AnalysisType> getBusinessTypeAnalysis(@Param("startTime")String startTime
+			,@Param("endTime")String endTime,@Param("chengban_dept")String chengban_dept
+			,@Param("accept_source")String accept_source);
 }

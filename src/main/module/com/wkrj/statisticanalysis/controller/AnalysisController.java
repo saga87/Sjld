@@ -43,6 +43,12 @@ public class AnalysisController {
 	}
 	
 	
+	@RequestMapping("getBusinessTypeAnalysis")
+	@ResponseBody
+	public Object getBusinessTypeAnalysis(String startTime,String endTime,String chengban_dept,String accept_source){
+		List<AnalysisType> list = service.getBusinessTypeAnalysis(startTime,endTime,chengban_dept,accept_source);
+		return list;
+	}
 	
 	
 }
