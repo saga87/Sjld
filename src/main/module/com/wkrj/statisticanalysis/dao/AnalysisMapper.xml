@@ -88,8 +88,8 @@
 		
 		FROM wkrj_reportevent_wf
 		WHERE  chengban_dept in (select dept_id from wkrj_sys_department where dept_parent_id = "04")
-		<if test="business_type != null and business_type != ''">
-             AND business_type = #{business_type}
+		<if test="content_type != null and content_type != ''">
+             AND content_type = #{content_type}
         </if>
         <if test="opt != null and opt != ''">
              <if test=" opt ==1 ">
@@ -102,8 +102,6 @@
              	AND satisfy_status is not null
         	 </if>
         </if>
-       
-        
 		GROUP BY chengban_dept
 		ORDER BY nums desc
 	</select>

@@ -67,9 +67,9 @@ public class AnalysisController {
 	
 	@RequestMapping("dealRankingOpt")
 	@ResponseBody
-	public Object dealRankingOpt(String business_type,String opt){
+	public Object dealRankingOpt(String content_type,String opt){
 		List<Map<String,Object>> list = 
-				service.dealRankingOpt(business_type,opt);
+				service.dealRankingOpt(content_type,opt);
 		return UtilsHelper.returnMap(list, list.size());
 	}
 	

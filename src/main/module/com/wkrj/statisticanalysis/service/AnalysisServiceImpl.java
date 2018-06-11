@@ -62,9 +62,9 @@ public class AnalysisServiceImpl implements AnalysisService {
 	}
 
 	@Override
-	public List<Map<String, Object>> dealRankingOpt(String business_type,String opt) {
+	public List<Map<String, Object>> dealRankingOpt(String content_type,String opt) {
 		// TODO Auto-generated method stub
-		return dao.dealRankingOpt(business_type,opt);
+		return dao.dealRankingOpt(content_type,opt);
 	}
 
 	@Override

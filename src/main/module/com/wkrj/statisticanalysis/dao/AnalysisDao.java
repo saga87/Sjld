@@ -28,7 +28,7 @@ public interface AnalysisDao {
 			@Param("event_status")String event_status,@Param("qianshou_status")String qianshou_status,
 			@Param("satisfy_status")String satisfy_status);
 	
-	List<Map<String,Object>> dealRankingOpt(@Param("business_type")String business_type,@Param("opt") String opt);
+	List<Map<String,Object>> dealRankingOpt(@Param("content_type")String content_type,@Param("opt") String opt);
 	
 	List<Map<String,Object>> getSatisfaction(@Param("dept_id")String dept_id);
 }

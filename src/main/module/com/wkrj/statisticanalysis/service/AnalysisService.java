@@ -22,7 +22,7 @@ public interface AnalysisService {
 	List<Map<String,Object>> dealRanking(String business_type,String event_status,String qianshou_status
 			,String satisfy_status);
 	
-	List<Map<String,Object>> dealRankingOpt(String business_type,String opt);
+	List<Map<String,Object>> dealRankingOpt(String content_type,String opt);
 	
 	List<Map<String,Object>> getSatisfaction(String dept_id);
 	

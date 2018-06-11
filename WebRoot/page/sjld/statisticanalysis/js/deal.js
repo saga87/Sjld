@@ -21,6 +21,8 @@ $(function(){
 		$("#qxrank").hide();
 		chengban_dept = counties;
 	}
+	
+	
 	$.ajax({
         url: "analysis/getTypeAnalysis",
         dataType : "json",  
@@ -76,8 +78,9 @@ $(function(){
 
 function rank(){
 	var a = $("input[name='radio']:checked").val();
+	var b = $("#content_type").val();
 	manager1 = $("#rank_maingrid").ligerGrid({
-		url:'analysis/dealRankingOpt?opt='+a,
+		url:'analysis/dealRankingOpt?opt='+a+"&content_type="+b,
         columns: [
         { display: '县市区', name: 'chengban_dept', id: 'chengban_dept', width: '70%', align: 'center' },
         { display: '数目', name: 'nums', id: 'nums', width: '30%', align: 'center' },
