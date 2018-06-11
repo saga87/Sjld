@@ -15,9 +15,9 @@
 <body style="overflow:hidden;">
 <div id="repliedEventWf_layout" style="width:100%;">   
     <div position="center">
-        <div class="search_div">
+        <!-- <div class="search_div">
             <form action="" id="search_form">
-                <!-- <div class="clear">
+                <div class="clear">
                     <div style="float:left;"><span class="search_name">事件编号：</span><input class="inputtext" type="text" name="event_no" id="event_no" style="width: 146px;height: 23px;">
                     </div>
                     <div style="float:left;"><span class="search_name">关键字：</span><input class="inputtext" type="text" name="event_content" id="event_content" style="width: 146px;height: 23px;">
@@ -28,9 +28,9 @@
                     <div style="float:left;margin-left: -1px;">
                         <input type="button" class="button_c" onclick="goReset()" value="重置">
                     </div>
-                </div> -->
+                </div>
             </form> 
-        </div>
+        </div> -->
         <div id="repliedEventWf_maingrid"></div>
     </div>
 </div>

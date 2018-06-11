@@ -19,6 +19,7 @@
         (select opt_content from wkrj_procedurerecord where event_id=n.event_id and opt_type=3 order by opt_time desc limit 1) back_reason,
         DATE_FORMAT((select opt_time from wkrj_procedurerecord where event_id=n.event_id and opt_type=3 order by opt_time desc limit 1),'%Y-%m-%d %H:%i:%s') back_time,
         (select opt_content from wkrj_procedurerecord where event_id=n.event_id and opt_type=4 order by opt_time desc limit 1) cuiban_reason,
+        (select count(1) from wkrj_procedurerecord where event_id=n.event_id and opt_type=4) cuiban_cnt,
         DATE_FORMAT((select opt_time from wkrj_procedurerecord where event_id=n.event_id and opt_type=4 order by opt_time desc limit 1),'%Y-%m-%d %H:%i:%s') cuiban_time,
         DATE_FORMAT(n.input_time,'%Y-%m-%d %H:%i:%s') event_inputtime,DATE_FORMAT(n.qianshou_time,'%Y-%m-%d %H:%i:%s') qianshoutime
         FROM `wkrj_reportevent_wf` n

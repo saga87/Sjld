@@ -17,7 +17,8 @@ $(function(){
         { display: '业务类型', name: 'nature', id: 'nature', width: '10%', align: 'center' },
         { display: '受理时间', name: 'event_inputtime', id: 'event_inputtime', width: '10%', align: 'center' },
         { display: '受理渠道', name: 'source', id: 'source', width: '10%', align: 'center' },
-        { display: '备注', name: 'event_other', id: 'event_other', width: '9%', align: 'center' },
+        //{ display: '备注', name: 'event_other', id: 'event_other', width: '9%', align: 'center' },
+        { display: '催办次数', name: 'cuiban_cnt', id: 'cuiban_cnt', width: '9%', align: 'center' },
         { display: '状态', name: 'event_status', id: 'event_status', width: '10%', align: 'center', render: statusTrans }
 //        { display: '操作', isSort: false, width: '9%', render: function (rowdata, rowindex, value){
 //            var h = "<a style='text-decoration:none;' onclick='print(\""+rowindex+"\")' href='javascript:void(0)'>[打印]</a>";
