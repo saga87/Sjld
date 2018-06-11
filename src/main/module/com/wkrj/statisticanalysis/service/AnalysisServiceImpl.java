@@ -11,6 +11,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 
+
+
+
 import com.wkrj.statisticanalysis.bean.AnalysisType;
 import com.wkrj.statisticanalysis.dao.AnalysisDao;
 
@@ -22,9 +25,9 @@ public class AnalysisServiceImpl implements AnalysisService {
 
 	@Override
 	public List<AnalysisType> getTypeAnalysis(String startTime,String endTime,String chengban_dept
-			,String business_type,String accept_source) {
+			,String business_type) {
 		// TODO Auto-generated method stub
-		return dao.getTypeAnalysis(startTime,endTime,chengban_dept,business_type,accept_source);
+		return dao.getTypeAnalysis(startTime,endTime,chengban_dept,business_type);
 	}
 
 	@Override
@@ -47,5 +50,18 @@ public class AnalysisServiceImpl implements AnalysisService {
 			String endTime, String chengban_dept, String accept_source) {
 		// TODO Auto-generated method stub
 		return dao.getBusinessTypeAnalysis(startTime, endTime, chengban_dept, accept_source);
+	}
+
+	@Override
+	public List<Map<String, Object>> dealRanking(String business_type,
+			String event_status, String qianshou_status, String satisfy_status) {
+		// TODO Auto-generated method stub
+		return dao.dealRanking(business_type, event_status, qianshou_status, satisfy_status);
+	}
+
+	@Override
+	public List<Map<String, Object>> dealRankingOpt(String business_type,String opt) {
+		// TODO Auto-generated method stub
+		return dao.dealRankingOpt(business_type,opt);
 	}
 }

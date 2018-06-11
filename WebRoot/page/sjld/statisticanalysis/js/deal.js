@@ -5,11 +5,15 @@ var chengban_dept;
 var type_name_content = new Array();
 var type_nums_content = new Array();
 
+var lay1;
+var manager1;
+
+
 $(function(){
 	if(gly=="1"||gly=="58dfbf28-ed18-4d52-a051-ac407c182dcd"||counties=="04"){
-		$("#counties").show();
+		$("#qxrank").show();
 	}else{
-		$("#counties").hide();
+		$("#qxrank").hide();
 		chengban_dept = counties;
 	}
 	$.ajax({
@@ -25,7 +29,41 @@ $(function(){
               caseTypeZz();
          	}
         }); 
+	
+	
+	 	lay1=$("#rank_layout").ligerLayout({rightWidth:560,isRightCollapse: true});
+		
+		manager1 = $("#rank_maingrid").ligerGrid({
+			url:'analysis/dealRankingOpt',
+	        columns: [
+	        { display: '县市区', name: 'chengban_dept', id: 'chengban_dept', width: '70%', align: 'center' },
+	        { display: '数目', name: 'nums', id: 'nums', width: '30%', align: 'center' },
+	        ], height: '100%',
+	        width:'99.9%',
+	        usePager :true,
+			rownumbers : true,
+	        alternatingRow: true
+	    });
+	
+	
+	
 });
+
+function rank(){
+	var a = $("input[name='radio']:checked").val();
+	manager1 = $("#rank_maingrid").ligerGrid({
+		url:'analysis/dealRankingOpt?opt='+a,
+        columns: [
+        { display: '县市区', name: 'chengban_dept', id: 'chengban_dept', width: '70%', align: 'center' },
+        { display: '数目', name: 'nums', id: 'nums', width: '30%', align: 'center' },
+        ], height: '100%',
+        width:'99.9%',
+        usePager :true,
+		rownumbers : true,
+        alternatingRow: true
+    });
+}
+
 
 function caseTypeZz() {
     var myChart = echarts.init(document.getElementById('caseSXTypeZz'));
