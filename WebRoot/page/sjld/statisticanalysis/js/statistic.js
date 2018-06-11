@@ -2,17 +2,26 @@
 var xs_combobox;
 var type_combobox;
 
+var gly = user_id;
+var counties = dept_id;
+
+var chengban_dept;
 
 var type_name = new Array();
 var type_nums = new Array();
 
 $(function(){
-	
-	
+	if(gly=="1"||gly=="58dfbf28-ed18-4d52-a051-ac407c182dcd"||counties=="04"){
+		$("#counties").show();
+	}else{
+		$("#counties").hide();
+		chengban_dept = counties;
+	}
 	
 	$.ajax({
         url: "analysis/getTypeAnalysis",
         dataType : "json",  
+        data: {chengban_dept: chengban_dept},
         type : "GET",
         success: function(ctt){        
               for (var i = 0; i < ctt.length; i++) {
@@ -44,7 +53,12 @@ $(function(){
 function statistic(){
 	 type_name = new Array();
 	 type_nums = new Array();
-	 var chengban_dept = $("#chengban_dept_val").val();
+	 chengban_dept = $("#chengban_dept_val").val();
+	 console.log($("#counties").is(":hidden")+"===="+chengban_dept);
+	 if($("#counties").is(":hidden")||chengban_dept == undefined){
+		 chengban_dept = counties;
+	 }
+//	 console.log(chengban_dept);
 	 var business_type = $("#business_type_val").val();
 	 var startTime = $("#startTime").val();
 	 var endTime = $("#endTime").val();
@@ -119,13 +133,6 @@ function caseTypeBT() {
 		            type:'pie',
 		            radius : '55%',
 		            center: ['50%', '60%'],
-//		            data:[
-//		                {value:335, name:'直接访问'},
-//		                {value:310, name:'邮件营销'},
-//		                {value:234, name:'联盟广告'},
-//		                {value:135, name:'视频广告'},
-//		                {value:1548, name:'搜索引擎'}
-//		            ]
 		            data:arrNum
 		        }
 		    ]
