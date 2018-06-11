@@ -13,9 +13,6 @@
         <if test="business_type != null and business_type != ''">
              AND business_type = #{business_type}
         </if>
-        <if test="accept_source != null and accept_source != ''">
-             AND accept_source = #{accept_source}
-        </if>
 		<if test="null!= startTime and ''!= startTime">
             AND input_time >= #{startTime}
         </if>
@@ -57,21 +54,60 @@
 	</select>
 	
 	
-	<select id="getDealAnalysis" >
-		SELECT 
-		(select dept_name from wkrj_sys_department where dept_id = chengban_dept)
+	
+	<select id="dealRanking"  parameterType="Object" resultType="map">
+		SELECT (select dept_name from wkrj_sys_department where dept_id = chengban_dept)
 		as chengban_dept
-		,COUNT(*) as nums
-		FROM `wkrj_reportevent_wf` 
-		WHERE  1=1
-		<if test="null!= startTime and ''!= startTime">
-            AND input_time >= #{startTime}
+		,count(chengban_dept) as nums
+		
+		FROM wkrj_reportevent_wf
+		WHERE  chengban_dept in (select dept_id from wkrj_sys_department where dept_parent_id = "04")
+		<if test="business_type != null and business_type != ''">
+             AND business_type = #{business_type}
         </if>
-        <if test="null!= endTime and ''!= endTime">
-            AND input_time &lt;= #{endTime}
+        <if test="event_status != null and event_status != ''">
+             AND event_status = #{event_status}
         </if>
-		GROUP BY chengban_dept;
+        <if test="qianshou_status != null and qianshou_status != ''">
+             AND qianshou_status = #{qianshou_status}
+        </if>
+        
+        <if test="satisfy_status != null and satisfy_status != ''">
+             AND satisfy_status is not null
+        </if>
+        
+		GROUP BY chengban_dept
+		ORDER BY nums desc
 	</select>
+	
+	
+	<select id="dealRankingOpt"  parameterType="Object" resultType="map">
+		SELECT (select dept_name from wkrj_sys_department where dept_id = chengban_dept)
+		as chengban_dept
+		,count(chengban_dept) as nums
+		
+		FROM wkrj_reportevent_wf
+		WHERE  chengban_dept in (select dept_id from wkrj_sys_department where dept_parent_id = "04")
+		<if test="business_type != null and business_type != ''">
+             AND business_type = #{business_type}
+        </if>
+        <if test="opt != null and opt != ''">
+             <if test=" opt ==1 ">
+             	AND event_status = "1"
+        	 </if>
+        	 <if test=" opt ==2 ">
+             	AND qianshou_status = "1"
+        	 </if>
+        	 <if test=" opt ==3 ">
+             	AND satisfy_status is not null
+        	 </if>
+        </if>
+       
+        
+		GROUP BY chengban_dept
+		ORDER BY nums desc
+	</select>
+	
 	
 	
 </mapper>
