@@ -14,6 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 
+
+
 import com.wkrj.statisticanalysis.bean.AnalysisType;
 import com.wkrj.statisticanalysis.dao.AnalysisDao;
 
@@ -63,5 +65,11 @@ public class AnalysisServiceImpl implements AnalysisService {
 	public List<Map<String, Object>> dealRankingOpt(String business_type,String opt) {
 		// TODO Auto-generated method stub
 		return dao.dealRankingOpt(business_type,opt);
+	}
+
+	@Override
+	public List<Map<String, Object>> getSatisfaction(String dept_id) {
+		// TODO Auto-generated method stub
+		return dao.getSatisfaction(dept_id);
 	}
 }

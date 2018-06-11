@@ -14,6 +14,9 @@
     </head>
     <body>
     	<div id="caseSXTypeZz" style="width:800px;height:400px;"></div>
+    	<div id="SatisfactionBT" style="width:600px;height:400px;"></div>
+    	
+    	
     	<div id="qxrank">
     	<div style="margin-left:20px">
 			<input type="radio" name="radio"  value="1">受理

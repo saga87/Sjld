@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 
 
+
 import wkrjsystem.utils.UtilsHelper;
 
 import com.wkrj.statisticanalysis.bean.AnalysisType;
@@ -72,5 +73,11 @@ public class AnalysisController {
 		return UtilsHelper.returnMap(list, list.size());
 	}
 	
+	@RequestMapping("getSatisfaction")
+	@ResponseBody
+	public Object getSatisfaction(String dept_id){
+		List<Map<String,Object>> list = service.getSatisfaction(dept_id);
+		return UtilsHelper.returnMap(list, list.size());
+	}
 	
 }

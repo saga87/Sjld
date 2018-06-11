@@ -109,5 +109,15 @@
 	</select>
 	
 	
+	<select id="getSatisfaction" parameterType="String" resultType="map">
+		SELECT satisfy_status,count(*) as nums
+		FROM wkrj_reportevent_wf
+		WHERE satisfy_status is not null
+		<if test="dept_id != null and dept_id != ''">
+             AND chengban_dept LIKE CONCAT(#{dept_id},'%')
+        </if>
+        group by satisfy_status
+	</select>
+	
 	
 </mapper>

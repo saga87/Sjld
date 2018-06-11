@@ -23,4 +23,7 @@ public interface AnalysisService {
 			,String satisfy_status);
 	
 	List<Map<String,Object>> dealRankingOpt(String business_type,String opt);
+	
+	List<Map<String,Object>> getSatisfaction(String dept_id);
+	
 }

@@ -8,6 +8,8 @@ import org.apache.ibatis.annotations.Param;
 
 
 
+
+
 import com.wkrj.statisticanalysis.bean.AnalysisType;
 
 public interface AnalysisDao {
@@ -27,4 +29,6 @@ public interface AnalysisDao {
 			@Param("satisfy_status")String satisfy_status);
 	
 	List<Map<String,Object>> dealRankingOpt(@Param("business_type")String business_type,@Param("opt") String opt);
+	
+	List<Map<String,Object>> getSatisfaction(@Param("dept_id")String dept_id);
 }

@@ -5,6 +5,11 @@ var chengban_dept;
 var type_name_content = new Array();
 var type_nums_content = new Array();
 
+var satis_name = new Array();
+var satis_nums = new Array();
+
+
+
 var lay1;
 var manager1;
 
@@ -45,7 +50,27 @@ $(function(){
 	        alternatingRow: true
 	    });
 	
-	
+		$.ajax({
+	        url: "analysis/getSatisfaction",
+	        dataType : "json",  
+	        data: {dept_id: chengban_dept},
+	        type : "GET",
+	        success: function(data){
+	        	  var ctt = data.Rows;
+	              for (var i = 0; i < ctt.length; i++) {
+	            	  if("1"==ctt[i].satisfy_status){
+	            		  satis_name.push("满意");
+	            	  }else if("2"==ctt[i].satisfy_status){
+	            		  satis_name.push("基本满意");
+	            	  }else if("3"==ctt[i].satisfy_status){
+	            		  satis_name.push("不满意");
+	            	  }
+	            	  satis_nums.push(ctt[i].nums);
+	              } 
+	              caseTypeBT();
+	         	}
+	        }); 
+		
 	
 });
 
@@ -62,6 +87,32 @@ function rank(){
 		rownumbers : true,
         alternatingRow: true
     });
+}
+
+
+function caseTypeBT() {
+	var btChart = echarts.init(document.getElementById('SatisfactionBT'));
+	var arrNum = [];
+	 for (var i = 0; i < satis_nums.length; i++) {
+         arrNum.push({"value": satis_nums[i],"name":satis_name[i]});
+     }
+	btChart.setOption({
+			title:{
+				show:true,//显示策略，默认值true,可选为：true（显示） | false（隐藏）
+	            text: '满意度',//主标题文本，'\n'指定换行
+	            x:'100px',
+	            y:'100px'
+			},
+		    calculable : true,
+		    series : [
+		        {
+		            type:'pie',
+		            radius : '55%',
+		            center: ['50%', '60%'],
+		            data:arrNum
+		        }
+		    ]
+		});
 }
 
 
