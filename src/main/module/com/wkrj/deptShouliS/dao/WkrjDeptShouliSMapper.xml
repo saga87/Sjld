@@ -1,0 +1,542 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.wkrj.deptChengbanS.dao.WkrjDeptChengbanSDao">
+    
+    <select id="getDeptChengbanList" resultType="hashmap" parameterType="int">
+        SELECT COUNT(1) cnt,d.dept_name,d.dept_id,
+        (SELECT count(1) FROM wkrj_reportevent WHERE DATE_SUB(input_time,INTERVAL -deal_days DAY) &lt;= NOW() AND chengban_dept=d.dept_id) should_cnt,
+        (SELECT count(1) FROM wkrj_reportevent WHERE DATE_SUB(input_time,INTERVAL -deal_days DAY) &lt;= NOW() AND chengban_dept=d.dept_id AND (event_status = '完成' or event_status = '直接完成' or event_status = '回访完成')) fact_cnt,
+        (SELECT count(1) FROM wkrj_reportevent WHERE DATE_SUB(input_time,INTERVAL -deal_days DAY) > NOW() AND chengban_dept=d.dept_id AND (<!-- event_status != '完成' AND event_status != '直接完成' AND event_status != '回访完成' -->event_status = '转办' AND qianshou_status != 2)) overtime_cnt,
+        (SELECT count(1) FROM wkrj_reportevent WHERE qianshou_status=1 AND chengban_dept=d.dept_id) notReply_cnt,
+        (SELECT count(1) FROM wkrj_eventdelay ed LEFT JOIN wkrj_reportevent re ON re.event_no=ed.event_no WHERE re.chengban_dept=d.dept_id) delay_cnt,
+        (SELECT count(1) FROM wkrj_reportevent WHERE chengban_dept=d.dept_id AND event_no LIKE '%-%') twoUp_cnt,
+        (SELECT count(1) FROM wkrj_reportevent WHERE satisfy_status_dept=1 AND chengban_dept=d.dept_id) satisfied,
+        (SELECT count(1) FROM wkrj_reportevent WHERE satisfy_status_dept=2 AND chengban_dept=d.dept_id) basicSatisfied,
+        (SELECT count(1) FROM wkrj_reportevent WHERE satisfy_status_dept=3 AND chengban_dept=d.dept_id) notSatisfied
+        FROM `wkrj_reportevent` n left join wkrj_sys_department d on n.chengban_dept=d.dept_id where 1=1
+        <if test="null!=dept_id and ''!=dept_id">
+            and n.chengban_dept = #{dept_id}
+        </if>
+        <if test="null!=start_date and ''!=start_date">
+            and n.input_time >= #{start_date}
+        </if>
+        <if test="null!=end_date and ''!=end_date">
+            and n.input_time &lt;= #{end_date}
+        </if>
+        group by n.chengban_dept
+    </select>
+    
+    <select id="getShJianfenWfList" resultType="hashmap" parameterType="int">
+        SELECT COUNT(1) cnt,d.*,(typecode*COUNT(1)) tem_score FROM wkrj_reportevent_wf n LEFT JOIN wkrj_sys_data_dictionary d ON n.zxsh_opinion=d.id 
+        WHERE !ISNULL(n.zxsh_opinion) 
+        <if test="null!=dept_id and ''!=dept_id">
+            and n.chengban_dept = #{dept_id}
+        </if>
+        <if test="null!=start_date and ''!=start_date">
+            and DATE_SUB(n.input_time,INTERVAL -deal_days DAY) >= #{start_date}
+        </if>
+        <if test="null!=end_date and ''!=end_date">
+            and DATE_SUB(n.input_time,INTERVAL -deal_days DAY) &lt;= #{end_date}
+        </if>
+        GROUP BY zxsh_opinion
+    </select>
+    
+    <select id="getDeptChengbanWfList" resultType="hashmap" parameterType="int">
+        SELECT COUNT(1) cnt_old,d.dept_name,d.dept_id,d.isshizhi,
+        (SELECT count(1) FROM wkrj_reportevent_wf WHERE  chengban_dept=d.dept_id
+        <if test="null!=start_date and ''!=start_date">
+            and input_time >= #{start_date}
+        </if>
+        <if test="null!=end_date and ''!=end_date">
+            and input_time &lt;= #{end_date}
+        </if>) cnt,
+        (SELECT count(1) FROM wkrj_reportevent_wf WHERE  chengban_dept=d.dept_id and event_status!='撤销' and event_status!='退回'
+        AND event_no NOT LIKE '%-%' 
+        <if test="null!=start_date and ''!=start_date">
+            <!-- and input_time >= #{start_date} -->
+            and DATE_SUB(input_time,INTERVAL -deal_days DAY) >= #{start_date}
+        </if>
+        <if test="null!=end_date and ''!=end_date">
+            <!-- and input_time &lt;= #{end_date} -->
+            and DATE_SUB(input_time,INTERVAL -deal_days DAY) &lt;= #{end_date}
+        </if>) should_cnt,
+        (SELECT count(1) FROM wkrj_reportevent_wf WHERE chengban_dept=d.dept_id AND (qianshou_status=2 or event_status='延时')
+        AND event_no NOT LIKE '%-%' 
+        <if test="null!=start_date and ''!=start_date">
+            <!-- and input_time >= #{start_date} -->
+            and DATE_SUB(input_time,INTERVAL -deal_days DAY) >= #{start_date}
+        </if>
+        <if test="null!=end_date and ''!=end_date">
+            <!-- and input_time &lt;= #{end_date} -->
+            and DATE_SUB(input_time,INTERVAL -deal_days DAY) &lt;= #{end_date}
+        </if>
+        <!-- SELECT count(1) FROM ((SELECT  *  FROM wkrj_reportevent_wf WHERE qianshou_status=2 and zhuanbanornot = 0 AND event_no NOT LIKE '%-%' and event_status!='撤销' and event_status!='退回'
+        <if test="null!=start_date and ''!=start_date">
+            and input_time >= #{start_date}
+            and DATE_SUB(input_time,INTERVAL -deal_days DAY) >= #{start_date}
+        </if>
+        <if test="null!=end_date and ''!=end_date">
+            and input_time &lt;= #{end_date}
+            and DATE_SUB(input_time,INTERVAL -deal_days DAY) &lt;= #{end_date}
+        </if>)
+        UNION ALL (SELECT * FROM wkrj_reportevent_wf WHERE qianshou_status=2 and event_status!='撤销' and event_status!='退回' and zhuanbanornot = 0 
+        and (event_no like concat("%", '-2',"%") OR event_no like concat("%", '-3',"%") OR event_no like concat("%", '-4',"%") OR event_no like concat("%", '-5',"%") OR event_no like concat("%", '-6',"%") OR event_no like concat("%", '-7',"%") OR event_no like concat("%", '-8',"%") OR event_no like concat("%", '-9',"%") OR event_no like concat("%", '-10',"%"))
+        <if test="null!=start_date and ''!=start_date">
+            and input_time >= #{start_date}
+            and DATE_SUB(input_time,INTERVAL -deal_days DAY) >= #{start_date}
+        </if>
+        <if test="null!=end_date and ''!=end_date">
+            and input_time &lt;= #{end_date}
+            and DATE_SUB(input_time,INTERVAL -deal_days DAY) &lt;= #{end_date}
+        </if>)) tem where tem.chengban_dept=d.dept_id  -->
+        ) fact_cnt,
+        
+        (SELECT count(1) cnt
+        FROM wkrj_reportevent_wf  WHERE  qianshou_status=2 and zhuanbanornot = 0 AND event_no NOT LIKE '%-%'
+        and event_status!='撤销' and event_status!='退回' and chengban_dept = d.dept_id
+        <if test="null!=start_date and ''!=start_date">
+            and DATE_SUB(input_time,INTERVAL -deal_days DAY) >= #{start_date}
+        </if>
+        <if test="null!=end_date and ''!=end_date">
+            and DATE_SUB(input_time,INTERVAL -deal_days DAY) &lt;= #{end_date}
+        </if>) onceFinish,
+
+        (SELECT count(1) cnt FROM wkrj_reportevent_wf  WHERE  qianshou_status=2 
+        and event_status!='撤销' and event_status!='退回' and event_no like concat("%", -2,"%") and zhuanbanornot = 0 and chengban_dept = d.dept_id
+        <if test="null!=start_date and ''!=start_date">
+            and DATE_SUB(input_time,INTERVAL -deal_days DAY) >= #{start_date}
+        </if>
+        <if test="null!=end_date and ''!=end_date">
+            and DATE_SUB(input_time,INTERVAL -deal_days DAY) &lt;= #{end_date}
+        </if>) secondFinish,
+
+        (SELECT count(1) cnt FROM wkrj_reportevent_wf  WHERE  qianshou_status=2 
+        and event_status!='撤销' and event_status!='退回' and event_no like concat("%", -3,"%") and zhuanbanornot = 0 and chengban_dept = d.dept_id
+        <if test="null!=start_date and ''!=start_date">
+            and DATE_SUB(input_time,INTERVAL -deal_days DAY) >= #{start_date}
+        </if>
+        <if test="null!=end_date and ''!=end_date">
+            and DATE_SUB(input_time,INTERVAL -deal_days DAY) &lt;= #{end_date}
+        </if>) thirdFinish,
+
+        (SELECT SUM(tem_score) FROM (SELECT (typecode*COUNT(1)) tem_score,chengban_dept FROM wkrj_reportevent_wf  LEFT JOIN wkrj_sys_data_dictionary dd ON zxsh_opinion=dd.id 
+        WHERE !ISNULL(zxsh_opinion)
+        <if test="null!=start_date and ''!=start_date">
+            and DATE_SUB(input_time,INTERVAL -deal_days DAY) >= #{start_date}
+        </if>
+        <if test="null!=end_date and ''!=end_date">
+            and DATE_SUB(input_time,INTERVAL -deal_days DAY) &lt;= #{end_date}
+        </if>
+         GROUP BY chengban_dept,zxsh_opinion) TEMP WHERE TEMP.chengban_dept = d.dept_id) sh_jianfen,
+        
+        (SELECT count(1) FROM wkrj_reportevent_wf WHERE <!-- DATE_SUB(input_time,INTERVAL -deal_days DAY) > NOW() AND --> chengban_dept=d.dept_id AND (<!-- event_status != '完成' AND event_status != '直接完成' AND event_status != '回访完成' -->event_status = '转办' AND qianshou_status != 2)
+        <if test="null!=start_date and ''!=start_date">
+            <!-- and input_time >= #{start_date} -->
+            and DATE_SUB(input_time,INTERVAL -deal_days DAY) >= #{start_date}
+        </if>
+        <if test="null!=end_date and ''!=end_date">
+            <!-- and input_time &lt;= #{end_date} -->
+            and DATE_SUB(input_time,INTERVAL -deal_days DAY) &lt;= #{end_date}
+        </if>) overtime_cnt,
+        (SELECT count(1) FROM wkrj_reportevent_wf WHERE qianshou_status=1 AND chengban_dept=d.dept_id and event_status!='撤销' and event_status!='退回'
+        <if test="null!=start_date and ''!=start_date">
+            <!-- and input_time >= #{start_date} -->
+            and DATE_SUB(input_time,INTERVAL -deal_days DAY) >= #{start_date}
+        </if>
+        <if test="null!=end_date and ''!=end_date">
+            <!-- and input_time &lt;= #{end_date} -->
+            and DATE_SUB(input_time,INTERVAL -deal_days DAY) &lt;= #{end_date}
+        </if>) notReply_cnt,
+        <!-- (SELECT count(1) FROM wkrj_eventdelay_wf ed LEFT JOIN wkrj_reportevent_wf re ON re.event_no=ed.event_no WHERE re.chengban_dept=d.dept_id) delay_cnt, -->
+        (SELECT count(1) FROM wkrj_reportevent_wf re WHERE re.chengban_dept=d.dept_id and re.event_status='延时' AND event_no NOT LIKE '%-%'
+        <if test="null!=start_date and ''!=start_date">
+            <!-- and input_time >= #{start_date} -->
+            and DATE_SUB(input_time,INTERVAL -deal_days DAY) >= #{start_date}
+        </if>
+        <if test="null!=end_date and ''!=end_date">
+            <!-- and input_time &lt;= #{end_date} -->
+            and DATE_SUB(input_time,INTERVAL -deal_days DAY) &lt;= #{end_date}
+        </if>) delay_cnt,
+        (SELECT count(1) FROM wkrj_reportevent_wf WHERE chengban_dept=d.dept_id AND event_no LIKE '%-%' and event_status!='撤销' and event_status!='退回'
+        <if test="null!=start_date and ''!=start_date">
+            and input_time >= #{start_date}
+        </if>
+        <if test="null!=end_date and ''!=end_date">
+            and input_time &lt;= #{end_date}
+        </if>) twoUp_cnt,
+        (SELECT count(1) FROM wkrj_reportevent_wf WHERE satisfy_status_dept=1 AND chengban_dept=d.dept_id
+        <if test="null!=start_date and ''!=start_date">
+            <!-- and input_time >= #{start_date} -->
+            and DATE_SUB(input_time,INTERVAL -deal_days DAY) >= #{start_date}
+        </if>
+        <if test="null!=end_date and ''!=end_date">
+            <!-- and input_time &lt;= #{end_date} -->
+            and DATE_SUB(input_time,INTERVAL -deal_days DAY) &lt;= #{end_date}
+        </if>) satisfied,
+        (SELECT count(1) FROM wkrj_reportevent_wf WHERE satisfy_status_dept=2 AND chengban_dept=d.dept_id
+        <if test="null!=start_date and ''!=start_date">
+            <!-- and input_time >= #{start_date} -->
+            and DATE_SUB(input_time,INTERVAL -deal_days DAY) >= #{start_date}
+        </if>
+        <if test="null!=end_date and ''!=end_date">
+            <!-- and input_time &lt;= #{end_date} -->
+            and DATE_SUB(input_time,INTERVAL -deal_days DAY) &lt;= #{end_date}
+        </if>) basicSatisfied,
+        (SELECT count(1) FROM wkrj_reportevent_wf WHERE satisfy_status_dept=3 AND chengban_dept=d.dept_id
+        <if test="null!=start_date and ''!=start_date">
+            <!-- and input_time >= #{start_date} -->
+            and DATE_SUB(input_time,INTERVAL -deal_days DAY) >= #{start_date}
+        </if>
+        <if test="null!=end_date and ''!=end_date">
+            <!-- and input_time &lt;= #{end_date} -->
+            and DATE_SUB(input_time,INTERVAL -deal_days DAY) &lt;= #{end_date}
+        </if>) notSatisfied
+        FROM `wkrj_reportevent_wf` n left join wkrj_sys_department d on n.chengban_dept=d.dept_id where 1=1
+        <if test="null!=dept_id and ''!=dept_id">
+            and n.chengban_dept = #{dept_id}
+        </if>
+        <!-- <if test="null!=start_date and ''!=start_date">
+            and n.input_time >= #{start_date}
+        </if>
+        <if test="null!=end_date and ''!=end_date">
+            and n.input_time &lt;= #{end_date}
+        </if> -->
+        group by n.chengban_dept order by cnt desc
+    </select>
+    
+    <select id="getFactFinishWfList" resultType="hashmap" parameterType="int">
+        SELECT n.*,(select typename from wkrj_sys_data_dictionary where id=n.deal_level) level,(select typename from wkrj_sys_data_dictionary where id=n.address1) jiedao,
+        (select typename from wkrj_sys_data_dictionary where id=n.accept_source) source,(select typename from wkrj_sys_data_dictionary where id=n.content_type) type,
+        (select user_realname from wkrj_sys_user where user_no=n.accept_workno) user_realname,DATEDIFF(NOW(),DATE_SUB(input_time,INTERVAL -deal_days DAY)) remain_days,
+        DATE_FORMAT(DATE_SUB(input_time,INTERVAL -deal_days DAY),'%Y-%m-%d %H:%i:%s') daoqi_time,
+        round((UNIX_TIMESTAMP(NOW())-UNIX_TIMESTAMP(DATE_SUB(input_time,INTERVAL -deal_days DAY)))/3600) remain_hours,
+        (select dept_name from wkrj_sys_department where dept_id=n.chengban_dept) dept_name,(select typename from wkrj_sys_data_dictionary where id=n.business_type) nature,
+        DATE_FORMAT((select reply_time from wkrj_deptopinion_wf where event_id=n.event_id order by reply_time desc limit 1),'%Y-%m-%d %H:%i:%s') reply_time,
+        (select leader_pishi from wkrj_deptopinion_wf where event_id=n.event_id order by reply_time desc limit 1) leader_pishi,
+        (select reply_content from wkrj_deptopinion_wf where event_id=n.event_id order by reply_time desc limit 1) reply_content,
+        (select delay_reason from wkrj_eventdelay_wf where event_id=n.event_id order by input_time desc limit 1) delay_reason,
+        DATE_FORMAT(n.opt_time,'%Y-%m-%d %H:%i:%s') opttime,
+        DATE_FORMAT(n.huifang_time,'%Y-%m-%d %H:%i:%s') huifangtime,DATE_FORMAT(n.cbd_time,'%Y-%m-%d %H:%i:%s') cbdtime,
+        DATE_FORMAT(n.input_time,'%Y-%m-%d %H:%i:%s') event_inputtime,DATE_FORMAT(n.qianshou_time,'%Y-%m-%d %H:%i:%s') qianshoutime
+        FROM `wkrj_reportevent_wf` n
+        where 1=1 AND (qianshou_status=2 or event_status='延时') AND event_no NOT LIKE '%-%'
+        <!-- FROM ((SELECT  *  FROM wkrj_reportevent_wf WHERE qianshou_status=2 and zhuanbanornot = 0 AND event_no NOT LIKE '%-%' and event_status!='撤销' and event_status!='退回')
+        UNION ALL (SELECT * FROM wkrj_reportevent_wf WHERE qianshou_status=2 and event_status!='撤销' and event_status!='退回' and zhuanbanornot = 0 
+        and (event_no like concat("%", '-2',"%") OR event_no like concat("%", '-3',"%") OR event_no like concat("%", '-4',"%") OR event_no like concat("%", '-5',"%") OR event_no like concat("%", '-6',"%") OR event_no like concat("%", '-7',"%") OR event_no like concat("%", '-8',"%") OR event_no like concat("%", '-9',"%") OR event_no like concat("%", '-10',"%"))))
+        n where 1=1 -->
+        <!-- FROM ((SELECT  *  FROM wkrj_reportevent_wf w WHERE w.qianshou_status=2 and w.zhuanbanornot = 0 AND w.event_no NOT LIKE '%-%' and w.event_status!='撤销' and w.event_status!='退回'
+        and DATE_FORMAT(DATE_SUB(w.input_time,INTERVAL -deal_days DAY),'%Y-%m-%d %H:%i:%s') > DATE_FORMAT((select reply_time from wkrj_deptopinion_wf where event_id=w.event_id order by reply_time desc limit 1),'%Y-%m-%d %H:%i:%s')
+        )
+        UNION ALL (SELECT * FROM wkrj_reportevent_wf f WHERE f.qianshou_status=2 and f.event_status!='撤销' and f.event_status!='退回' and f.zhuanbanornot = 0 
+        and DATE_FORMAT(DATE_SUB(f.input_time,INTERVAL -deal_days DAY),'%Y-%m-%d %H:%i:%s') > DATE_FORMAT((select reply_time from wkrj_deptopinion_wf where event_id=f.event_id order by reply_time desc limit 1),'%Y-%m-%d %H:%i:%s')
+        and (f.event_no like concat("%", '-2',"%") OR f.event_no like concat("%", '-3',"%") OR f.event_no like concat("%", '-4',"%") OR f.event_no like concat("%", '-5',"%") OR f.event_no like concat("%", '-6',"%") OR f.event_no like concat("%", '-7',"%") OR f.event_no like concat("%", '-8',"%") OR f.event_no like concat("%", '-9',"%") OR f.event_no like concat("%", '-10',"%"))
+        )) n where 1=1 -->
+        <if test="null!=dept_id and ''!=dept_id">
+            and n.chengban_dept = #{dept_id}
+        </if>
+        <if test="null!=start_date and ''!=start_date">
+            <!-- and n.input_time >= #{start_date} -->
+            and DATE_SUB(n.input_time,INTERVAL -deal_days DAY) >= #{start_date}
+        </if>
+        <if test="null!=end_date and ''!=end_date">
+            <!-- and n.input_time &lt;= #{end_date} -->
+            and DATE_SUB(n.input_time,INTERVAL -deal_days DAY) &lt;= #{end_date}
+        </if>
+        order by n.input_time desc
+         limit #{offset},#{page}
+    </select>
+    
+    <select id="getFactFinishWfListCount" resultType="Long" parameterType="Object">
+        SELECT count(1)
+        FROM `wkrj_reportevent_wf` n
+        where 1=1 AND (qianshou_status=2 or event_status='延时') AND event_no NOT LIKE '%-%'
+        <!-- FROM ((SELECT  *  FROM wkrj_reportevent_wf WHERE qianshou_status=2 and zhuanbanornot = 0 AND event_no NOT LIKE '%-%' and event_status!='撤销' and event_status!='退回')
+        UNION ALL (SELECT * FROM wkrj_reportevent_wf WHERE qianshou_status=2 and event_status!='撤销' and event_status!='退回' and zhuanbanornot = 0 
+        and (event_no like concat("%", '-2',"%") OR event_no like concat("%", '-3',"%") OR event_no like concat("%", '-4',"%") OR event_no like concat("%", '-5',"%") OR event_no like concat("%", '-6',"%") OR event_no like concat("%", '-7',"%") OR event_no like concat("%", '-8',"%") OR event_no like concat("%", '-9',"%") OR event_no like concat("%", '-10',"%"))))
+        n where 1=1 -->
+        <!-- FROM ((SELECT  *  FROM wkrj_reportevent_wf w WHERE w.qianshou_status=2 and w.zhuanbanornot = 0 AND w.event_no NOT LIKE '%-%' and w.event_status!='撤销' and w.event_status!='退回'
+        and DATE_FORMAT(DATE_SUB(w.input_time,INTERVAL -deal_days DAY),'%Y-%m-%d %H:%i:%s') > DATE_FORMAT((select reply_time from wkrj_deptopinion_wf where event_id=w.event_id order by reply_time desc limit 1),'%Y-%m-%d %H:%i:%s')
+        )
+        UNION ALL (SELECT * FROM wkrj_reportevent_wf f WHERE f.qianshou_status=2 and f.event_status!='撤销' and f.event_status!='退回' and f.zhuanbanornot = 0 
+        and DATE_FORMAT(DATE_SUB(f.input_time,INTERVAL -deal_days DAY),'%Y-%m-%d %H:%i:%s') > DATE_FORMAT((select reply_time from wkrj_deptopinion_wf where event_id=f.event_id order by reply_time desc limit 1),'%Y-%m-%d %H:%i:%s')
+        and (f.event_no like concat("%", '-2',"%") OR f.event_no like concat("%", '-3',"%") OR f.event_no like concat("%", '-4',"%") OR f.event_no like concat("%", '-5',"%") OR f.event_no like concat("%", '-6',"%") OR f.event_no like concat("%", '-7',"%") OR f.event_no like concat("%", '-8',"%") OR f.event_no like concat("%", '-9',"%") OR f.event_no like concat("%", '-10',"%"))
+        )) n where 1=1 -->
+        <if test="null!=dept_id and ''!=dept_id">
+            and n.chengban_dept = #{dept_id}
+        </if>
+        <if test="null!=start_date and ''!=start_date">
+            <!-- and n.input_time >= #{start_date} -->
+            and DATE_SUB(n.input_time,INTERVAL -deal_days DAY) >= #{start_date}
+        </if>
+        <if test="null!=end_date and ''!=end_date">
+            <!-- and n.input_time &lt;= #{end_date} -->
+            and DATE_SUB(n.input_time,INTERVAL -deal_days DAY) &lt;= #{end_date}
+        </if>
+    </select>
+    
+    <select id="getSatisfyDuWfList" resultType="hashmap" parameterType="int">
+        SELECT n.*,(select typename from wkrj_sys_data_dictionary where id=n.deal_level) level,(select typename from wkrj_sys_data_dictionary where id=n.address1) jiedao,
+        (select typename from wkrj_sys_data_dictionary where id=n.accept_source) source,(select typename from wkrj_sys_data_dictionary where id=n.content_type) type,
+        (select user_realname from wkrj_sys_user where user_no=n.accept_workno) user_realname,DATEDIFF(NOW(),DATE_SUB(input_time,INTERVAL -deal_days DAY)) remain_days,
+        DATE_FORMAT(DATE_SUB(input_time,INTERVAL -deal_days DAY),'%Y-%m-%d %H:%i:%s') daoqi_time,
+        round((UNIX_TIMESTAMP(NOW())-UNIX_TIMESTAMP(DATE_SUB(input_time,INTERVAL -deal_days DAY)))/3600) remain_hours,
+        (select dept_name from wkrj_sys_department where dept_id=n.chengban_dept) dept_name,(select typename from wkrj_sys_data_dictionary where id=n.business_type) nature,
+        DATE_FORMAT((select reply_time from wkrj_deptopinion_wf where event_id=n.event_id order by reply_time desc limit 1),'%Y-%m-%d %H:%i:%s') reply_time,
+        (select leader_pishi from wkrj_deptopinion_wf where event_id=n.event_id order by reply_time desc limit 1) leader_pishi,
+        (select reply_content from wkrj_deptopinion_wf where event_id=n.event_id order by reply_time desc limit 1) reply_content,
+        (select delay_reason from wkrj_eventdelay_wf where event_id=n.event_id order by input_time desc limit 1) delay_reason,
+        DATE_FORMAT(n.opt_time,'%Y-%m-%d %H:%i:%s') opttime,
+        DATE_FORMAT(n.huifang_time,'%Y-%m-%d %H:%i:%s') huifangtime,DATE_FORMAT(n.cbd_time,'%Y-%m-%d %H:%i:%s') cbdtime,
+        DATE_FORMAT(n.input_time,'%Y-%m-%d %H:%i:%s') event_inputtime,DATE_FORMAT(n.qianshou_time,'%Y-%m-%d %H:%i:%s') qianshoutime
+        FROM `wkrj_reportevent_wf` n
+        where 1=1 AND n.qianshou_status=2 
+        <if test="null!=satisfy_status_dept and ''!=satisfy_status_dept">
+            and n.satisfy_status_dept = #{satisfy_status_dept}
+        </if>
+        <if test="null!=dept_id and ''!=dept_id">
+            and n.chengban_dept = #{dept_id}
+        </if>
+        <if test="null!=start_date and ''!=start_date">
+            <!-- and n.input_time >= #{start_date} -->
+            and DATE_SUB(n.input_time,INTERVAL -deal_days DAY) >= #{start_date}
+        </if>
+        <if test="null!=end_date and ''!=end_date">
+            <!-- and n.input_time &lt;= #{end_date} -->
+            and DATE_SUB(n.input_time,INTERVAL -deal_days DAY) &lt;= #{end_date}
+        </if>
+        order by n.input_time desc
+         limit #{offset},#{page}
+    </select>
+    
+    <select id="getSatisfyDuWfListCount" resultType="Long" parameterType="Object">
+        SELECT count(1)
+        FROM `wkrj_reportevent_wf` n
+        where 1=1 AND n.qianshou_status=2
+        <if test="null!=satisfy_status_dept and ''!=satisfy_status_dept">
+            and n.satisfy_status_dept = #{satisfy_status_dept}
+        </if>
+        <if test="null!=dept_id and ''!=dept_id">
+            and n.chengban_dept = #{dept_id}
+        </if>
+        <if test="null!=start_date and ''!=start_date">
+            <!-- and n.input_time >= #{start_date} -->
+            and DATE_SUB(n.input_time,INTERVAL -deal_days DAY) >= #{start_date}
+        </if>
+        <if test="null!=end_date and ''!=end_date">
+            <!-- and n.input_time &lt;= #{end_date} -->
+            and DATE_SUB(n.input_time,INTERVAL -deal_days DAY) &lt;= #{end_date}
+        </if>
+    </select>
+    
+    <select id="getDelayWfList" resultType="hashmap" parameterType="int">
+        SELECT n.*,(select typename from wkrj_sys_data_dictionary where id=n.deal_level) level,(select typename from wkrj_sys_data_dictionary where id=n.address1) jiedao,
+        (select typename from wkrj_sys_data_dictionary where id=n.accept_source) source,(select typename from wkrj_sys_data_dictionary where id=n.content_type) type,
+        (select user_realname from wkrj_sys_user where user_no=n.accept_workno) user_realname,DATEDIFF(NOW(),DATE_SUB(input_time,INTERVAL -deal_days DAY)) remain_days,
+        DATE_FORMAT(DATE_SUB(input_time,INTERVAL -deal_days DAY),'%Y-%m-%d %H:%i:%s') daoqi_time,
+        round((UNIX_TIMESTAMP(NOW())-UNIX_TIMESTAMP(DATE_SUB(input_time,INTERVAL -deal_days DAY)))/3600) remain_hours,
+        (select dept_name from wkrj_sys_department where dept_id=n.chengban_dept) dept_name,(select typename from wkrj_sys_data_dictionary where id=n.business_type) nature,
+        DATE_FORMAT((select reply_time from wkrj_deptopinion_wf where event_id=n.event_id order by reply_time desc limit 1),'%Y-%m-%d %H:%i:%s') reply_time,
+        (select leader_pishi from wkrj_deptopinion_wf where event_id=n.event_id order by reply_time desc limit 1) leader_pishi,
+        (select reply_content from wkrj_deptopinion_wf where event_id=n.event_id order by reply_time desc limit 1) reply_content,
+        (select delay_reason from wkrj_eventdelay_wf where event_id=n.event_id order by input_time desc limit 1) delay_reason,
+        DATE_FORMAT((select input_time from wkrj_eventdelay_wf where event_id=n.event_id order by input_time desc limit 1),'%Y-%m-%d %H:%i:%s') delay_time,
+        DATE_FORMAT(n.opt_time,'%Y-%m-%d %H:%i:%s') opttime,
+        DATE_FORMAT(n.huifang_time,'%Y-%m-%d %H:%i:%s') huifangtime,DATE_FORMAT(n.cbd_time,'%Y-%m-%d %H:%i:%s') cbdtime,
+        DATE_FORMAT(n.input_time,'%Y-%m-%d %H:%i:%s') event_inputtime,DATE_FORMAT(n.qianshou_time,'%Y-%m-%d %H:%i:%s') qianshoutime
+        FROM `wkrj_reportevent_wf` n
+        where 1=1 and n.event_status='延时' AND n.event_no NOT LIKE '%-%'
+        <if test="null!=dept_id and ''!=dept_id">
+            and n.chengban_dept = #{dept_id}
+        </if>
+        <if test="null!=start_date and ''!=start_date">
+            <!-- and n.input_time >= #{start_date} -->
+            and DATE_SUB(n.input_time,INTERVAL -deal_days DAY) >= #{start_date}
+        </if>
+        <if test="null!=end_date and ''!=end_date">
+            <!-- and n.input_time &lt;= #{end_date} -->
+            and DATE_SUB(n.input_time,INTERVAL -deal_days DAY) &lt;= #{end_date}
+        </if>
+        order by n.input_time desc
+         limit #{offset},#{page}
+    </select>
+    
+    <select id="getDelayWfListCount" resultType="Long" parameterType="Object">
+        SELECT count(1)
+        FROM `wkrj_reportevent_wf` n
+        where 1=1 and n.event_status='延时' AND n.event_no NOT LIKE '%-%'
+        <if test="null!=dept_id and ''!=dept_id">
+            and n.chengban_dept = #{dept_id}
+        </if>
+        <if test="null!=start_date and ''!=start_date">
+            <!-- and n.input_time >= #{start_date} -->
+            and DATE_SUB(n.input_time,INTERVAL -deal_days DAY) >= #{start_date}
+        </if>
+        <if test="null!=end_date and ''!=end_date">
+            <!-- and n.input_time &lt;= #{end_date} -->
+            and DATE_SUB(n.input_time,INTERVAL -deal_days DAY) &lt;= #{end_date}
+        </if>
+    </select>
+    
+    <select id="getTwoUpWfList" resultType="hashmap" parameterType="int">
+        SELECT n.*,(select typename from wkrj_sys_data_dictionary where id=n.deal_level) level,(select typename from wkrj_sys_data_dictionary where id=n.address1) jiedao,
+        (select typename from wkrj_sys_data_dictionary where id=n.accept_source) source,(select typename from wkrj_sys_data_dictionary where id=n.content_type) type,
+        (select user_realname from wkrj_sys_user where user_no=n.accept_workno) user_realname,DATEDIFF(NOW(),DATE_SUB(input_time,INTERVAL -deal_days DAY)) remain_days,
+        DATE_FORMAT(DATE_SUB(input_time,INTERVAL -deal_days DAY),'%Y-%m-%d %H:%i:%s') daoqi_time,
+        round((UNIX_TIMESTAMP(NOW())-UNIX_TIMESTAMP(DATE_SUB(input_time,INTERVAL -deal_days DAY)))/3600) remain_hours,
+        (select dept_name from wkrj_sys_department where dept_id=n.chengban_dept) dept_name,(select typename from wkrj_sys_data_dictionary where id=n.business_type) nature,
+        DATE_FORMAT((select reply_time from wkrj_deptopinion_wf where event_id=n.event_id order by reply_time desc limit 1),'%Y-%m-%d %H:%i:%s') reply_time,
+        (select leader_pishi from wkrj_deptopinion_wf where event_id=n.event_id order by reply_time desc limit 1) leader_pishi,
+        (select reply_content from wkrj_deptopinion_wf where event_id=n.event_id order by reply_time desc limit 1) reply_content,
+        (select delay_reason from wkrj_eventdelay_wf where event_id=n.event_id order by input_time desc limit 1) delay_reason,
+        DATE_FORMAT(n.opt_time,'%Y-%m-%d %H:%i:%s') opttime,
+        DATE_FORMAT(n.huifang_time,'%Y-%m-%d %H:%i:%s') huifangtime,DATE_FORMAT(n.cbd_time,'%Y-%m-%d %H:%i:%s') cbdtime,
+        DATE_FORMAT(n.input_time,'%Y-%m-%d %H:%i:%s') event_inputtime,DATE_FORMAT(n.qianshou_time,'%Y-%m-%d %H:%i:%s') qianshoutime
+        FROM `wkrj_reportevent_wf` n
+        where 1=1 AND n.event_no LIKE '%-%' and n.event_status!='撤销' and n.event_status!='退回'
+        <if test="null!=dept_id and ''!=dept_id">
+            and n.chengban_dept = #{dept_id}
+        </if>
+        <if test="null!=start_date and ''!=start_date">
+            and n.input_time >= #{start_date}
+        </if>
+        <if test="null!=end_date and ''!=end_date">
+            and n.input_time &lt;= #{end_date}
+        </if>
+        order by n.input_time desc
+         limit #{offset},#{page}
+    </select>
+    
+    <select id="getTwoUpWfListCount" resultType="Long" parameterType="Object">
+        SELECT count(1)
+        FROM `wkrj_reportevent_wf` n
+        where 1=1 AND n.event_no LIKE '%-%' and n.event_status!='撤销' and n.event_status!='退回'
+        <if test="null!=dept_id and ''!=dept_id">
+            and n.chengban_dept = #{dept_id}
+        </if>
+        <if test="null!=start_date and ''!=start_date">
+            and n.input_time >= #{start_date}
+        </if>
+        <if test="null!=end_date and ''!=end_date">
+            and n.input_time &lt;= #{end_date}
+        </if>
+    </select>
+    
+    <select id="getDeptTree" resultType="WkrjDept" parameterType="String">
+        
+        SELECT *
+        FROM `wkrj_sys_department` 
+        where true and islock!='1' and type!=1
+        <choose>  
+            <when test="true==isGly">  
+                and dept_parent_id = #{parent_id}
+            </when>   
+            <when test="false==isGly and user_dept!=null and user_dept!=''">  
+                and dept_parent_id = #{user_dept}
+                <!-- and dept_parent_id like concat("%", #{user_dept},"%") -->
+            </when>  
+            <otherwise>  
+               
+            </otherwise>  
+        </choose>  
+        <if test="null!=isshizhi and ''!=isshizhi">
+            and isshizhi = #{isshizhi}
+        </if>
+        ORDER BY type desc,CONVERT(dept_name USING GBK) ASC
+    </select>
+    
+    <select id="getEventReportWfList" resultType="hashmap">
+        
+        SELECT n.*,(select typename from wkrj_sys_data_dictionary where id=n.deal_level) level,(select typename from wkrj_sys_data_dictionary where id=n.address1) jiedao,
+        (select typename from wkrj_sys_data_dictionary where id=n.accept_source) source,(select typename from wkrj_sys_data_dictionary where id=n.content_type) type,
+        (select user_realname from wkrj_sys_user where user_no=n.accept_workno) user_realname,DATEDIFF(NOW(),DATE_SUB(input_time,INTERVAL -deal_days DAY)) remain_days,
+        DATE_FORMAT(DATE_SUB(input_time,INTERVAL -deal_days DAY),'%Y-%m-%d %H:%i:%s') daoqi_time,
+        round((UNIX_TIMESTAMP(NOW())-UNIX_TIMESTAMP(DATE_SUB(input_time,INTERVAL -deal_days DAY)))/3600) remain_hours,
+        (select dept_name from wkrj_sys_department where dept_id=n.chengban_dept) dept_name,(select typename from wkrj_sys_data_dictionary where id=n.business_type) nature,
+        DATE_FORMAT((select reply_time from wkrj_deptopinion_wf where event_id=n.event_id order by reply_time desc limit 1),'%Y-%m-%d %H:%i:%s') reply_time,
+        (select leader_pishi from wkrj_deptopinion_wf where event_id=n.event_id order by reply_time desc limit 1) leader_pishi,
+        (select reply_content from wkrj_deptopinion_wf where event_id=n.event_id order by reply_time desc limit 1) reply_content,
+        (select delay_reason from wkrj_eventdelay_wf where event_id=n.event_id order by input_time desc limit 1) delay_reason,
+        DATE_FORMAT((select input_time from wkrj_eventdelay_wf where event_id=n.event_id order by input_time desc limit 1),'%Y-%m-%d %H:%i:%s') delay_time,
+        DATE_FORMAT(n.opt_time,'%Y-%m-%d %H:%i:%s') opttime,
+        DATE_FORMAT(n.huifang_time,'%Y-%m-%d %H:%i:%s') huifangtime,DATE_FORMAT(n.cbd_time,'%Y-%m-%d %H:%i:%s') cbdtime,
+        DATE_FORMAT(n.input_time,'%Y-%m-%d %H:%i:%s') event_inputtime,DATE_FORMAT(n.qianshou_time,'%Y-%m-%d %H:%i:%s') qianshoutime
+        FROM `wkrj_reportevent_wf` n
+        where 1=1 and n.event_status!='撤销' and n.event_status!='退回' AND n.event_no NOT LIKE '%-%'
+        <if test="null!=dept_id and ''!=dept_id">
+            and n.chengban_dept = #{dept_id}
+        </if>
+        <if test="null!=start_date and ''!=start_date">
+            <!-- and n.input_time >= #{start_date} -->
+            and DATE_SUB(n.input_time,INTERVAL -deal_days DAY) >= #{start_date}
+        </if>
+        <if test="null!=end_date and ''!=end_date">
+            <!-- and n.input_time &lt;= #{end_date} -->
+            and DATE_SUB(n.input_time,INTERVAL -deal_days DAY) &lt;= #{end_date}
+        </if>
+         limit #{offset},#{page}
+         
+    </select>
+
+    <select id="getEventReportWfListCount" resultType="Long" parameterType="Object">
+        
+        SELECT count(1) 
+        FROM `wkrj_reportevent_wf` n
+        where 1=1 and n.event_status!='撤销' and n.event_status!='退回' AND n.event_no NOT LIKE '%-%'
+        <if test="null!=dept_id and ''!=dept_id">
+            and n.chengban_dept = #{dept_id}
+        </if>
+        <if test="null!=start_date and ''!=start_date">
+            <!-- and n.input_time >= #{start_date} -->
+            and DATE_SUB(n.input_time,INTERVAL -deal_days DAY) >= #{start_date}
+        </if>
+        <if test="null!=end_date and ''!=end_date">
+            <!-- and n.input_time &lt;= #{end_date} -->
+            and DATE_SUB(n.input_time,INTERVAL -deal_days DAY) &lt;= #{end_date}
+        </if>
+
+    </select>
+    
+    <select id="getOvertimeNotReplyWfList" resultType="hashmap">
+        SELECT n.*,DATE_FORMAT((select reply_time from wkrj_deptopinion_wf where event_id=n.event_id order by reply_time desc limit 1),'%Y-%m-%d %H:%i:%s') reply_time,
+        (select dept_name from wkrj_sys_department where dept_id=n.chengban_dept) dept_name,DATE_FORMAT(DATE_SUB(input_time,INTERVAL -deal_days DAY),'%Y-%m-%d %H:%i:%s') shouldreplytime,
+        DATE_FORMAT(n.input_time,'%Y-%m-%d %H:%i:%s') event_inputtime
+        FROM `wkrj_reportevent_wf` n where ((n.qianshou_status != 2 and n.event_status = '转办')
+        <!-- OR DATE_FORMAT((select reply_time from wkrj_deptopinion_wf where event_id=n.event_id order by reply_time desc limit 1),'%Y-%m-%d %H:%i:%s') > DATE_FORMAT(DATE_SUB(input_time,INTERVAL -deal_days DAY),'%Y-%m-%d %H:%i:%s') -->)
+        <if test="null!=dept_id and ''!=dept_id">
+            and n.chengban_dept = #{dept_id}
+        </if>
+        <if test="null!=start_date and ''!=start_date">
+            and DATE_SUB(n.input_time,INTERVAL -deal_days DAY) >= #{start_date}
+        </if>
+        <if test="null!=end_date and ''!=end_date">
+            and DATE_SUB(n.input_time,INTERVAL -deal_days DAY) &lt;= #{end_date}
+        </if>
+        <if test="(null==start_date or ''==start_date) and (null==end_date or ''==end_date)">
+            and now() > DATE_SUB(n.input_time,INTERVAL -deal_days DAY) 
+        </if>
+
+        limit #{offset},#{page}
+    </select>
+    
+    <select id="getOvertimeNotReplyWfListCount" resultType="Long" parameterType="Object">
+        SELECT count(1)
+        FROM `wkrj_reportevent_wf` n where ((n.qianshou_status != 2 and n.event_status = '转办')
+        <!-- OR DATE_FORMAT((select reply_time from wkrj_deptopinion_wf where event_id=n.event_id order by reply_time desc limit 1),'%Y-%m-%d %H:%i:%s') > DATE_FORMAT(DATE_SUB(input_time,INTERVAL -deal_days DAY),'%Y-%m-%d %H:%i:%s') -->)
+        <if test="null!=dept_id and ''!=dept_id">
+            and n.chengban_dept = #{dept_id}
+        </if>
+        <if test="null!=start_date and ''!=start_date">
+            and DATE_SUB(n.input_time,INTERVAL -deal_days DAY) >= #{start_date}
+        </if>
+        <if test="null!=end_date and ''!=end_date">
+            and DATE_SUB(n.input_time,INTERVAL -deal_days DAY) &lt;= #{end_date}
+        </if>
+        <if test="(null==start_date or ''==start_date) and (null==end_date or ''==end_date)">
+            and now() > DATE_SUB(n.input_time,INTERVAL -deal_days DAY) 
+        </if>
+    </select>
+    
+</mapper>
+
