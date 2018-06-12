@@ -341,7 +341,8 @@
         (select opt_content from wkrj_procedurerecord where event_id=n.event_id and opt_type=2 order by opt_time desc limit 1) delay_reason,
         DATE_FORMAT(n.input_time,'%Y-%m-%d %H:%i:%s') event_inputtime,DATE_FORMAT(n.qianshou_time,'%Y-%m-%d %H:%i:%s') qianshoutime
         FROM `wkrj_reportevent_wf` n
-        where 1=1 and ABS(round((UNIX_TIMESTAMP(NOW())-UNIX_TIMESTAMP(DATE_SUB(input_time,INTERVAL -deal_days DAY)))/3600))&lt;=24 and n.qianshou_status != '2'
+        where 1=1 AND round((UNIX_TIMESTAMP(NOW())-UNIX_TIMESTAMP(DATE_SUB(input_time,INTERVAL -deal_days DAY)))/3600)&lt;0 
+        and ABS(round((UNIX_TIMESTAMP(NOW())-UNIX_TIMESTAMP(DATE_SUB(input_time,INTERVAL -deal_days DAY)))/3600))&lt;=24 and n.qianshou_status != '2'
         <if test="isGly==false">
             <if test="null!=user_dept and ''!=user_dept">
                 and n.chengban_dept = #{user_dept}
@@ -368,7 +369,8 @@
         
         SELECT count(1) 
         FROM `wkrj_reportevent_wf` n
-        where 1=1 and ABS(round((UNIX_TIMESTAMP(NOW())-UNIX_TIMESTAMP(DATE_SUB(input_time,INTERVAL -deal_days DAY)))/3600))&lt;=24 and n.qianshou_status != '2'
+        where 1=1 AND round((UNIX_TIMESTAMP(NOW())-UNIX_TIMESTAMP(DATE_SUB(input_time,INTERVAL -deal_days DAY)))/3600)&lt;0 
+        and ABS(round((UNIX_TIMESTAMP(NOW())-UNIX_TIMESTAMP(DATE_SUB(input_time,INTERVAL -deal_days DAY)))/3600))&lt;=24 and n.qianshou_status != '2'
         <if test="isGly==false">
             <if test="null!=user_dept and ''!=user_dept">
                 and n.chengban_dept = #{user_dept}

@@ -1445,16 +1445,18 @@ public class WkrjEventWfController {
             }
             List<Map<String, Object>> jjdq_list = this.erService.getJjdqEventWfList(0, 1000000, "", user_dept, "", "", isGly, "", "", "", "", "", "", "", "");
             List<Map<String, Object>> cuiban_list = this.erService.getEventReportWfList(0, 1000000, user_id, user_dept, "", "", isGly, "", "", "1", "", "", "", "", "");
-            return getMap(jjdq_list.size(), cuiban_list.size());
+            List<Map<String, Object>> notAccept_list = this.erService.getEventReportWfList(0, 1000000, "", user_dept, "", "", isGly, "1", "0", "", "", "", "", "", "");
+            List<Map<String, Object>> dealing_list = this.erService.getEventReportWfList(0, 1000000, "", user_dept, "", "", isGly, "1", "1", "", "", "", "", "", "");
+            return getMap(jjdq_list.size(), cuiban_list.size(), notAccept_list.size(), dealing_list.size());
     }
     
-    private Map<String, Object> getMap(long jjdq_cnt, long cuiban_cnt) {
+    private Map<String, Object> getMap(long jjdq_cnt, long cuiban_cnt, long notAccept_cnt, long dealing_cnt) {
 
             Map<String, Object> modelMap = new HashMap<String, Object>(2);
             modelMap.put("jjdq_cnt", jjdq_cnt);
             modelMap.put("cuiban_cnt", cuiban_cnt);
-//            modelMap.put("isExpiring_count", isExpiring_count);
-//            modelMap.put("policyLaw_notChecked_count", policyLaw_notChecked_count);
+            modelMap.put("notAccept_cnt", notAccept_cnt);
+            modelMap.put("dealing_cnt", dealing_cnt);
 //            modelMap.put("fileNotice_notChecked_count", fileNotice_notChecked_count);
 //            modelMap.put("news_notChecked_count", news_notChecked_count);
 //            modelMap.put("mhqExpiredCnt", mhqExpiredCnt);

@@ -43,8 +43,10 @@ $(function(){
             var title = "提醒";
             //var plugin = "reportInfoCheck/reportInfoCheck";
             //$.ligerDialog.tip(0, '<a onclick="open1(\''+plugin+'\',\''+title+'\',\'\',\'\');"  href="javascript:void(0);" style="text-decoration:none;color:red;font-size:14px;">您有['+result.total+']条待办事项已到期，点击可以打开待办事项</a>');
-            var html_content = 	'通知公告未查看：<a href="javascript:void(0);" onclick="newsNotChecked_click()" style="text-decoration:underline;color:red;font-size:14px;">'+
-            						'['+result.jjdq_cnt+']</a>条<br>'+
+            var html_content = 	'新受理单：<a href="javascript:void(0);" onclick="notAccept_click()" style="text-decoration:underline;color:red;font-size:14px;">'+
+            						'['+result.notAccept_cnt+']</a>条<br>'+
+            					'处理中单：<a href="javascript:void(0);" onclick="dealing_click()" style="text-decoration:underline;color:red;font-size:14px;">'+
+            						'['+result.dealing_cnt+']</a>条<br>'+
             					'24小时即将到期单：<a href="javascript:void(0);" onclick="jjdq_click()" style="text-decoration:underline;color:red;font-size:14px;">'+
             						'['+result.jjdq_cnt+']</a>个<br>'+
             					'被催单：<a href="javascript:void(0);" onclick="beicui_click()" style="text-decoration:underline;color:red;font-size:14px;">'+
@@ -62,8 +64,12 @@ $(function(){
     });
 });
 
-function newsNotChecked_click(){
-	openTab("sjc/newsManage/newsManage", "通知公告管理", "e66baf6b-6524-4e60-9b8f-5b575cb6a59b");
+function notAccept_click(){
+	openTab("sjc/notAccept/notAccept", "未签收事项", "aa714487-22e6-4e7c-a9ab-d598e32e7bd9");
+}
+
+function dealing_click(){
+	openTab("sjc/notReply/notReply", "未回复事项", "f9cb619d-e782-44c3-8ca3-9e699160ecd4");
 }
 
 function jjdq_click(){
