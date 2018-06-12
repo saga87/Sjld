@@ -24,11 +24,22 @@ $(function(){
         usePager :true,
         rownumbers : true,
         alternatingRow: true,
+        toolbar : {
+            items : [ {
+                text : '评分',
+                click : event_pingjia,
+                icon : 'comment',
+                id:'eventWf/WkrjEventWf/pingjiaEventWf'
+            }, {
+                line : true
+            }, {
+                text : '退回',
+                click : event_back,
+                icon : 'back',
+                id:'eventWf/WkrjEventWf/sendBackEventWf'
+            } ]
+        },
         onDblClickRow: function (data, rowindex, rowobj) {
-        	if (data.satisfy_status != null && data.satisfy_status != "") {
-                top.$.ligerDialog.alert("已评价");
-                return;
-            }
             var s = parent.$.ligerDialog.open({
                 //target: $("#eventReport_updateWindow_form"),
                 url : "page/sjc/yihuifuEvent/yihuifuDetails.jsp",
@@ -38,7 +49,7 @@ $(function(){
                 data: {
                     content:data
                 },
-                buttons : [ {
+                buttons : [ /*{
                     text : '保存',
                     onclick : function(item, dialog) {
                         var data = dialog.frame.liger.get("eventInfo_repliedWfWindow_form").getData();
@@ -99,7 +110,7 @@ $(function(){
                                });
                         }
                     }
-                }, {
+                },*/ {
                     text : '取消',
                     onclick : function(item, dialog) {
                         dialog.close();
@@ -110,6 +121,120 @@ $(function(){
         }
     });
 });
+
+function event_pingjia(row){
+    var g = $("#repliedEventWf_maingrid").ligerGetGridManager();
+    var r = g.getSelectedRow();
+    if (r == undefined) {
+        $.ligerDialog.alert('请选择一条记录评分!');
+        return;
+    }
+	if (r.satisfy_status != null && r.satisfy_status != "") {
+	  top.$.ligerDialog.alert("已评价");
+	  return;
+	}
+    var s = parent.$.ligerDialog.open({
+        //target: $("#eventReport_updateWindow_form"),
+        url : "page/sjc/yihuifuEvent/yihuifuPingfen.jsp",
+        //data : JSON.stringify(r),
+        width : 900,
+        height :650,
+        data: {
+            content:r
+        },
+        buttons : [ {
+            text : '确定',
+            onclick : function(item, dialog) {
+                var data = dialog.frame.liger.get("eventInfo_repliedWfWindow_form").getData();
+                data.satisfy_status = dialog.frame.$('input[name="satisfy_status"]:checked').val();
+                if (data.satisfy_status == undefined) {
+                    top.$.ligerDialog.alert('请选择满意度');
+                    return;
+                }
+                $.ajax({
+                    url: "eventWf/WkrjEventWf/pingjiaEventWf",
+                    data: data,
+                    dataType : "json",  
+                    type : "POST",
+                    success: function(result){
+                            try{
+                                result = eval('('+result+')');
+                            }catch(e){
+                            }
+                            if (result.success) {
+                                $.ligerDialog.alert(result.msg);
+                                g.loadData();
+                                dialog.close();
+                            } else {
+                                top.$.ligerDialog.alert(result.msg);
+                            }
+                         }
+                   });
+            }
+        }, {
+            text : '取消',
+            onclick : function(item, dialog) {
+                dialog.close();
+            }
+        } ]
+
+    });
+}
+
+function event_back(row){
+    var g = $("#repliedEventWf_maingrid").ligerGetGridManager();
+    var r = g.getSelectedRow();
+    if (r == undefined) {
+        $.ligerDialog.alert('请选择一条记录退回!');
+        return;
+    }
+    if (r.satisfy_status != null && r.satisfy_status != "") {
+  	  top.$.ligerDialog.alert("已评价");
+  	  return;
+  	}
+    var s = parent.$.ligerDialog.open({
+        //target: $("#eventReport_updateWindow_form"),
+        url : "page/sjc/notReply/eventWfBack.jsp",
+        //data : JSON.stringify(r),
+        width : 900,
+        height :650,
+        data: {
+            content:r
+        },
+        buttons : [ {
+            text : '确定',
+            onclick : function(item, dialog) {
+                var data = dialog.frame.liger.get("wfNotReply_replyWindow_form").getData();
+                data.opt_content = dialog.frame.$("#back_reason").val();
+                $.ajax({
+                    url: "eventWf/WkrjEventWf/sendBackEventWf",
+                    data: data,
+                    dataType : "json",  
+                    type : "POST",
+                    success: function(result){
+                            try{
+                                result = eval('('+result+')');
+                            }catch(e){
+                            }
+                            if (result.success) {
+                                $.ligerDialog.alert(result.msg);
+                                g.loadData();
+                                dialog.close();
+                            } else {
+                                top.$.ligerDialog.alert(result.msg);
+                            }
+                         }
+                   });
+            }
+        }, {
+            text : '取消',
+            onclick : function(item, dialog) {
+                dialog.close();
+            }
+        } ]
+
+    });
+}
 
 function goSearch(){
 //    var start_date=$("#start_date").val();

@@ -160,13 +160,13 @@
                 <textarea name="event_other" id="event_other" style="height:100px;width:700px;" disabled></textarea>
             </div>
         </div>
-        <div class="Co">
+        <!-- <div class="Co">
             <label>&nbsp;&nbsp;&nbsp;&nbsp;处理结果:</label>
             <input type="radio" name="deal_result" value="1"/>回复
             <input type="radio" name="deal_result" value="2"/>转办
             <input type="radio" name="deal_result" value="3"/>退回
-        </div>
-        <div class="Co" style="display:none" id="reply_div">
+        </div> -->
+        <div class="Co" style="" id="reply_div">
             <label>&nbsp;&nbsp;&nbsp;&nbsp;回复内容:</label>
             <div class="r_div">
                 <textarea name="opt_content" id="reply_content" style="height:100px;width:700px;" ></textarea>

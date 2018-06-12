@@ -40,17 +40,31 @@ $(function(){
                 line : true
             },*/ {
                 text : '延时',
-                click : eventReport_delay,
+                click : event_delay,
                 icon : 'modify',
                 id:'eventWf/WkrjEventWf/delayEventWf'
-            }/*, {
+            }, {
                 line : true
             }, {
                 text : '回复',
-                click : eventReport_reply,
-                icon : 'modify',
+                click : event_reply,
+                icon : 'prev',
                 id:'eventWf/WkrjEventWf/replyEventWf'
-            }*/ ]
+            }, {
+                line : true
+            }, {
+                text : '退回',
+                click : event_back,
+                icon : 'back',
+                id:'eventWf/WkrjEventWf/sendBackEventWf'
+            }, {
+                line : true
+            }, {
+                text : '转办',
+                click : event_zhuanban,
+                icon : 'archives',
+                id:'eventWf/WkrjEventWf/zhuanbanEvent'
+            } ]
         },
         onDblClickRow: function (data, rowindex, rowobj) {
         	if (data.zhuanbanornot == 1) {
@@ -59,14 +73,14 @@ $(function(){
             }
             var s = parent.$.ligerDialog.open({
                 //target: $("#wfNotReply_updateWindow_form"),
-                url : "page/sjc/notReply/eventWfReply.jsp",
+                url : "page/sjc/notReply/notReply_details.jsp",
                 //data : JSON.stringify(r),
                 width : 900,
                 height :650,
                 data: {
                     content:data
                 },
-                buttons : [ {
+                buttons : [ /*{
                     text : '确定',
                     onclick : function(item, dialog) {
                         var data = dialog.frame.liger.get("wfNotReply_replyWindow_form").getData();
@@ -144,7 +158,7 @@ $(function(){
                                });
                         }
                     }
-                }, {
+                },*/ {
                     text : '取消',
                     onclick : function(item, dialog) {
                         dialog.close();
@@ -156,7 +170,7 @@ $(function(){
     });
 });
 
-function eventReport_delay(row){
+function event_delay(row){
     var g = $("#wfNotReply_maingrid").ligerGetGridManager();
     var r = g.getSelectedRow();
     if (r == undefined) {
@@ -216,7 +230,7 @@ function eventReport_delay(row){
     });
 }
 
-function eventReport_reply(row){
+function event_reply(row){
     var g = $("#wfNotReply_maingrid").ligerGetGridManager();
     var r = g.getSelectedRow();
     if (r == undefined) {
@@ -225,7 +239,7 @@ function eventReport_reply(row){
     }
     var s = parent.$.ligerDialog.open({
         //target: $("#eventReport_updateWindow_form"),
-        url : "page/sjc/wfNotReply/eventWf_reply.jsp",
+        url : "page/sjc/notReply/eventWfReply.jsp",
         //data : JSON.stringify(r),
         width : 900,
         height :650,
@@ -236,8 +250,111 @@ function eventReport_reply(row){
             text : '确定',
             onclick : function(item, dialog) {
                 var data = dialog.frame.liger.get("wfNotReply_replyWindow_form").getData();
+                data.opt_content = dialog.frame.$("#reply_content").val();
                 $.ajax({
                     url: "eventWf/WkrjEventWf/replyEventWf",
+                    data: data,
+                    dataType : "json",  
+                    type : "POST",
+                    success: function(result){
+                            try{
+                                result = eval('('+result+')');
+                            }catch(e){
+                            }
+                            if (result.success) {
+                                $.ligerDialog.alert(result.msg);
+                                g.loadData();
+                                dialog.close();
+                            } else {
+                                top.$.ligerDialog.alert(result.msg);
+                            }
+                         }
+                   });
+            }
+        }, {
+            text : '取消',
+            onclick : function(item, dialog) {
+                dialog.close();
+            }
+        } ]
+
+    });
+}
+
+function event_back(row){
+    var g = $("#wfNotReply_maingrid").ligerGetGridManager();
+    var r = g.getSelectedRow();
+    if (r == undefined) {
+        $.ligerDialog.alert('请选择一条记录退回!');
+        return;
+    }
+    var s = parent.$.ligerDialog.open({
+        //target: $("#eventReport_updateWindow_form"),
+        url : "page/sjc/notReply/eventWfBack.jsp",
+        //data : JSON.stringify(r),
+        width : 900,
+        height :650,
+        data: {
+            content:r
+        },
+        buttons : [ {
+            text : '确定',
+            onclick : function(item, dialog) {
+                var data = dialog.frame.liger.get("wfNotReply_replyWindow_form").getData();
+                data.opt_content = dialog.frame.$("#back_reason").val();
+                $.ajax({
+                    url: "eventWf/WkrjEventWf/sendBackEventWf",
+                    data: data,
+                    dataType : "json",  
+                    type : "POST",
+                    success: function(result){
+                            try{
+                                result = eval('('+result+')');
+                            }catch(e){
+                            }
+                            if (result.success) {
+                                $.ligerDialog.alert(result.msg);
+                                g.loadData();
+                                dialog.close();
+                            } else {
+                                top.$.ligerDialog.alert(result.msg);
+                            }
+                         }
+                   });
+            }
+        }, {
+            text : '取消',
+            onclick : function(item, dialog) {
+                dialog.close();
+            }
+        } ]
+
+    });
+}
+
+function event_zhuanban(row){
+    var g = $("#wfNotReply_maingrid").ligerGetGridManager();
+    var r = g.getSelectedRow();
+    if (r == undefined) {
+        $.ligerDialog.alert('请选择一条记录转办!');
+        return;
+    }
+    var s = parent.$.ligerDialog.open({
+        //target: $("#eventReport_updateWindow_form"),
+        url : "page/sjc/notReply/eventWfZhuanban.jsp",
+        //data : JSON.stringify(r),
+        width : 900,
+        height :650,
+        data: {
+            content:r
+        },
+        buttons : [ {
+            text : '确定',
+            onclick : function(item, dialog) {
+                var data = dialog.frame.liger.get("wfNotReply_replyWindow_form").getData();
+                data.chengban_dept = dialog.frame.liger.get("chengban_dept").getValue();
+                $.ajax({
+                    url: "eventWf/WkrjEventWf/zhuanbanEvent",
                     data: data,
                     dataType : "json",  
                     type : "POST",

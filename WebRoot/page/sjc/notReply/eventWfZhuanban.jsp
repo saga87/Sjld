@@ -6,14 +6,19 @@
 <meta charset="UTF-8">
 <!-- <script language="javascript" src="plug-in/lodop/LodopFuncs.js"></script> -->
 <script type="text/javascript" src="system/js/commonStatus.js"></script>
+<style type="text/css">
+#reply_content_div span {
+	background: #FFFFFF url(../images/ui/input.gif) repeat-x top;
+}
+</style>
 <script type="text/javascript">
 	var cbd_fileurl;
 	$(function() {
 		var dialog = frameElement.dialog;
 		var dialogData = dialog.get('data');//获取data参数
-		$("#eventInfo_notReplyWindow_form").ligerForm().setData(
+		$("#wfNotReply_replyWindow_form").ligerForm().setData(
 				dialogData.content);
-		cbd_fileurl = dialogData.content.cbd_fileurl;
+
 	});
 	/*
 	 * 预览
@@ -27,7 +32,14 @@
 
 </head>
 <body>
-<form id="eventInfo_notReplyWindow_form" method="get" class="liger-form">
+<link href="systemdev/js/uploadfy/uploadify.css"
+     rel="stylesheet" type="text/css" />
+ <script type="text/javascript"
+   src="systemdev/js/uploadfy/jquery.uploadify.min.js"></script>
+ <script type="text/javascript"
+   src="systemdev/js/uploadfy/jquery.uploadify.js"></script>
+<form id="wfNotReply_replyWindow_form" method="get" class="liger-form">
+    <!-- <div id="accept_user"></div> -->
     <div style="overflow:hidden;">
         <div class="Co">
             <label><span class="text_red" >*</span>&nbsp;&nbsp;受理渠道:</label>
@@ -62,7 +74,7 @@
         </div>
         <div class="Co" style="" id="zhuanban_div">
             <label><span class="text_red" >*</span>&nbsp;&nbsp;受理单位:</label>
-            <input type="text" name="dept_name" id="chengban_dept" disabled/>
+            <input type="text" name="" id="chengban_dept" />
             <input type="hidden" name="chengban_dept_hidden" id="chengban_dept_hidden" />
         </div>
         <input type="hidden" name="event_id" id="event_id">

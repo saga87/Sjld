@@ -20,71 +20,7 @@
 				dialogData.content);
 		cbd_fileurl = dialogData.content.cbd_fileurl;
 		$("#reply_content_div").html(dialogData.content.reply_content);
-		//var messagea_ue=UE.getEditor("reply_content");
-		//     messagea_ue.addListener('ready', function () {
-		//                     if (CheckF != '1') {
-		//                         messagea_ue.setDisabled();
-		//                     }
-		//                 });
 
-// 	    $.ajax({
-// 			type : 'POST',
-// 			url : 'eventReportWf/WkrjEventReportWf/getReplyFileInfoWf?event_id='
-// 					+ dialogData.content.event_id,
-// 			dataType : 'json',
-// 			success : function(result) {
-//                 if (result.success) {
-//                     $("#replyFileDiv").show();
-//                     var d=eval(result);//解析
-//                     $(d.obj).each(function(index,obj){  
-//                         $("#file_show_div").append($('<span style="margin-left:10px"><a href="javascipt:void(0);" onclick="previewOF(\''+obj.file_xname+'\',\''+obj.file_yname+'\')">'+obj.file_yname+'</a></span>'));//后台数据加到下拉框
-//                     });
-//                 } else {
-//                 }
-// 			}
-// 		});
-        //根据radio值设置可见不可见
-        $("input[type=radio][name=deal_type]").click(function() {
-//             if ($(this).val() == 1) {
-//                 $("#satisfy_div").show();
-//                 $("#back_div").hide();
-//             } else if ($(this).val() == 2) {
-//             	$("#satisfy_div").hide();
-//                 $("#back_div").show();
-//             }
-        });
-// 		lay = $("#replied_eventWf_layout").ligerLayout({
-// 			allowLeftCollapse : false,
-// 			leftWidth : 890,
-// 			rightWidth : 300,
-// 			isRightCollapse : false,
-// 			allowLeftResize : false,
-// 			allowRightResize : false
-// 		});
-		var deal_type = [ {
-			id : 1,
-			text : '通过'
-		}, {
-			id : 2,
-			text : '退回'
-		} ];
-		dt_combobox = $("#deal_type")
-				.ligerComboBox(
-						{
-							width : 150,
-							height : 30,
-							selectBoxWidth : 150,
-							selectBoxHeight : 100,
-							data : deal_type,
-							isMultiSelect : false,
-							valueField : 'id',
-							onSelected : function(newvalue) {
-								if (1 == newvalue) {//通过
-								}
-								if (2 == newvalue) {//退回
-								}
-							}
-						});
 
 	});
 	/*
@@ -160,12 +96,12 @@
 		                <textarea id="event_content" name="event_content" style="height:100px;width:700px;" disabled></textarea>
 		            </div>
 		        </div>
-		        <div class="Co">
+		        <!-- <div class="Co">
 		            <label>&nbsp;&nbsp;&nbsp;&nbsp;事件备注:</label>
 		            <div class="r_div">
 		                <textarea name="event_other" id="event_other" style="height:100px;width:700px;" disabled></textarea>
 		            </div>
-		        </div>
+		        </div> -->
 		        <div class="Co" style="" id="zhuanban_div">
 		            <label><span class="text_red" >*</span>&nbsp;&nbsp;受理单位:</label>
 		            <input type="text" name="dept_name" id="chengban_dept" disabled/>
@@ -177,12 +113,7 @@
 		                <textarea name="reply_content" id="" style="height:100px;width:700px;" disabled></textarea>
 		            </div>
 		        </div>
-		        <!-- <div class="Co">
-		            <label>&nbsp;&nbsp;&nbsp;&nbsp;处理:</label>
-		            <input type="radio" name="deal_type" value="1"/>通过
-		            <input type="radio" name="deal_type" value="2"/>退回
-		        </div> -->
-		        <div class="Co" style="display:none" id="satisfy_div">
+		        <div class="Co" style="" id="satisfy_div">
                     <label>&nbsp;&nbsp;&nbsp;&nbsp;满意度:</label>
                     <input type="radio" name="satisfy_status" value="1"/>满意
                     <input type="radio" name="satisfy_status" value="2"/>基本满意
