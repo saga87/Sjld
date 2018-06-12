@@ -15,7 +15,7 @@
 		(select dept_name from wkrj_sys_department where dept_id=a.chengban_dept)AS chengban
 		FROM wkrj_reportevent_wf a,wkrj_procedurerecord b
 		WHERE 1=1 AND b.event_no = a.event_no
-		AND qianshou_status = 2
+		AND qianshou_status = 2 AND event_status = 1
 		<if test="event_no != null and event_no != ''">
 			AND a.event_no = #{event_no}
 		</if>
