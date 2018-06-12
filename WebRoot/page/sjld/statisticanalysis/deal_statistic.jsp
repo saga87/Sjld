@@ -108,9 +108,10 @@ $(function (){
 			</div>
 			
 			<div style ="margin-top:10px">
-			<a href="javascript:void(0)"
-                        iconCls="icon-search" plain="true"
-                        onclick="rank()">&nbsp;&nbsp;查看排行</a>
+			
+			<input type="button" value="查看排行" onclick="rank()"/>
+			
+			
 			</div>
 			
     	</div>

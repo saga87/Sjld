@@ -82,7 +82,7 @@ input.file{
         
     </head>
     <body>
-    		<div>
+    		<div >
 			<label>&nbsp;&nbsp;类别事项:</label>
             <input type="text" name="content_type" id="content_type"/>
             <select id="dateinfo" name="dateinfo" id="dateinfo">  
@@ -92,10 +92,9 @@ input.file{
     
     	
 			
-			<div style ="margin-top:10px">
-			<a href="javascript:void(0)"
-                        iconCls="icon-search" plain="true"
-                        onclick="ratio()">&nbsp;&nbsp;查看环比同比</a>
+			<div style ="margin-top:10px;margin-left: 15px">
+			<input type="button" value="查看环比同比" onclick="ratio()"/>
+			
 			</div>
 			
     	<div id="ratioZz" style="width:400px;height:400px;"></div>
