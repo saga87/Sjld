@@ -126,6 +126,10 @@
              AND content_type = #{content_type}
         </if>
         
+        <if test="dept_id != null and dept_id != ''">
+             AND chengban_dept LIKE CONCAT(#{dept_id},'%')
+        </if>
+        
         <if test="null!= startTime and ''!= startTime">
             AND input_time >= #{startTime}
         </if>

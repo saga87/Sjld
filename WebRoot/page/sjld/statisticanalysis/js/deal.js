@@ -132,7 +132,7 @@ function caseTypeZz() {
         legend: {
             data: ['']
         },
-        grid:{left:40,right:48},
+        grid:{left:40,right:80},
         toolbox: {
             show: false,
             feature: {
@@ -157,7 +157,7 @@ function caseTypeZz() {
         },
         calculable: true,
         xAxis: {
-            name: '(类别)',
+            name: '(类别事项)',
             type: 'category',
             boundaryGap: true, //取消左侧的间距
             data: [],
@@ -194,7 +194,7 @@ function caseTypeZz() {
             }
         },
         series: [{
-            name: '录入工单数',
+            name: '工单数',
             type: 'bar',
             data: [],
         }]

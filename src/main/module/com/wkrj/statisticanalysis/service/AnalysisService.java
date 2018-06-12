@@ -29,6 +29,6 @@ public interface AnalysisService {
 	List<Map<String,Object>> getSatisfaction(String dept_id);
 	
 	List<Map<String,Object>> getRatio(String content_type,
-			String startTime,String endTime);
+			String startTime,String endTime,String dept_id);
 	
 }

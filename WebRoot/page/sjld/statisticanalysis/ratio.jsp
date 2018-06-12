@@ -99,5 +99,6 @@ input.file{
 			</div>
 			
     	<div id="ratioZz" style="width:400px;height:400px;"></div>
+    	<h3 style="margin-left: 30px;"><span id="hb"></span>&nbsp;<span id="tb"></span></h4>
     </body>
 </html>    

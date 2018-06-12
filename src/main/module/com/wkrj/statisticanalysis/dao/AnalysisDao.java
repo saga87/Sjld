@@ -33,5 +33,6 @@ public interface AnalysisDao {
 	List<Map<String,Object>> getSatisfaction(@Param("dept_id")String dept_id);
 	
 	List<Map<String,Object>> getRatio(@Param("content_type")String content_type,
-			@Param("startTime")String startTime,@Param("endTime")String endTime);
+			@Param("startTime")String startTime,@Param("endTime")String endTime,
+			@Param("dept_id")String dept_id);
 }

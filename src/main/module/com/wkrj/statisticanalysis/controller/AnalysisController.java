@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 
 
+
 import wkrjsystem.utils.UtilsHelper;
 
 import com.wkrj.statisticanalysis.bean.AnalysisType;
@@ -83,8 +84,8 @@ public class AnalysisController {
 	
 	@RequestMapping("getRatio")
 	@ResponseBody
-	public Object getRatio(String content_type,String startTime, String endTime){
-		List<Map<String,Object>> list = service.getRatio(content_type, startTime, endTime);
+	public Object getRatio(String content_type,String startTime, String endTime,String dept_id){
+		List<Map<String,Object>> list = service.getRatio(content_type, startTime, endTime,dept_id);
 		return UtilsHelper.returnMap(list, list.size());
 	}
 	

@@ -1,11 +1,24 @@
-		var parentID = "6c3d5d3b-17c4-42ac-b465-370b1ff11b2e";
-		var lstarttime,nstarttime,ostarttime;
-		var lendtime,nendtime,oendtime;
-		var ldate,ndate,odate;
-		var lnum,nnum,onum;
-		var x_names = new Array();
-		var y_nums = new Array();
+var parentID = "6c3d5d3b-17c4-42ac-b465-370b1ff11b2e";
+var lstarttime,nstarttime,ostarttime;
+var lendtime,nendtime,oendtime;
+var ldate,ndate,odate;
+var lnum,nnum,onum;
+var x_names = new Array();
+var y_nums = new Array();
+
+var gly = user_id;
+var counties = dept_id;
+var chengban_dept;
+		
+		
 		$(function (){
+			
+			if(gly=="1"||gly=="58dfbf28-ed18-4d52-a051-ac407c182dcd"||counties=="04"){
+			}else{
+				chengban_dept = counties;
+			}
+			
+			
 			$.ajax({
                 type:'POST',
                 url:'eventWf/WkrjEventWf/getDataDictionary?parentID='+parentID,
@@ -36,24 +49,16 @@
 			
 });
 		
-		function formatDate(value) {
-		    var date = new Date(value).format("yyyy-MM-dd HH:mm");
-		    if (date == "1970-01-01 08:00")
-		        return "--";
-		    else
-		        return date;
-		}
-		
 	function ratio(){
+		x_names = new Array();
+		y_nums = new Array();
 		var content_type = $("#content_type").val();
 		var selectdate = $("#dateinfo").val();
 		if("===请选择当前月份之前的月份===" == selectdate){
 			alert("请选择月份");
 			return;
 		}
-		var date = new   Date(Date.parse(selectdate.replace(/-/g,   "/")));
-		
-//		alert(date.getFullYear()+"==========="+date.getMonth());
+		var date = new Date(Date.parse(selectdate.replace(/-/g,   "/")));
 		var year = date.getFullYear();
 		var month = date.getMonth()+1;
 		var upmonth = date.getMonth();
@@ -70,8 +75,6 @@
 			oendtime = (year-1)+"-"+(month+1)+"-01"+" "+"00:00:00";
 			nendtime = year+"-"+(month+1)+"-01"+" "+"00:00:00";
 		}
-		
-		
 		
 		if(upmonth==0){
 			ldate = (year-1)+"年"+"12月";
@@ -93,34 +96,39 @@
 	        url: "analysis/getRatio",
 	        dataType : "json",  
 	        data: {content_type: content_type,startTime:nstarttime,
-	        	endTime:nendtime},
+	        	endTime:nendtime,dept_id:chengban_dept},
 	        type : "GET",
 	        success: function(data){
 	        	  x_names.push(ndate);
+	        	  nnum = data.Rows[0].nums;
 	        	  y_nums.push(data.Rows[0].nums);
 	        	  
 	        	  $.ajax({
 	      	        url: "analysis/getRatio",
 	      	        dataType : "json",  
 	      	        data: {content_type: content_type,startTime:lstarttime,
-	      	        	endTime:lendtime},
+	      	        	endTime:lendtime,dept_id:chengban_dept},
 	      	        type : "GET",
 	      	        success: function(data2){
 	      	        	  x_names.push(ldate);
+	      	        	  lnum = data2.Rows[0].nums;
 	      	        	  y_nums.push(data2.Rows[0].nums);
-	      	        	  
 	      	        	  
 	      	        	 $.ajax({
 	     	      	        url: "analysis/getRatio",
 	     	      	        dataType : "json",  
 	     	      	        data: {content_type: content_type,startTime:ostarttime,
-	     	      	        	endTime:oendtime},
+	     	      	        	endTime:oendtime,dept_id:chengban_dept},
 	     	      	        type : "GET",
 	     	      	        success: function(data3){
 	     	      	        	  x_names.push(odate);
+	     	      	        	  onum = data3.Rows[0].nums;
 	     	      	        	  y_nums.push(data3.Rows[0].nums);
 	     	      	        	  
 	     	      	        	  ratioZz();
+	     	      	        	  
+	     	      	        	  cal();
+	     	      	        	  
 	     	      	         	}
 	     	      	        }); 
 	      	        	  
@@ -138,6 +146,22 @@
 		
 		
 	}	
+	
+	function cal(){
+		if(lnum==0){
+			$("#hb").html("环比增长"+nnum+"件");
+		}else{
+			$("#hb").html("环比增长"+100*(nnum-lnum)/lnum+"%");
+		}
+		
+		if(onum==0){
+			$("#tb").html(",同比增长"+nnum+"件");
+		}else{
+			$("#tb").html(",同比增长"+100*(nnum-onum)/onum+"%");
+		}
+		
+	}
+	
 	
 	
 	function ratioZz() {
