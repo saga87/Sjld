@@ -55,7 +55,7 @@ var chengban_dept;
 		var content_type = $("#content_type").val();
 		var selectdate = $("#dateinfo").val();
 		if("===请选择当前月份之前的月份===" == selectdate){
-			alert("请选择月份");
+			 $.ligerDialog.error('请选择月份');
 			return;
 		}
 		var date = new Date(Date.parse(selectdate.replace(/-/g,   "/")));

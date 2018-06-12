@@ -28,9 +28,7 @@
             
 		</div>
 		<div style ="margin-top:10px">
-			<a href="javascript:void(0)"
-                        iconCls="icon-search" plain="true"
-                        onclick="statistic()">&nbsp;&nbsp;查看统计图</a>
+		<input type="button" value="查看统计图" onclick="statistic()"/>
 		</div>
         </div>
         
