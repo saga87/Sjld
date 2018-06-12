@@ -71,6 +71,7 @@ http://www.springframework.org/schema/cache http://www.springframework.org/schem
 				/wkrjsystem/wkrjUser/getUserList=anon
 				/eventWf/WkrjEventWf/getDataDictionary=anon
 				/eventWf/WkrjEventWf/getDeptTree=anon
+				/eventWf/WkrjEventWf/getTipInfoList=anon
 				
 				<!-- 手机端开始 -->
 				/wkrjsystem/wkrjlogin/checkLogin_mobile=anon

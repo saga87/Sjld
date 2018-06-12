@@ -342,8 +342,10 @@
         DATE_FORMAT(n.input_time,'%Y-%m-%d %H:%i:%s') event_inputtime,DATE_FORMAT(n.qianshou_time,'%Y-%m-%d %H:%i:%s') qianshoutime
         FROM `wkrj_reportevent_wf` n
         where 1=1 and ABS(round((UNIX_TIMESTAMP(NOW())-UNIX_TIMESTAMP(DATE_SUB(input_time,INTERVAL -deal_days DAY)))/3600))&lt;=24 and n.qianshou_status != '2'
-        <if test="null!=user_dept and ''!=user_dept">
-            and n.chengban_dept like concat("%", #{user_dept},"%")
+        <if test="isGly==false">
+            <if test="null!=user_dept and ''!=user_dept">
+                and n.chengban_dept = #{user_dept}
+            </if>
         </if>
         <if test="null!=event_no and ''!=event_no">
             and n.event_no like concat("%", #{event_no},"%")
@@ -367,8 +369,10 @@
         SELECT count(1) 
         FROM `wkrj_reportevent_wf` n
         where 1=1 and ABS(round((UNIX_TIMESTAMP(NOW())-UNIX_TIMESTAMP(DATE_SUB(input_time,INTERVAL -deal_days DAY)))/3600))&lt;=24 and n.qianshou_status != '2'
-        <if test="null!=user_dept and ''!=user_dept">
-            and n.chengban_dept like concat("%", #{user_dept},"%")
+        <if test="isGly==false">
+            <if test="null!=user_dept and ''!=user_dept">
+                and n.chengban_dept = #{user_dept}
+            </if>
         </if>
         <if test="null!=event_no and ''!=event_no">
             and n.event_no like concat("%", #{event_no},"%")

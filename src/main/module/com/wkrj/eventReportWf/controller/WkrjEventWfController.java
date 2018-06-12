@@ -74,17 +74,23 @@ public class WkrjEventWfController {
     @RequestMapping("getJjdqEventWfList")
     @ResponseBody
     public Object getJjdqEventWfList(String parentId, HttpServletRequest request){
-
+        String user_dept = "";
+        WkrjUser user = (WkrjUser) request.getSession().getAttribute("user");
+        WkrjUserDev userDev = (WkrjUserDev) request.getSession().getAttribute("userDev");
         String dateF = "";
         boolean isGly = checkIsGly(request);
-
+        if (user != null) {
+            user_dept = user.getDept_id();
+        } else if (userDev != null) {
+            user_dept = userDev.getDept_id();
+        }
         String start_date = request.getParameter("start_date");
         String end_date = request.getParameter("end_date");
         int page=Integer.parseInt(request.getParameter("page"));
         int pagesize=Integer.parseInt(request.getParameter("pagesize"));
         int offset = (page-1)*pagesize;
-        List<Map<String, Object>> list = this.erService.getJjdqEventWfList(offset, pagesize, "", "", start_date, end_date, isGly, "", "", "", "", dateF, "", "", "");
-        long count = this.erService.getJjdqEventWfList("", "", start_date, end_date, isGly, "", "", "", "", dateF, "", "", "");
+        List<Map<String, Object>> list = this.erService.getJjdqEventWfList(offset, pagesize, "", user_dept, start_date, end_date, isGly, "", "", "", "", dateF, "", "", "");
+        long count = this.erService.getJjdqEventWfList("", user_dept, start_date, end_date, isGly, "", "", "", "", dateF, "", "", "");
         return UtilsHelper.returnMap(list,count);
     }
     
@@ -796,6 +802,7 @@ public class WkrjEventWfController {
     @ResponseBody
     public AjaxJson pingjiaEvent(WkrjEventWf er, HttpServletRequest request){
         AjaxJson json = new AjaxJson();
+        //boolean isGly = checkIsGly(request);
         WkrjUser user = (WkrjUser) request.getSession().getAttribute("user");
         WkrjUserDev userDev = (WkrjUserDev) request.getSession().getAttribute("userDev");
         String user_id = "";
@@ -1417,5 +1424,42 @@ public class WkrjEventWfController {
         //erWf.setInput_time(event_inputtime);
         request.setAttribute("map", erWf);
         return new ModelAndView("forward:/page/sjc/wfNotReply/printPage.jsp");
+    }
+    
+    /**
+     * 获取快到期、未查看的上报信息数量、未查看的通知公告数量等
+     * @param request
+     * @return
+     */
+    @RequestMapping("getTipInfoList")
+    @ResponseBody
+    public Object getTipInfoList(HttpServletRequest request, String dept_id, String school, String project){
+            WkrjUser user = (WkrjUser) request.getSession().getAttribute("user");
+
+            boolean isGly = checkIsGly(request);
+            String user_id = "";
+            String user_dept = "";
+            if (user != null) {
+                user_id = user.getUser_id();
+                user_dept = user.getDept_id();
+            }
+            List<Map<String, Object>> jjdq_list = this.erService.getJjdqEventWfList(0, 1000000, "", user_dept, "", "", isGly, "", "", "", "", "", "", "", "");
+            List<Map<String, Object>> cuiban_list = this.erService.getEventReportWfList(0, 1000000, user_id, user_dept, "", "", isGly, "", "", "1", "", "", "", "", "");
+            return getMap(jjdq_list.size(), cuiban_list.size());
+    }
+    
+    private Map<String, Object> getMap(long jjdq_cnt, long cuiban_cnt) {
+
+            Map<String, Object> modelMap = new HashMap<String, Object>(2);
+            modelMap.put("jjdq_cnt", jjdq_cnt);
+            modelMap.put("cuiban_cnt", cuiban_cnt);
+//            modelMap.put("isExpiring_count", isExpiring_count);
+//            modelMap.put("policyLaw_notChecked_count", policyLaw_notChecked_count);
+//            modelMap.put("fileNotice_notChecked_count", fileNotice_notChecked_count);
+//            modelMap.put("news_notChecked_count", news_notChecked_count);
+//            modelMap.put("mhqExpiredCnt", mhqExpiredCnt);
+//            modelMap.put("mhqYearCheckExpiredCnt", mhqYearCheckExpiredCnt);
+
+            return modelMap;
     }
 }
